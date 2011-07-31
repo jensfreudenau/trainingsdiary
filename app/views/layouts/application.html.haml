@@ -46,7 +46,7 @@
           #footer
             = render :partial => "partials/footer"
         #sidebar
-          = render :partial => "partials/calendar" 
+          
           - if user_signed_in?
             = render :partial => "partials/statistic", :locals => { :report => @report }
           - if user_signed_in?
