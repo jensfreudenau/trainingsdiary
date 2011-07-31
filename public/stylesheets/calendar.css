@@ -1,0 +1,89 @@
+#calendar table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#calendar td,
+#calendar th {
+  font-family: "Lucida Grande",arial,helvetica,sans-serif;
+  font-size: 8px;
+  padding: 6px;
+  width: 12px;
+  text-align: center;
+}
+
+#calendar th {
+  background: #DDD;
+  color: #666;
+  text-align: center;
+}
+
+#calendar td {
+  background: #FFF;
+  color: #777;
+  vertical-align: top;
+  font-size: 6px;
+  border-bottom: 1px solid #999;
+}
+
+#calendar .notmonth {
+  color: #CCC;
+}
+
+#calendar #month {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+#calendar #month a, #calendar #month a:hover {
+  text-decoration: none;
+  padding: 0 10px;
+  color: #999;
+}
+
+#calendar .today {
+  background-color: #D7F2FF;
+}
+
+#calendar ul {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+}
+
+#calendar li {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  text-align: center;
+}
+
+#basicMap {
+  height: 86%;
+  width: 96%;
+  padding: 0; margin: 0;
+}
+ 
+#sidebar #calendar .content {
+  font-size: 1em;
+  padding-top: 10px;
+}
+ 
+#osm {
+  font-size: 0.7em;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+#calendar a {
+  font-size: 6px;
+}
+#calenar h3 a {
+  color: #FFF;
+}
+#calendar h2 {
+  font-size: 12px;
+}

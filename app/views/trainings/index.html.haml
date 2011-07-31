@@ -1,0 +1,75 @@
+= javascript_include_tag 'OpenLayers', 'OpenStreetMap'
+:javascript
+  //base layers
+  var openstreetmap = new OpenLayers.Layer.OSM();
+  var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+  
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", trainings_path
+      %li
+        = link_to "#{t("web-app-theme.new", :default => "New")}", new_training_path
+  .content
+    %h2.title
+      = t("web-app-theme.all_trainings", :default => "All Trainings")
+    #training
+      .inner
+        %ul.listing
+          - @trainings.each do |training|           
+            .block
+              %h3
+                = training.sportname
+              %li{:id => "home_#{training.id}", :class => "list_overview" }                
+                %dl.floated
+                  %dt
+                    = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
+                  %dd
+                    = number_to_human(training.distance_total, :units => :distance, :precision => 3)
+                  %dt
+                    = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                  %dd
+                    = time2hms(to_dot_time(training.time_total.to_i))
+                  %dt
+                    = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.subject", :default => "Sportlevel."))
+                  %dd
+                    = training.sportlevel
+                  %dt
+                    = t("activerecord.attributes.training.sportname", :default => t("activerecord.labels.sportname", :default => "Sport"))
+                  %dd
+                    = training.sportname
+                  %dt
+                    = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                  %dd
+                    = training.coursename
+                  %dt
+                    = t("activerecord.attributes.training.start_time", :default => t("activerecord.labels.start_time", :default => "Started at"))
+                  %dd
+                    = localize(training.start_time, :format => :default)
+                  %dt
+                    = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "Comment"))
+                  %dd
+                    = training.comment
+                  %br/
+                  %dt
+                    = t("details", :default => "Details")
+                  %dd
+                    \#{link_to image_tag("web-app-theme/icons/show.gif", :alt=>"show") , training_path(training)}
+                    - if can? :update, training
+                      \#{link_to image_tag("web-app-theme/icons/img_icon_edit.png", :alt=>"edit") , edit_training_path(training)}
+                      \#{link_to image_tag("web-app-theme/icons/cross.png", :alt=>"delete") , training_path(training), :method => :delete, :remote => true, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+                .map{:class => 'minimap', :id => "map_#{training.id.to_s}"}
+                  :javascript
+                    createMapWithRoute( #{[training.map_data]}, "map_#{training.id.to_s}");
+                  
+            .clear
+           
+           
+         
+              
+              
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @trainings
+
+

@@ -1,0 +1,8 @@
+-if target.errors.any?
+  #errorExplanation
+    %h2
+      = t('activerecord.errors.template.header', :model => User.model_name.human, :count => @user.errors.count)
+    %ul
+    - target.errors.full_messages.each do |msg|
+      %li
+        = msg

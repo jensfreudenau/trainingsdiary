@@ -1,0 +1,78 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.new", :default => "New")}", "test"
+       
+  .content
+    .inner
+      #Laufen
+      #Radfahren
+= javascript_include_tag 'highcharts'
+:javascript
+
+  var data = [];
+  var reports = #{@statistic};
+
+  $.each( reports, function( intIndex, objValue ){
+    var data = [];
+    data = object2Array(objValue); 
+    $(function() {
+        new Highcharts.Chart({
+          chart: {
+            height: 250,
+            renderTo: intIndex.toString(),          
+            margin: [10, 20, 30, 60]	
+          },
+          title: {
+            text: '',
+            x: -50, //center$maxHeight
+            y: 200
+          },
+          subtitle: {
+            text: '',
+            x: -20
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            enabled: false
+          },         
+          xAxis: {
+            labels: {
+              formatter: function() {
+                  return this.value;
+              },
+              style: {
+                  color: '#000000'
+              }
+            },
+            type: "Krude",
+            lineWidth: 1
+          },
+           yAxis: [{ // Primary yAxis
+             labels: {
+               formatter: function() {
+                   return this.value + ' km';
+               },
+               style: {
+                   color: '#AA4643'
+               }
+             },
+             title: {
+               text: '',
+               margin: 80,
+               style: {
+                   color: '#AA4643'
+               }
+             }
+           }], 
+          
+          series: [{
+            type: 'area',
+            data: data
+          }]
+        });
+      });
+  });
+  

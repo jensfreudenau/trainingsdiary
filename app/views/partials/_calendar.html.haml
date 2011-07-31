@@ -1,0 +1,17 @@
+.block.notice
+  #calendar
+    %h3#month
+      = link_to "<", :month => (@date.beginning_of_month-1).strftime("%d-%m-%Y") , :remote=>true
+      = @date.strftime("%B %Y")
+      = link_to ">", :month => (@date.end_of_month+1).strftime("%d-%m-%Y"), :remote=>true
+    .content
+    
+      - calendar_for @calendartrainings, :year => @date.year, :month => @date.month, :first_day_of_week=>1 do |calendar|
+        = calendar.head(t("date.calendar_days"))
+        - calendar.day(:day_method => :start_time) do |date, trainings|
+          = date.day
+          - if user_signed_in?
+            %ul
+              - for training in trainings
+                %li
+                = link_to h(number_to_human(training.distance_total, :units => :distance, :precision => 3)), training

@@ -1,0 +1,196 @@
+= javascript_include_tag 'OpenLayers', 'OpenStreetMap', 'highcharts'
+- for training in @training
+  - heartrate = [training.heartrate]
+  .block
+    .secondary-navigation
+      %ul.wat-cf
+        %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", trainings_path
+        %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_training_path
+        %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", training_path
+    .content
+      .inner        
+        #heartrate_chart
+        
+        .trainings_data
+          %table.training
+            %tr
+              %th 
+                = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
+              %th
+                = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+              %th
+                &oslash; Pace
+              %th
+                = t("activerecord.attributes.training.sportname", :default => t("activerecord.labels.sportname", :default => "Kind of Sport"))
+              %th
+                = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+              %th
+                = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.sportlevel", :default => "Level"))  
+              %th
+                = t("activerecord.attributes.training.start_time", :default => t("activerecord.labels.start_time", :default => "Started at"))
+            %tr             
+              %td 
+                = number_to_human(training.distance_total, :units => :distance, :precision => 4)  
+              %td
+                = time2hms(to_dot_time(training.time_total.to_i))
+              %td
+                = minutesPerKm(training.distance_total, training.time_total.to_i)
+              %td
+                = training.sportname
+              %td
+                = training.coursename
+              %td
+                = training.sportlevel
+              %td
+                = localize(training.start_time, :format => :default)
+                
+          %p
+            = training.comment
+          %hr/  
+          #laps
+            .outer_laps
+              %table.laps
+                %tr
+                  %th
+                    = t("numb", :default => "No")
+                  %th
+                    = t("activerecord.attributes.lap.distance", :default => t("activerecord.labels.distance", :default => "Lap Distance"))
+                  %th
+                    = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
+                  %th
+                    &oslash; Pace 
+                  %th
+                    &oslash; 
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                  %th
+                    max. 
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))  
+                //- for lap in @laps 
+                - @laps.each_with_index do |lap, index|   
+                  %tr{:class => cycle("odd", "even")}
+                    %td
+                      = index.to_i + 1
+                    %td
+                      = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
+                    %td
+                      = time2hms(to_dot_time(lap.duration.to_i))                     
+                    %td
+                      - if lap.distance_total != 0
+                        = minutesPerKm(lap.distance_total,lap.duration.to_i)
+                    %td
+                      = lap.heartrate_avg
+                    %td
+                      = lap.heartrate_max.to_i
+
+        #map
+          :javascript
+            createMapWithRoute( #{[training.map_data]}, "map");
+        .wat-cf
+          = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
+          = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+
+
+:javascript
+  
+  var heartrates = #{heartrate};
+  var heartbeat = [];
+  var value;  
+  var test = [];
+  k = 0;
+  $.each( heartrates, function( intIndex, objValue ){
+     $.each( objValue, function( index, value ){
+        if (value != null) {
+          heartbeat[k] = value;
+          k++;
+        }
+     });
+  });
+  console.log(test);
+  var max = heartbeat[k-1][0];
+  $(function() {
+      new Highcharts.Chart({
+        chart: {
+          height: 250,
+          renderTo: 'heartrate_chart',
+          
+          margin: [10, 20, 30, 60]	
+        },
+        title: {
+          text: '',
+          x: -50, //center$maxHeight
+          y: 200
+        },
+        subtitle: {
+          text: '',
+          x: -20
+        },
+        credits: {
+          enabled: false
+        },
+        legend: {
+          enabled: false
+        },
+        xAxis: {
+          labels: {
+            formatter: function() {
+                return secondsToTime(this.value);
+            },
+            style: {
+                color: '#000000'
+            }
+          },
+          type: "Time",
+          lineWidth: 1,
+          max: max 
+        },
+        
+        yAxis: [{ // Primary yAxis
+          labels: {
+            formatter: function() {
+                return this.value + ' bpm';
+            },
+            style: {
+                color: '#AA4643'
+            }
+          },
+          title: {
+            text: '',
+            margin: 80,
+            style: {
+                color: '#AA4643'
+            }
+          }
+        }],
+        plotOptions: {
+          area: {
+            fillOpacity: 0.3,
+            lineWidth: 1,
+            marker: {
+              enabled: false,
+              states: {
+                hover: {
+                  enabled: true,
+                  radius: 3
+                }
+              }
+            },
+            shadow: true,
+            states: {
+              hover: {
+                lineWidth: 1						
+              }
+            }
+          }
+        },
+        tooltip: {
+          formatter: function() {
+            return secondsToTime(this.x) +' '+ this.y + ' bpm';
+          }
+        },
+        series: [{
+          type: 'area',
+          data: heartbeat
+        }]
+      });
+    });
+  

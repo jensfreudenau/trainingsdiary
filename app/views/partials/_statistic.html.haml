@@ -1,0 +1,14 @@
+- if user_signed_in?
+  .block
+    #statistic
+      %h3#week
+        = link_to "<", :week => (@from_date.beginning_of_week-7).strftime("%d-%m-%Y")     
+        = localize(@from_date.beginning_of_week, :format => :date)
+        &nbsp;-&nbsp;
+        = localize(@from_date.end_of_week, :format => :date)
+        = link_to ">", :week => (@from_date.beginning_of_week+7).strftime("%d-%m-%Y") 
+      %ul.navigation
+        - report.each do |training|
+          %li
+            = training[0].to_s + ":" 
+            = number_to_human(training[1], :units => :distance, :precision => 3)

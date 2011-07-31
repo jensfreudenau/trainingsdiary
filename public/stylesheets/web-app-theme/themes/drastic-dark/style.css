@@ -1,0 +1,594 @@
+/*
+
+    Drastic Dark
+    by Juan Maria Martinez Arce
+       juan[at]insignia4u.com
+
+    light grey:                 #cfcfcf
+    medium grey:                #36393d
+    dark grey:                  #1a1a1a
+    interactive action yellow   #ffff88
+    red                         #cc0000
+    light blue                  #E6EEFC
+    dark blue                   #0B43A8
+
+*/
+
+.small {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: normal;
+  letter-spacing: normal;
+  line-height: 1.4em;
+}
+
+.gray {
+  color:#999999;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+  text-transform: normal;
+  letter-spacing: normal;
+  line-height: 1.6em;
+}
+
+.hightlight {
+  background-color: #ffff88;
+  font-weight: bold;
+  color: #36393d;
+}
+
+a:link, a:visited, a:hover, a:active, h1, h2, h3 { color: #36393d; }
+a { 
+    -moz-outline: none; 
+    font-size: 12px;
+}
+
+body {
+  color: #222;
+  background: #cfcfcf;
+  font-family: helvetica, arial, sans-serif;
+}
+
+hr {
+  background: #f0f0ee;
+  color: #f0f0ee;
+}
+
+#header {
+  background: #36393d;
+}
+
+#header h1 {
+  padding: 15px 0;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: bold;
+  text-transform: normal;
+  letter-spacing: -1px;
+  line-height: 1.2em;
+}
+
+#header h1 a:link, #header h1 a:active, #header h1 a:hover, #header h1 a:visited {
+  color: #FFF;
+}
+
+#user-navigation {
+  top: auto;
+  bottom: 5px;
+  right: 25px;
+}
+
+#user-navigation a.logout {
+  background: #cc0000;
+  padding: 1px 4px;
+  -moz-border-radius: 4px;
+	-webkit-border-radius: 3px;
+}
+
+#main .block .content {
+  background: #FFF;
+  padding-top: 1px;
+  padding-bottom: 20px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+#main .block .content h2 {
+  margin-left: 15px;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: bold;
+  text-transform: normal;
+  letter-spacing: 0.5em;
+  line-height: 1.2em;
+  
+}
+
+#main .block .content p {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: normal;
+  text-transform: normal;
+  letter-spacing: normal;
+  line-height: 1.45em;
+}
+
+#sidebar .block {
+  background: #FFF;
+}
+
+#sidebar .block h4 {
+  font-weight: bold;
+}
+
+#sidebar .notice {
+  background-color: #FFFFFF;
+}
+
+#sidebar .notice h4 {
+  color: #0B43A8;
+}
+
+#sidebar h3, ul.listing h3{
+  background: #36393d;
+  color: #FFF;
+  border-bottom: 5px solid #1a1a1a;
+}
+
+#main-navigation ul li {
+  padding-left: 15px;
+}
+
+#main-navigation ul li a {
+  padding: 8px 0;
+}
+
+#main-navigation ul li.active {
+  padding: 0;
+  margin-left: 15px;
+}
+
+#main-navigation ul li.active {
+  margin-left: 15px;
+}
+
+#main-navigation ul li.active a {
+  padding: 8px 15px;
+}
+
+#sidebar ul li a:link, #sidebar ul li a:visited {
+  background: #FFF;
+  border-bottom: 1px solid #F0F0EE;
+  text-decoration: none;
+}
+
+#sidebar ul li a:hover, #sidebar ul li a:active {
+  background: #666666;
+  color: #ffffff;;
+}
+
+#main-navigation {
+  background: #1a1a1a;
+}
+
+#main-navigation ul li {
+  background: #1a1a1a;
+  margin-right: 0;
+}
+
+#main-navigation ul li.active {
+  background: #f0f0ee;
+}
+
+#main-navigation ul li a:link, #main-navigation ul li a:visited, #main-navigation ul li a:hover, #main-navigation ul li a:active,
+.secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, .secondary-navigation ul li a:hover, .secondary-navigation ul li a:active,
+#user-navigation ul li a:link, #user-navigation ul li a:visited, #user-navigation ul li a:hover, #user-navigation ul li a:active {
+  text-decoration: none;
+  color: #FFF;
+  letter-spacing: 1px;
+}
+
+.secondary-navigation li a:hover {
+  background: #666666;
+}
+
+#main-navigation ul li.active a:link, #main-navigation ul li.active a:visited, #main-navigation ul li.active a:hover, #main-navigation ul li.active a:active {
+  color: #1a1a1a;
+  
+}
+
+.secondary-navigation {
+  background: #36393d;
+  border-bottom-color: #1a1a1a;
+}
+
+.secondary-navigation ul li.active, .secondary-navigation ul li.active a:hover {
+  background-color: #1a1a1a;
+}
+
+#footer .block {
+  color: #FFF;
+  background: #1a1a1a;
+}
+
+#footer .block p {
+  margin: 0;
+  padding: 10px;
+}
+
+/* pagination */
+
+.pagination a, .pagination span {
+  background: #cfcfcf;
+  -moz-border-radius: 3px;
+  border: 1px solid #c1c1c1;
+}
+.pagination .current{
+  background: #fff;
+}
+.pagination em {
+  background: #36393d;
+  color: #FFF;
+  border: 1px solid #36393d;
+}
+
+.pagination a {
+  color: #1a1a1a;
+}
+
+.pagination a:hover {
+  border: 1px solid #666;
+}
+
+/* tables */
+
+.table th {
+  background: #36393d;  
+  color: #FFF;
+  font-size: 12px;
+}
+
+.table td {
+  border-bottom:1px solid #F0F0EE;
+  font-size: 12px;
+}
+
+.table tr.even, table.laps tr.even {
+  background: #ebebeb;
+}
+
+/* forms */
+
+.form label.label {
+  color: #666666;
+}
+
+.form input.text_field, .form textarea.text_area {
+  width: 80%;
+  border: 1px solid #cfcfcf;
+}
+.form textarea.text_area {
+  height: 200px;
+}
+.form input.button {
+  background: #cfcfcf;
+  -moz-border-radius: 5px;
+  border: 1px solid #c1c1c1;
+  padding: 2px 5px;
+  cursor: pointer;
+  color: #36393d;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.form input.button:hover {
+  border: 1px solid #666;
+}
+
+.form .description {
+  font-style: italic;
+  color: #8C8C8C;
+  font-size: .9em;
+}
+
+.form .navform a {
+  color: #cc0000;
+}
+
+/* flash-messages */
+.flash .message {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-align:center;
+  margin: 0 auto 15px;
+
+}
+
+.flash .message p {
+  margin:8px;
+}
+.flash .error {
+  border: 1px solid #fbb;
+  background-color: #fdd;
+}
+.flash .warning {
+  border: 1px solid #fffaaa;
+  background-color: #ffffcc;
+}
+.flash .notice {
+  border: 1px solid #1FDF00;
+  background-color: #BBFFB6;
+}
+
+/* lists */
+
+ul.list li {
+  border-bottom-color: #F0F0EE;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+ul.list li .item .avatar {
+  border-color: #F0F0EE;
+  border-width: 1px;
+  border-style: solid;
+  padding: 2px;
+}
+
+/* box */
+
+#box .block {
+  background: #FFF;
+}
+
+#box .block h2 {
+  background: #36393d;
+  color: #FFF;
+}
+
+
+/* rounded borders */
+
+#main, #main-navigation, #main-navigation li, .secondary-navigation, #main .block, #sidebar .block, #sidebar h3,
+#footer .block, .form input.button, #box .block, #box .block h2, ul.listing h3 {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+}
+
+.secondary-navigation li.first a, .secondary-navigation ul li.first, .table th.first, .table th.first {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+}
+
+.table th.last {
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+}
+
+.secondary-navigation ul li.first {
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+}
+
+#last_trainings, #last_trainings .block, #sidebar, #sidebar .block, #main .block, #sidebar ul.navigation, #last_trainings ul.navigation, ul.list li, #footer .block, .form input.button, #box .block {
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  
+}
+.block {
+  box-shadow: 0 0 5px #999;
+}
+ul.trainings {
+  list-style-type: disc !important;
+  padding-left: 22px !important;
+}
+.secondary-navigation {
+  border-bottom-width: 5px;
+}
+.sortup {
+	color:#1FDF00;
+}
+.sortdown {
+	color: #CD0A0A;
+}
+.outer_laps div.left {
+    float: left;
+    width: 5%;
+    font-size: 20px;
+    font-weight: bold;
+    padding-left:10px;
+}
+.outer_laps div.right {
+    float: right;
+    width: 92%;
+}
+.outer_laps {
+  margin: 10px 0 0 0;
+  padding:10px 0 0 0;
+  
+  margin-left:auto; 
+  margin-right:auto;
+}
+#map {
+  margin-left:auto; 
+  margin-right:auto;
+  width:670px;
+  height:400px;
+  margin-top:20px;
+  margin-bottom:20px;
+  padding: 5px;
+  border: 1px solid gray;
+  box-shadow: 0 0 5px #CCCCCC;
+}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; font-size: 12px;}
+#sortable li { 
+  margin: 0 3px 15px 30px; 
+  padding: 0.4em; 
+  padding-left: 1.5em;  
+  height: 18px; 
+  border: 1px solid darkred;
+  box-shadow: 0 0 5px #CCCCCC;
+  padding-bottom: 15px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 2px;
+}
+#sortable td.name {
+  width: 200px;
+  font-size: 12px;
+}
+#sortable td.css {
+  width: 100px;
+  font-size: 12px;
+}
+#heartrate_chart, #Laufen, #Radfahren {
+  border: 1px solid gray;
+  padding-top:30px;
+  margin-top:30px;
+  height: 250px; 
+  width:680px;
+  margin-left:auto; 
+  margin-right:auto;
+  box-shadow: 0 0 5px #CCCCCC;
+  overflow:hidden;
+}
+table.training {
+  /*border-collapse: collapse;*/
+  padding-bottom: 20px;
+  width: 90%;
+  text-align: left;
+  font-size: 12px;
+}
+
+table.laps{
+/*  border-collapse: collapse; */
+  font-size: 12px; 
+  width: 100%;
+}
+table.laps td { 
+  text-align: center;
+}
+table.training td { 
+  text-align: left;
+}
+table.laps td, table.training td { 
+  padding: 5px 0 5px 3px;
+}
+
+table.laps td, table.laps th {
+  text-align:left;
+}
+
+table.training th, table.laps th, table.trainings th {
+  margin: 0;
+  padding:0px;
+  height:25px;
+  font-style:italic;
+  border-bottom:1px solid #CCCCCC;
+  text-align: left;
+}
+.trainings_data {
+  padding: 20px;
+  margin-top:30px;
+  margin-left:auto; 
+  margin-right:auto;
+  width:640px;
+  font-size:12px;
+}
+
+.quader {
+    height: 10px;
+    width: 10px;
+}
+ul#trainingsform {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul#trainingsform li {
+  margin-bottom: 20px;
+  clear: both;
+}
+ul#trainingsform label {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 3px;
+  clear: both;
+}
+#statistic #week {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+#statistic #week a, #statistic #week a:hover {
+  text-decoration: none;
+  padding: 0 10px;
+  color: #999;
+}
+
+#statistic li {
+  padding: 10px;
+  border-bottom: 1px solid #F0F0EE;
+}
+.minimap {
+  border:1px solid gray;
+  height:200px;
+  width: 200px;
+  float:right;
+}
+table.trainings_data {
+  float:left;
+}
+li.list_overview {
+  height:205px;
+  margin-bottom:10px;
+  padding:15px;
+  list-style-type: none;
+}
+ul.listing{
+  width: 90%;
+  padding:10px;
+  margin:10px;
+  list-style:none;
+}
+li.training_data {
+  height:200px;
+}
+.clear {
+   clear: both;
+}
+td .map {
+  border:1px solid gray;
+  height:200px;
+  width: 200px;
+}
+
+table.table tr.training_data {
+  margin:10px;
+  padding:10px;  
+  border-radius: 2px;
+}
+
+table.table tr.training_data td{
+  border:none;
+  padding:10px;
+  margin:10px;
+}
+tr.empty{
+  height:20px;
+}
+dl.floated { padding: 0.5em; float:left;} 
+dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green; } 
+dt:after { content: ":"; } 
+dd { margin: 0 0 0 110px; padding: 0 0 0.5em 0; }

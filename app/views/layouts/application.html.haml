@@ -1,0 +1,59 @@
+%html
+  %head
+    %title My Trainings
+    = stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/drastic-dark/style", "web-app-theme/override", "calendar","uniform.default", :cache => true
+    = javascript_include_tag 'jquery', 'jquery-ui.min','jquery.uniform', 'rails', 'application', :cache => true
+    = csrf_meta_tag
+  %body
+    #container
+      #header
+        %h1
+          %a{:href => "/"} My Trainings
+        #user-navigation
+          %ul.wat-cf
+            - if user_signed_in?
+              %li
+                %a{:href => "#"}= t("web-app-theme.profile", :default => "Profile")
+              %li
+                %a{:href => "edit"}= t("web-app-theme.settings", :default => "Settings")
+            %li
+              - if user_signed_in?
+                = link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path
+              - else
+                = link_to t("web-app-theme.login", :default => "Login"), new_user_session_path
+        #main-navigation
+          %ul.wat-cf
+            %li{ :class => (params[:controller] == "home" ? "first active" : "first") }
+              = link_to t("home"), root_path
+            - if user_signed_in?
+              %li{ :class => (params[:controller] == "trainings" ? "active" : nil) }
+                = link_to t("trainings"), trainings_path 
+              %li{ :class => (params[:controller] == "statistics" ? "active" : nil) }
+                = link_to t("statistics"), statistics_path 
+              %li{ :class => (params[:controller] == "course_names" ? "active" : nil) }
+                = link_to t("courses"), course_names_path
+              %li{ :class => (params[:controller] == "sports" ? "active" : nil) }
+                = link_to t("sports"), sports_path  
+              %li{ :class => (params[:controller] == "sport_levels" ? "active" : nil) }
+                = link_to t("sportlevels"), sport_levels_path 
+      #wrapper.wat-cf
+        .flash
+          - flash.each do |type, message|
+            %div{:class => "message #{type}"}
+              %p= message
+        #main
+          = yield
+          #footer
+            = render :partial => "partials/footer"
+        #sidebar
+          = render :partial => "partials/calendar" 
+          - if user_signed_in?
+            = render :partial => "partials/statistic", :locals => { :report => @report }
+          - if user_signed_in?
+            .block            
+              %h3 
+                = t('last_trainings')
+              %ul{:class => "navigation trainings"}
+                = render :partial => "partials/last_training", :collection => @last_trainings
+
+ 
