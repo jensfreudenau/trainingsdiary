@@ -1,0 +1,14 @@
+/* Insert a notice between the last sport and the sport form */
+$("#sport-notice").html('<div class="flash notice"><%= escape_javascript(flash.delete(:notice)) %></div>');
+
+/* Replace the count of sports */
+$("#sports_count").html("<%= pluralize(Sport.count, 'Sport') %>");
+
+/* Add the new sport to the bottom of the sports list */
+$("#sports").append("<%= escape_javascript(render(@sport)) %>");
+
+/* Highlight the new sport */
+$("#sport_<%= @sport.id %>").effect("highlight", {}, 3000);
+
+/* Reset the sport form */
+$("#new_sport")[0].reset();

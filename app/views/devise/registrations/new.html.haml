@@ -1,0 +1,49 @@
+%div{:class => "block", :id => "block-signup"}
+  %h2 Sign up #{resource_name.to_s.humanize}
+  .content
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :class=>[:form, :register] }) do |f|
+      = devise_error_messages!
+      %div{:class => "group wat-cf"}
+        .left
+          %label{:class => "label right"}
+            = f.label :email
+        .right
+          = f.text_field :email, :class=>'text_field'
+      
+      %div{:class => "group wat-cf"} 
+        .left
+          %label{:class => "label right"}
+            = f.label :username
+        .right
+          = f.text_field :username, :class=>'text_field'
+      %div{:class => "group wat-cf"} 
+        .left
+          %label{:class => "label right"}
+            = f.label :password
+        .right
+          = f.password_field :password, :class=>'text_field'              
+      %div{:class => "group wat-cf"} 
+        .left
+          %label{:class => "label right"}
+            = f.label :password_confirmation
+        .right
+          = f.password_field :password_confirmation, :class=>'text_field'
+          
+      %div{:class => "group wat-cf"} 
+        .left
+          %label{:class => "label right"}
+            role_id
+        .right
+          = f.text_field :role_id, :class=>'text_field'  
+      %div{:class => "group wat-cf"} 
+        .left
+          %label{:class => "label right"}
+            = f.label :time_zone
+        .right
+          = f.time_zone_select :time_zone, ActiveSupport::TimeZone.all
+      %div{:class => "group navform wat-cf"}  
+        .right
+          = f.submit "Sign in", :type => :image, :src => "/images/web-app-theme/icons/signup.jpg"
+      %div{:class => "group bottom wat-cf"}
+        .right
+          = render :partial => "devise/shared/links"

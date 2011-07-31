@@ -1,0 +1,31 @@
+%div{:class => "block", :id => "block-login"}
+  %h2 Login
+  %div{:class => "content login"}
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name), :html =>{ :class=>[:form, :login] }) do |f|
+    %div{:class => "group wat-cf"}
+      .left
+        %label{:class => "label right"}
+          Login/Email
+      .right
+        = f.text_field :email, :class=>'text_field'
+    %div{:class => "group wat-cf"} 
+      .left
+        %label{:class => "label right"}
+          Password
+      .right
+        = f.password_field :password, :class=>'text_field'
+    %div{:class => "group wat-cf"} 
+      .left
+        %label{:class => "label right"}
+      .right
+      - if devise_mapping.rememberable?
+        %p
+          = f.check_box :remember_me
+          = f.label :remember_me
+    %div{:class => "group navform wat-cf"}  
+      .right
+        = f.submit "Sign in", :type => :image, :src => "/images/web-app-theme/icons/submit.jpg"
+    %div{:class => "group bottom wat-cf"}
+      .right
+        = render :partial => "devise/shared/links"
+

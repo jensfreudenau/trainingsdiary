@@ -1,0 +1,26 @@
+:css
+  .level {
+    color: ##{@sport_level.css};
+  }
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", sport_levels_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_level_path
+      %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", sport_level_path
+  .content
+    .inner
+      %p
+        %b
+          = t("activerecord.attributes.sport_level.name", :default => t("activerecord.labels.name", :default => "Name"))
+          \:
+        = @sport_level.name
+      %p
+        %b
+          = t("activerecord.attributes.sport_level.css", :default => t("activerecord.labels.css", :default => "Color"))
+          \:
+          %span(class="level")
+            = @sport_level.css
+      .wat-cf
+        = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_sport_level_path(@sport), :class => "button"
+        = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), sport_level_path(@sport), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"

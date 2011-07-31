@@ -1,0 +1,13 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", sport_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_path
+      %li.active= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_sport_path
+  .content
+    %h2.title
+      = t("web-app-theme.edit", :default => "Edit")
+      Sport
+    .inner
+      = form_for :sport, :url => sport_path, :html => { :class => :form } do |f|
+        = render :partial => "form", :locals => {:f => f}

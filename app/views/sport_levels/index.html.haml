@@ -1,0 +1,49 @@
+:javascript
+  $(document).ready(function(){   
+    $('#sortable').sortable({
+      axis: 'y',
+      dropOnEmpty: false,       
+      cursor: 'crosshair',
+      items: 'li',
+      opacity: 0.4,
+      scroll: true,
+      update: function(){
+        $.ajax({
+          type: 'post',
+          data: $('#sortable').sortable('serialize'),
+          dataType: 'script',
+          complete: function(request){
+            $('#sortable li').effect('highlight', {}, 2000);
+          },
+          url: '/sport_levels/sort'
+        })
+      }
+    });
+  });
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", sport_levels_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_level_path
+  .content
+    %h2.title
+      = t("web-app-theme.all_sportlevels", :default => "All Sportlevels")
+    .inner
+      %ul#sortable
+        - @sport_levels.each do |sport_level|
+          :css
+            td.#{sport_level.name} {
+              color: ##{sport_level.css};
+            }
+          %li{:class => 'sortlist', :id => "list_#{sport_level.id.to_s}"}
+            %table
+              %tr
+                %td{:class => "name"}
+                  = sport_level.name
+                %td{:class => "css #{sport_level.name.to_s}"}
+                  = sport_level.css
+                %td{:class => "last"}
+                  - if can? :update, sport_level                  
+                    \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_sport_level_path(sport_level)} |
+                    \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", sport_level_path(sport_level), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf

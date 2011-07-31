@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/base/jquery-ui.css" id="theme">
+= stylesheet_link_tag('jquery.fileupload-ui')
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", blog_entries_path
+      %li.active= link_to "#{t("web-app-theme.new", :default => "New")}", new_blog_entry_path
+  .content
+    %h2.title
+      = t("web-app-theme.new", :default => "New")
+      BlogEntry
+    .inner
+      = form_for :blog_entry, :url => blog_entries_path,:remote => true, :html => { :class => :file_upload, :id => :file_upload, :multipart => true} do |f|
+        = render :partial => "form", :locals => {:f => f}
+
+= javascript_include_tag 'jquery.fileupload', 'jquery.fileupload-ui', 'jquery.fileupload-uix', 'application'
