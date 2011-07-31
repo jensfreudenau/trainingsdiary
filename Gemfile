@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream
-source 'http://rubygems.org'
 
-gem 'rails', '3.0.5'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'mysql2'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -30,7 +22,7 @@ gem 'mysql2'
 # group :development, :test do
 #   gem 'webrat'
 # end
-=======
+
 # A sample Gemfile
 source "http://rubygems.org"
 
@@ -54,4 +46,3 @@ gem 'itslog'
 gem 'json'
 gem "numerizer", "~> 0.1.1"
 gem 'chronic_duration'
->>>>>>> Stashed changes
