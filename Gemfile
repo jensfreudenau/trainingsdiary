@@ -21,3 +21,4 @@ gem 'itslog'
 gem 'json'
 gem "numerizer", "~> 0.1.1"
 gem 'chronic_duration'
+gem 'heroku'
