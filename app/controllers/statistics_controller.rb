@@ -1,61 +1,47 @@
 class StatisticsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
-
   def index
-    @log = Logger.new('log/home.log') 
-    date = Date.today.strftime('%W')
-    @current_week = Date.today.strftime('%W')
-    year = Date.today.strftime('%Y')
-    
+    @log = Logger.new('log/home.log')
+ 
+    @current_week = DateTime.now.beginning_of_week.beginning_of_day
      
-
-
-    month = DateTime.now.months_ago(6)
-    
-    @start_week = month.beginning_of_week
-    
+    @week = DateTime.now.months_ago(8).beginning_of_week.beginning_of_day
     
     @sports = Sport.find(
-        :all,
-        :select => 'id, name',
-        :conditions => ['sports.user_id = ?', 1]
+      :all,
+      :select => 'id, name',
+      :order => 'sort_order DESC',
+      :conditions => ['sports.user_id = ?', current_user.id]
     )
-    #if params[:week] 
-    #  @from_date = DateTime.parse(params[:week])
-    #else
-    #  
-    #end
-    @from_date = DateTime.now
-    @week_nr = @start_week.strftime('%W')
-    week = @week_nr.to_i
+    @log.debug(@sports)
+    
     @statistic = Hash.new
     @sports.each do |sport|
-      while week <= @current_week.to_i
-        week +=1
-        @statistic[sport.name.to_s] ||= {}
-        training = Training.sum( 'distance_total', 
-                                                            :conditions => { 
-                                                              :sport_id => sport.id,  
-                                                              :user_id => 1, 
-                                                              :start_time => @start_week..@start_week.end_of_week })
-        @statistic[sport.name.to_s][week.to_s] = training/1000.to_f
-        
-        @start_week = Date.commercial(year.to_i, week, 1)
+      while @week <= @current_week
 
-        @start_week = @start_week.beginning_of_week
+        @statistic[sport.name.to_s] ||= {}
+        training = Training.sum( 'distance_total',
+            :conditions => {
+              :sport_id => sport.id,
+              :user_id => current_user,
+              :start_time => @week..@week.end_of_week })
         
+        
+        @statistic[sport.name.to_s][@week.strftime('%Y, %m, %d').to_s] = training/1000.to_f
+
+        @week += 7.days
+        @week = @week.beginning_of_week
       end
-      @statistic[sport.name.to_s]
-      week = @week_nr.to_i
-      
-      @week_nr = @start_week.strftime('%W').to_i + 1
-      
+      @week = DateTime.now.months_ago(8).beginning_of_week.beginning_of_day
     end
+    @statistic['Radfahren'] = @statistic['Radfahren'].sort
+    @statistic['Laufen'] = @statistic['Laufen'].sort
     @statistic = @statistic.to_json
+
     respond_to do |format|
-        format.html # show.html.erb
-        format.xml  { render :xml => @statistic }
+      format.html # show.html.erb
+      format.xml  { render :xml => @statistic }
     end
   end
-  
+
 end

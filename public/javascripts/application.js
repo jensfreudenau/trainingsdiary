@@ -46,6 +46,11 @@ function object2Array(objValue) {
    });
   return ar;
 }
+
+function splitData(data) {
+	var txt = new String(data);  
+  return txt.split(',');
+}
 function createMapWithRoute (coordinates, cssId) {
   
   var minLat = 100000;
@@ -85,20 +90,21 @@ function createMapWithRoute (coordinates, cssId) {
     $.each( objValue, function( index, value ){      
       var txt = new String(value);  
       var t = txt.split(',');
-     
-      if(minLat > t[0]) {
-        minLat = t[0];
+	  var lat = t[0];	
+	  var lon = t[1];
+      if(minLat > lat) {
+        minLat = lat;
       }
-      if(maxLat < t[0]) { 
-          maxLat = t[0];
+      if(maxLat < lat) { 
+          maxLat = lat;
       }
-      if(minLong > t[1]) {
-          minLong = t[1];
+      if(minLong > lon) {
+          minLong = lon;
       }
-      if(maxLong < t[1]) {
-          maxLong = t[1];
+      if(maxLong < lon) {
+          maxLong = lon;
       }
-      point = new OpenLayers.Geometry.Point(t[1],t[0]);
+      point = new OpenLayers.Geometry.Point(lon,lat);
       
       point.transform(
         new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984

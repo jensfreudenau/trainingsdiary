@@ -95,7 +95,7 @@
   var heartrates = #{heartrate};
   var heartbeat = [];
   var value;  
-  var test = [];
+
   k = 0;
   $.each( heartrates, function( intIndex, objValue ){
      $.each( objValue, function( index, value ){
@@ -105,7 +105,7 @@
         }
      });
   });
-  console.log(test);
+
   var max = heartbeat[k-1][0];
   $(function() {
       new Highcharts.Chart({

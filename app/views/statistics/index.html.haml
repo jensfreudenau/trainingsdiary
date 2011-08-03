@@ -1,21 +1,22 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.new", :default => "New")}", "test"
+      %li.first= link_to "#{t("web-app-theme.new", :default => "Statistic")}", "statistic"
        
   .content
     .inner
-      #Laufen
-      #Radfahren
+       
 = javascript_include_tag 'highcharts'
 :javascript
 
   var data = [];
   var reports = #{@statistic};
 
-  $.each( reports, function( intIndex, objValue ){
-    var data = [];
-    data = object2Array(objValue); 
+  $.each( reports, function( intIndex, data ){
+
+    $('.inner').append('<div id="'+intIndex+'"></div>');
+    t = splitData(data[0][0]); 
+    var start = Date.UTC(t[0],t[1]-1,t[2]);
     $(function() {
         new Highcharts.Chart({
           chart: {
@@ -39,36 +40,43 @@
             enabled: false
           },         
           xAxis: {
+            type: 'datetime',
+            showLastTickLabel: true,
+             
+            plotBands: [{
+               id: 'mask-before',
+               from: start 
+            }],
+            title: {
+               text: null
+            }            
+          },
+          tooltip: {
+                   formatter: function() {
+                     return '<b>'+ this.series.name +'</b><br/>'+ Highcharts.dateFormat('%e. %b %Y', this.x) +': '+ Highcharts.numberFormat(this.y, 1, ',') +' km';
+                   }
+          },
+          yAxis: [{ // Primary yAxis
             labels: {
               formatter: function() {
-                  return this.value;
+                  return this.value + ' km';
               },
               style: {
-                  color: '#000000'
+                  color: '#AA4643'
               }
             },
-            type: "Krude",
-            lineWidth: 1
-          },
-           yAxis: [{ // Primary yAxis
-             labels: {
-               formatter: function() {
-                   return this.value + ' km';
-               },
-               style: {
-                   color: '#AA4643'
-               }
-             },
-             title: {
-               text: '',
-               margin: 80,
-               style: {
-                   color: '#AA4643'
-               }
-             }
-           }], 
+            title: {
+              text: '',
+              margin: 80,
+              style: {
+                  color: '#AA4643'
+              }
+            }
+          }], 
           
           series: [{
+            pointInterval: 7 * 24 * 3600000,
+            pointStart: start,
             type: 'area',
             data: data
           }]

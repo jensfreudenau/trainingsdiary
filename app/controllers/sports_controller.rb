@@ -3,8 +3,14 @@ class SportsController < ApplicationController
     # GET /sports.xml
     before_filter :authenticate_user!, :except => [:sort]
     def index
-        @sports = Sport.all
-        
+        #@sports = Sport.find(
+        #        :all,
+        #         
+        #        :conditions => {:user_id => current_user.id }
+        #        )
+        @log = Logger.new('log/sport.log')
+        @sports = Sport.with_exclusive_scope { find(:all) }
+        @log.debug(@sports)
         respond_to do |format|
             format.html # index.html.erb
             format.xml  { render :xml => @sports }

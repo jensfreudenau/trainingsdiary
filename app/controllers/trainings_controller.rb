@@ -323,14 +323,14 @@ class TrainingsController < ApplicationController
         end
       end
       @training.laps.create(
-      :distance_total => @distance,
-      :heartrate_avg => @heartrate_avg,
-      :calories => @calories,
-      :heartrate_max => @heartrate_max,
-      :duration => @seconds,
-      :heartrate => @lap_heartrate.to_json,
-      :height => @lap_height.to_json,
-      :map => @lap_map.to_json
+        :distance_total => @distance,
+        :heartrate_avg => @heartrate_avg,
+        :calories => @calories,
+        :heartrate_max => @heartrate_max,
+        :duration => @seconds,
+        :heartrate => @lap_heartrate.to_json,
+        :height => @lap_height.to_json,
+        :map => @lap_map.to_json
       )
       map << @lap_map
       heartrate << @lap_heartrate

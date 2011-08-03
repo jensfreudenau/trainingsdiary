@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110728121855) do
+ActiveRecord::Schema.define(:version => 20110802085543) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(:version => 20110728121855) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sort"
+    t.integer  "sort_order"
   end
 
   create_table "trainings", :force => true do |t|
