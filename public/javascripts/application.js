@@ -52,7 +52,6 @@ function splitData(data) {
   return txt.split(',');
 }
 function createMapWithRoute (coordinates, cssId) {
-  
   var minLat = 100000;
   var maxLat = 0;
   var minLong = 100000;

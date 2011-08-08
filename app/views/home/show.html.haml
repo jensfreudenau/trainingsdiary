@@ -92,11 +92,12 @@
                       = lap.heartrate_max.to_i
 
         #map
-          :javascript
-            createMapWithRoute( #{[home.map_data]}, "map");
 :javascript
+  createMapWithRoute( #{home.map_data}, "map");
 
-  var heartrates = #{heartrate};
+
+  var heartrates = #{home.heartrate};
+  console.log(1234);
   var heartbeat = [];
   var value;  
   k = 0;

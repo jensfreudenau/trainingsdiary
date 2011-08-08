@@ -84,7 +84,7 @@
 
         #map
           :javascript
-            createMapWithRoute( #{[training.map_data]}, "map");
+            createMapWithRoute( #{training.map_data}, "map");
         .wat-cf
           = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
           = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
@@ -92,7 +92,7 @@
 
 :javascript
   
-  var heartrates = #{heartrate};
+  var heartrates = #{training.heartrate};
   var heartbeat = [];
   var value;  
 

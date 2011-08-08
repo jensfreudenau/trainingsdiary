@@ -1,6 +1,6 @@
 Trainings1::Application.routes.draw do
   devise_for :users
-
+  
   resources :roles
   resources :home
   resources :course_names
@@ -38,7 +38,7 @@ Trainings1::Application.routes.draw do
 		get '/logout' => 'devise/sessions#destroy'
 	end
 =end	
-    root :to => "home#index"
+  root :to => "home#index"
 
 # The priority is based upon order of creation:
 # first created -> highest priority.
