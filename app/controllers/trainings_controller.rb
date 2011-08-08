@@ -1,5 +1,5 @@
 require 'rexml/document'
-require 'lib/forerunner.rb'
+require 'Forerunner'
 require 'json'
 require 'chronic_duration'
 require "FileUtils"
@@ -289,9 +289,10 @@ class TrainingsController < ApplicationController
     end
 
   def save_file_data(f)
+     require 'json'
     fr = Forerunner.new(f)
-
-    @fore_runner = fr.rounds.to_a.sort_by {|key|key}
+    @log = Logger.new('log/trainings.log')
+    @fore_runner = fr.rounds
     @timepoint = ''
     map = []
     heartrate = []
@@ -299,8 +300,10 @@ class TrainingsController < ApplicationController
     @training.distance_total = fr.distance_total
     @training.time_total = fr.time_total
     @training.start_time = fr.start_time
-
+   
     @fore_runner.each do |round, value|
+      value.to_a.sort
+
       value.each do |lap, v|
         if lap.to_s == 'seconds_total'
         @seconds = v.to_f
@@ -318,10 +321,11 @@ class TrainingsController < ApplicationController
         if lap.to_s == 'calories'
         @calories = v.to_f
         end
-        if v.type.to_s == "Hash" && lap.to_s == 'laps'
+        if v.kind_of?(Hash) && lap.to_s == 'laps'
           load_track_data(v.to_a.sort)
         end
       end
+     
       @training.laps.create(
         :distance_total => @distance,
         :heartrate_avg => @heartrate_avg,
@@ -330,7 +334,8 @@ class TrainingsController < ApplicationController
         :duration => @seconds,
         :heartrate => @lap_heartrate.to_json,
         :height => @lap_height.to_json,
-        :map => @lap_map.to_json
+        :map => @lap_map.to_json,
+        :start_time => @time
       )
       map << @lap_map
       heartrate << @lap_heartrate
@@ -342,6 +347,7 @@ class TrainingsController < ApplicationController
   end
 
   def load_track_data (data)
+   
     @lap_map = []
     @lap_heartrate = []
     @lap_height =  []
@@ -360,13 +366,12 @@ class TrainingsController < ApplicationController
 
       if @timepoint == '' && !@time.nil?
         @time_prev = Time.parse(@time).to_f
-      @timepoint = 0
+        @timepoint = 0
       elsif @timepoint >= 0
         diff = Time.parse(@time.to_s).to_f - @time_prev
         @timepoint += diff
         @time_prev = Time.parse(@time.to_s).to_f
       end
-
       @lap_height << [@timepoint, @height]
       if !@heartrate.to_f.zero?
         @lap_heartrate << [@timepoint, @heartrate]

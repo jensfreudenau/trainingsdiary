@@ -25,48 +25,48 @@ class Forerunner
 					@start_time = node["StartTime"].to_s
 				end
 				round = counter.to_s
-				@rounds[round.to_s]||= {}
-				@rounds[round.to_s][:lap_start_time] = node["StartTime"].to_s
+				@rounds[round.to_i]||= {}
+				@rounds[round.to_i][:lap_start_time] = node["StartTime"].to_s
 				 
 				
 				node.children.each do |main_sub_node|
 					
 					if main_sub_node.name == 'MaximumHeartRateBpm'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:heartrate_max] = main_sub_node.children[0].text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:heartrate_max] = main_sub_node.children[0].text.to_f
 						if @heartrate_max < main_sub_node.children[0].text.to_f
 							@heartrate_max = main_sub_node.children[0].text.to_f
 						end
 					end
 					
 					if main_sub_node.name == 'AverageHeartRateBpm'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:heartrate_avg] = main_sub_node.children[0].text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:heartrate_avg] = main_sub_node.children[0].text.to_f
 						@heartrate_avg = main_sub_node.children[0].text.to_f
 					end
 					if main_sub_node.name == 'TotalTimeSeconds'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:seconds_total] = main_sub_node.text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:seconds_total] = main_sub_node.text.to_f
 						@time_total += main_sub_node.text.to_f
 					end
 					
 					if main_sub_node.name == 'DistanceMeters'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:distance_lap] = main_sub_node.text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:distance_lap] = main_sub_node.text.to_f
 						@distance_total += main_sub_node.text.to_f
 					end
 					
 					if main_sub_node.name == 'MaximumSpeed'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:speed_max_lap] = main_sub_node.text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:speed_max_lap] = main_sub_node.text.to_f
 						if @speed_max < main_sub_node.text.to_f
 							@speed_max += main_sub_node.text.to_f
 						end
 					end
 					
 					if main_sub_node.name == 'Calories'
-						@rounds[round.to_s] ||= {}
-						@rounds[round.to_s][:calories] = main_sub_node.text.to_f
+						@rounds[round.to_i] ||= {}
+						@rounds[round.to_i][:calories] = main_sub_node.text.to_f
 						@calories += main_sub_node.text.to_f
 					end
 				end
@@ -74,34 +74,34 @@ class Forerunner
 				node.children.children.each do |sub_node|
 					if sub_node.name == 'Trackpoint'
 						trackpoint +=1
-						@rounds[round.to_s][:laps] ||= {}
+						@rounds[round.to_i][:laps] ||= {}
 						sub_node.children.each do |working_node|
 							if working_node.name == 'Time'
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:time] = working_node.inner_text.to_s 
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:time] = working_node.inner_text.to_s 
 							end
 							if working_node.name == 'Position' && !working_node.children[0].text.to_s.nil? &&  !working_node.children[1].text.nil? 
 							  
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:latitude_degrees]	= working_node.children[0].text.to_s
-								@rounds[round.to_s][:laps][trackpoint.to_i][:longitude_degrees]	= working_node.children[1].text.to_s
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:latitude_degrees]	= working_node.children[0].text.to_s
+								@rounds[round.to_i][:laps][trackpoint.to_i][:longitude_degrees]	= working_node.children[1].text.to_s
 							end
 							if working_node.name == 'AltitudeMeters'
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:altitude] = working_node.inner_text
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:altitude] = working_node.inner_text
 							end				
 							
               if working_node.name == 'DistanceMeters'
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:distance] = working_node.inner_text
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:distance] = working_node.inner_text
 							end
 							if working_node.name == 'HeartRateBpm'
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:heart_rate_bpm] = working_node.children[0].text.to_i
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:heart_rate_bpm] = working_node.children[0].text.to_i
 							end
 							if working_node.name == 'AltitudeMeters'
-								@rounds[round.to_s][:laps][trackpoint.to_i] ||= {}
-								@rounds[round.to_s][:laps][trackpoint.to_i][:height] = working_node.children[0].text.to_f
+								@rounds[round.to_i][:laps][trackpoint.to_i] ||= {}
+								@rounds[round.to_i][:laps][trackpoint.to_i][:height] = working_node.children[0].text.to_f
 							end
 						end
 					end
