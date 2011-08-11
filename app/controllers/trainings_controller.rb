@@ -1,5 +1,5 @@
 require 'rexml/document'
-require 'lib/forerunner'
+require 'lib/forerunner.rb'
 require 'json'
 require 'chronic_duration'
 require "FileUtils"
