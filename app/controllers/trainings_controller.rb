@@ -1,5 +1,5 @@
 require 'rexml/document'
-require 'Forerunner'
+require 'forerunner'
 require 'json'
 require 'chronic_duration'
 require "FileUtils"
