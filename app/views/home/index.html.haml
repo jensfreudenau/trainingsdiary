@@ -56,7 +56,8 @@
                    
                 .map{:class => 'minimap', :id => "map_#{home.id.to_s}"}
                   :javascript
-                    createMapWithRoute( #{home.map_data}, "map_#{home.id.to_s}");
+                    var withControl = false;
+                    createMapWithRoute( #{home.map_data}, "map_#{home.id.to_s}", withControl);
                 
             .clear
         .clear

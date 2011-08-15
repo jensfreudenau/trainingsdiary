@@ -1,8 +1,9 @@
 require 'rexml/document'
-require 'lib/forerunner.rb'
+require 'Forerunner'
+#require 'lib/forerunner.rb'
 require 'json'
 require 'chronic_duration'
-require "FileUtils"
+load "fileutils.rb"
 
 
 
@@ -11,11 +12,14 @@ class TrainingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
   load_and_authorize_resource
   def index
-    #files = Dir.glob("public/tracks/uploader/*.TCX", File::FNM_CASEFOLD)
-    #for file in @files
-    #  self.batch(file)
-    #end
     #@log = Logger.new('log/trainings.log')
+    #@files = Dir.glob("public/tracks/uploader/temp/*.TCX", File::FNM_CASEFOLD)
+    #
+    #for file in @files
+     
+     # self.batch(file)
+   # end
+    #
     items_per_page = 5
 
     sort = case params['sort']
@@ -47,6 +51,7 @@ class TrainingsController < ApplicationController
     :joins => [:sport_level, :sport, :course_name]
     )
     @trainings = trainings.paginate:page => params[:page], :per_page => items_per_page
+    #@trainings = trainings
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trainings }
@@ -174,6 +179,10 @@ class TrainingsController < ApplicationController
           f = File.open(path, "r")
           begin
             save_file_data(f)
+            require 'zlib'
+            Zlib::GzipWriter.open(path.to_s+".gz") do |gz|
+              gz.write(File.read(path.to_s)) 
+            end
           end
         end
         if @training.save
@@ -207,6 +216,10 @@ class TrainingsController < ApplicationController
           f = File.open(path, "r")
           begin
             save_file_data(f)
+            require 'zlib'
+            Zlib::GzipWriter.open(path.to_s+".gz") do |gz|
+              gz.write(File.read(path.to_s)) 
+            end
           end
         end
         if @training.save
@@ -238,10 +251,10 @@ class TrainingsController < ApplicationController
   def batch (file)
     f = File.open(file, "r")
     @training = current_user.trainings.new()
-    @training.user_id = 1
-    @training.sport_id = 1
+    @training.user_id = @training.user_id
+    @training.sport_id = 5
     @training.sport_level_id = 1
-    @training.course_name_id = 2
+    @training.course_name_id = 4
     @training.filename = File.basename(file).to_s
     @training_orl = Training.find(:first,
     :conditions => {:user_id => @training.user_id , :filename => @training.filename},
@@ -289,10 +302,12 @@ class TrainingsController < ApplicationController
     end
 
   def save_file_data(f)
-     require 'json'
-    fr = Forerunner.new(f)
     @log = Logger.new('log/trainings.log')
-    @fore_runner = fr.rounds
+    require 'json'
+    fr = Forerunner.new(f)
+    
+    @fore_runner = fr.rounds.sort
+     
     @timepoint = ''
     map = []
     heartrate = []
@@ -300,26 +315,24 @@ class TrainingsController < ApplicationController
     @training.distance_total = fr.distance_total
     @training.time_total = fr.time_total
     @training.start_time = fr.start_time
-   
-    @fore_runner.each do |round, value|
-      value.to_a.sort
 
+    @fore_runner.each do |round, value|
       value.each do |lap, v|
         if lap.to_s == 'seconds_total'
-        @seconds = v.to_f
+          @seconds = v.to_f
         end
         if lap.to_s == 'distance_lap'
-        @distance = v.to_f
+          @distance = v.to_f
         end
 
         if lap.to_s == 'heartrate_avg'
-        @heartrate_avg = v.to_f
+          @heartrate_avg = v.to_f
         end
         if lap.to_s == 'heartrate_max'
-        @heartrate_max = v.to_f
+          @heartrate_max = v.to_f
         end
         if lap.to_s == 'calories'
-        @calories = v.to_f
+          @calories = v.to_f
         end
         if v.kind_of?(Hash) && lap.to_s == 'laps'
           load_track_data(v.to_a.sort)
@@ -341,9 +354,11 @@ class TrainingsController < ApplicationController
       heartrate << @lap_heartrate
       height << @lap_height
     end
+    
     @training.map_data = map.to_json
     @training.heartrate = heartrate.to_json
     @training.height = height.to_json
+    
   end
 
   def load_track_data (data)

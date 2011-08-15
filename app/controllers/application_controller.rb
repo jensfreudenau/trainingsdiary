@@ -1,5 +1,7 @@
 require "date"
+
 class ApplicationController < ActionController::Base
+    helper :all
     
     before_filter :authenticate_user!, :except => [:index, :show]
     before_filter :set_locale, :set_time_zone, :list_last_trainings, :calendar, :statistic

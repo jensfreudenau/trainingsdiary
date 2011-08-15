@@ -81,7 +81,8 @@
                       = lap.heartrate_avg
                     %td
                       = lap.heartrate_max.to_i
-
+        .link_big_map  
+          = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'              
         #map
           :javascript
             createMapWithRoute( #{training.map_data}, "map");

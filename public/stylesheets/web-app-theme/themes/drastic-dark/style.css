@@ -337,6 +337,9 @@ ul.list li .item .avatar {
   border-style: solid;
   padding: 2px;
 }
+.secondary-navigation li {
+  line-height: 30px;
+}
 
 /* box */
 
@@ -451,7 +454,6 @@ ul.trainings {
 #heartrate_chart, #Laufen, #Radfahren {
   border: 1px solid gray;
   padding-top:30px;
-  margin-top:30px;
   height: 250px; 
   width:680px;
   margin-left:auto; 
@@ -546,12 +548,13 @@ ul#trainingsform label {
   height:200px;
   width: 200px;
   float:right;
+  margin-bottom:5px;
 }
 table.trainings_data {
   float:left;
 }
 li.list_overview {
-  height:205px;
+  height:225px;
   margin-bottom:10px;
   padding:15px;
   list-style-type: none;
@@ -588,7 +591,19 @@ table.table tr.training_data td{
 tr.empty{
   height:20px;
 }
-dl.floated { padding: 0.5em; float:left;} 
+dl.floated { padding: 17px; float:left;} 
 dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green; } 
 dt:after { content: ":"; } 
-dd { margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
+dd { margin: 0 0 0 110px; padding: 0 0 5px 0; }
+
+.courves h3 {
+  padding: 30px 0 10px 100px;
+}
+.link_big_map {
+  text-align:right;
+  padding-right: 100px;
+}
+ul.listing .link_big_map {
+  padding-right: 10px;
+  padding-bottom: 5px;
+}

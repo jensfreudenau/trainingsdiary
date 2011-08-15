@@ -1,4 +1,5 @@
-= javascript_include_tag 'OpenLayers', 'OpenStreetMap', 'highcharts'
+
+= javascript_include_tag 'highcharts' 
 :javascript
   //base layers
   var openstreetmap = new OpenLayers.Layer.OSM();
@@ -90,14 +91,16 @@
                       = lap.heartrate_avg
                     %td
                       = lap.heartrate_max.to_i
-
+        
+        .link_big_map  
+          = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
         #map
+        
 :javascript
   createMapWithRoute( #{home.map_data}, "map");
 
 
   var heartrates = #{home.heartrate};
-  console.log(1234);
   var heartbeat = [];
   var value;  
   k = 0;

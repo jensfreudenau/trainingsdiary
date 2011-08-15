@@ -18,6 +18,7 @@
  * @param integer secs Number of seconds to convert
  * @return object
  */
+ var maper, layer;
 function secondsToTime(sec)
 {
 	  var hr = Math.floor(sec / 3600);
@@ -51,7 +52,10 @@ function splitData(data) {
 	var txt = new String(data);  
   return txt.split(',');
 }
-function createMapWithRoute (coordinates, cssId) {
+
+function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
+  withControl = typeof(withControl) != 'undefined' ? withControl : true;
+  zoomControl = typeof(zoomControl) != 'undefined' ? zoomControl : false;
   var minLat = 100000;
   var maxLat = 0;
   var minLong = 100000;
@@ -68,7 +72,12 @@ function createMapWithRoute (coordinates, cssId) {
   
   //Initialize the map
   //creates a new openlayers map in the <div> html element id map
-  var map = new OpenLayers.Map (cssId);
+  if (withControl == false) {    
+    var map = new OpenLayers.Map (cssId, { controls: [] });
+  }
+  if (withControl == true) {
+    var map = new OpenLayers.Map (cssId);
+  }
   //base layers
   var openstreetmap = new OpenLayers.Layer.OSM();
   var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
@@ -89,8 +98,8 @@ function createMapWithRoute (coordinates, cssId) {
     $.each( objValue, function( index, value ){      
       var txt = new String(value);  
       var t = txt.split(',');
-	  var lat = t[0];	
-	  var lon = t[1];
+	    var lat = t[0];	
+	    var lon = t[1];
       if(minLat > lat) {
         minLat = lat;
       }
@@ -128,11 +137,25 @@ function createMapWithRoute (coordinates, cssId) {
   //map.addLayer(new OpenLayers.Control.Navigation());
   controls = map.getControlsByClass('OpenLayers.Control.Navigation');
   
-  for(var i = 0; i<controls.length; ++i)
-      controls[i].disableZoomWheel();
+  if (zoomControl != true) {
+    for(var i = 0; i<controls.length; ++i) {
+      controls[i].disableZoomWheel();    
+    }
+  }
+     
 }
+ 
 
 $(document).ready(function () {
+  
+	  $("a#bigmap").fancybox({
+  		'hideOnContentClick': true,
+      'width': '100%',
+      'height': '100%'
+  	});
+     
+  	 
+  	   
   $("input, textarea, select, button").uniform(); 
   $( "#datepicker" ).datepicker();
 });

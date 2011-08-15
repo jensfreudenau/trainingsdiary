@@ -1,10 +1,14 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.new", :default => "Statistic")}", "statistic"
+      %li.first 
+        a
        
   .content
+    %h2.title
+      = t("web-app-theme.statistics", :default => "Statistics")
     .inner
+      .courves
        
 = javascript_include_tag 'highcharts'
 :javascript
@@ -13,8 +17,9 @@
   var reports = #{@statistic};
 
   $.each( reports, function( intIndex, data ){
-
-    $('.inner').append('<div id="'+intIndex+'"></div>');
+    $('.courves').append('<h3>'+intIndex+'</h3>');
+    $('.courves').append('<div id="'+intIndex+'"></div>');
+    
     t = splitData(data[0][0]); 
     var start = Date.UTC(t[0],t[1]-1,t[2]);
     $(function() {

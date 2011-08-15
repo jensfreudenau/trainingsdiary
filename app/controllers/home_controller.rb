@@ -1,6 +1,6 @@
 
 class HomeController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:index, :show, :bigmap]
   
   def index 
     #@log = Logger.new('log/home.log')   
@@ -22,6 +22,14 @@ class HomeController < ApplicationController
                                     :joins => [:sport_level, :sport, :course_name],
                                     :limit => 10)
   end
+  
+  def bigmap
+    @map = Training.find(:all, 
+                          :select => 'trainings.map_data',
+                          :conditions => ['trainings.id = ?', params[:id]])
+    render :partial => 'bigmap.html.haml'
+  end
+  
   
   def show
     @home = Training.find(:all, 

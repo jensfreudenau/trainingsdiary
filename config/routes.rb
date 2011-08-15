@@ -30,6 +30,7 @@ Trainings1::Application.routes.draw do
   resources :trainings do
     post :sort, :on => :collection
   end
+  match 'bigmap', :to => 'home#bigmap'
 =begin
 	devise_for :users, :controllers => {:users => "users"}  
 		resources :user

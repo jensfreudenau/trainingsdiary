@@ -20,14 +20,16 @@ class Forerunner
 		trackpoint = 0
 		@source_doc.root.children.children.children.each do |node|
 			if node.name == 'Lap'
+			  
 				counter +=1
 				if counter == 1
 					@start_time = node["StartTime"].to_s
 				end
-				round = counter.to_s
-				@rounds[round.to_i]||= {}
-				@rounds[round.to_i][:lap_start_time] = node["StartTime"].to_s
-				 
+				round = counter.to_i
+				round -=1
+			 
+				@rounds[round]||= {}
+				@rounds[round][:lap_start_time] = node["StartTime"].to_s				  
 				
 				node.children.each do |main_sub_node|
 					

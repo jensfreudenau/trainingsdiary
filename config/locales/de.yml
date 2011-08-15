@@ -8,6 +8,7 @@ de:
   blogentries: "Blog"  
   comment: "Kommentar"  
   courses: "Strecken"
+  statistics: "Statistik"
   home: "Home"
   laps: "Runden"
   lap: "Runde"
@@ -17,7 +18,7 @@ de:
   sports: "Sportarten"
   sport: "Sportart"
   trainings: "Training"
-  
+  fullscreen: "Fullscreen"
   web-app-theme:
     delete: "löschen"
     show: "anzeigen"
@@ -27,6 +28,7 @@ de:
     profile: "Profil"
     all_courses: "Alle Strecken"
     all_trainings: "Training"
+    statistics: "Statistik"
     save: "Speichern"
     new_training: "Neues Training"
   

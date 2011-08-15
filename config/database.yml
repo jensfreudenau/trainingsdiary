@@ -16,3 +16,10 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
  
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: coach
+  pool: 5
+  username: postgres
+  password: 12345

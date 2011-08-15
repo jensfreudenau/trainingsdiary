@@ -6,8 +6,8 @@ class StatisticsController < ApplicationController
     @current_week = DateTime.now.beginning_of_week.beginning_of_day
      
     @week = DateTime.now.months_ago(8).beginning_of_week.beginning_of_day
-    
-    @sports = Sport.find(
+
+    @sports = Sport.unscoped.find(
       :all,
       :select => 'id, name',
       :order => 'sort_order DESC',

@@ -51,6 +51,7 @@ GEM
       warden (~> 1.0.3)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    facebox-render (0.9.9)
     ffi (1.0.9)
     haml (3.1.2)
     haml-rails (0.3.4)
@@ -130,6 +131,7 @@ DEPENDENCIES
   carrierwave
   chronic_duration
   devise
+  facebox-render
   haml
   haml-rails
   hpricot
@@ -142,5 +144,6 @@ DEPENDENCIES
   rack-raw-upload
   rails
   ruby_parser
+  rubyzip
   web-app-theme
   will_paginate
