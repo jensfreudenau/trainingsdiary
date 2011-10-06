@@ -25,6 +25,7 @@ module Trainingsdata
     
     def start_import
       self.generate_laps
+      
       self.save_file_data
       self.cleanup
     end
@@ -143,8 +144,6 @@ module Trainingsdata
     
     protected
     
-    
-    
     def generate_laps
       counter = 0
       round = 0
@@ -243,5 +242,5 @@ module Trainingsdata
         end            
       end
     end
-  end
-end
+  end #class
+end #module

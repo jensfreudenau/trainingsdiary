@@ -271,32 +271,32 @@ class TrainingsController < ApplicationController
   
   def save_file_data(file_data)
     path = "public/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
- 
     begin
       td = Trainingsdata::Forerunner.new(path)
       td.start_import
       td.laps.each do |value|
-        
         @training.laps.create(
               :distance_total => value[:distance],
-              :heartrate_avg => value[:heartrate_avg],
-              :calories => value[:calories],
-              :heartrate_max => value[:heartrate_max],
-              :duration => value[:duration],
-              :heartrate => value[:heartrate].to_json,
-              :height => value[:height].to_json,
-              :map => value[:map].to_json,
-              :start_time => value[:time]
+              :heartrate_avg  => value[:heartrate_avg],
+              :calories       => value[:calories],
+              :heartrate_max  => value[:heartrate_max],
+              :duration       => value[:duration],
+              :heartrate      => value[:heartrate].to_json,
+              :height         => value[:height].to_json,
+              :map            => value[:map].to_json,
+              :start_time     => value[:time]
             )
-      end      
-      @training.start_time = td.start_time
-      @training.distance_total = td.distance_total
-      @training.time_total = td.time_total
-      @training.map_data = td.map_data
-      @training.heartrate = td.heartrate
-      @training.height = td.height
-      @training.heartrate_avg = td.heartrate_avg
-      @training.heartrate_max = td.heartrate_max
+      end   
+     
+      @training.start_time      = td.start_time
+      @training.distance_total  = td.distance_total
+      @training.time_total      = td.time_total
+      @training.map_data        = td.map_data
+      @training.heartrate       = td.heartrate
+      @training.height          = td.height
+      @training.heartrate_avg   = td.heartrate_avg
+      @training.heartrate_max   = td.heartrate_max
+      
     end     
   end
   
