@@ -11,7 +11,7 @@
       = f.label :sport_level_id, t("activerecord.attributes.training.sportlevel", :default => "Sport Level"), :class => :label
       = f.collection_select :sport_level_id, @sportlevel, :id, :name
     %li
-      = f.label :sport_id, t("activerecord.attributes.training.sport_id", :default => "Start Time"), :class => :label
+      = f.label :sport_id, t("activerecord.attributes.training.sport_id", :default => "Sport"), :class => :label
       - @sport.each do |option| 
         %label
           .radio

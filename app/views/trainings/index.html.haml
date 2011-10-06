@@ -60,7 +60,7 @@
                       - if can? :update, training
                         \#{link_to image_tag("web-app-theme/icons/img_icon_edit.png", :alt=>"edit") , edit_training_path(training)}
                         \#{link_to image_tag("web-app-theme/icons/cross.png", :alt=>"delete") , training_path(training), :method => :delete, :remote => true, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
-                  .link_big_map  
+                  .link_big_map
                     = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
                   .map{:class => 'minimap', :id => "map_#{training.id.to_s}"}
                     :javascript
