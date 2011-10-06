@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110802085543) do
+ActiveRecord::Schema.define(:version => 20111005085303) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(:version => 20110802085543) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sort"
+  end
+
+  create_table "courses", :force => true do |t|
+    t.string   "name"
+    t.string   "file"
+    t.text     "comment"
+    t.integer  "sport_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "laps", :force => true do |t|
@@ -81,6 +91,8 @@ ActiveRecord::Schema.define(:version => 20110802085543) do
     t.text     "heartrate"
     t.text     "height"
     t.text     "comment"
+    t.integer  "heartrate_avg"
+    t.integer  "heartrate_max"
   end
 
   create_table "users", :force => true do |t|

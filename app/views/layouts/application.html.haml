@@ -36,6 +36,8 @@
                 = link_to t("sports"), sports_path  
               %li{ :class => (params[:controller] == "sport_levels" ? "active" : nil) }
                 = link_to t("sportlevels"), sport_levels_path 
+              %li{ :class => (params[:controller] == "courses" ? "active" : nil) }
+                = link_to t("courses"), courses_path
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|
@@ -50,8 +52,8 @@
           - if user_signed_in?
             = render :partial => "partials/statistic", :locals => { :report => @report }
           - if user_signed_in?
-            .block            
-              %h3 
+            .block
+              %h3
                 = t('last_trainings')
               %ul{:class => "navigation trainings"}
                 = render :partial => "partials/last_training", :collection => @last_trainings

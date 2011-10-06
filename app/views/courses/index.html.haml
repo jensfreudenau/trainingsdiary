@@ -1,0 +1,27 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", courses_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_path
+  .content
+    %h2.title
+      = t("web-app-theme.courses", :default => "Courses")
+      
+    .inner
+      %ul#sortable
+        - @courses.each do |course|
+          %h3
+            = course.sport.name    
+          %li{:class => 'sortlist', :id => "list_#{course.id.to_s}"}
+            %table
+              %tr
+                %td{:class => "name"}
+                  = course.name
+                  = link_to t("Download"), :controller => "courses", :action =>"course", :id=>course.id.to_s, :filename => course.file.to_s
+                %td{:class => "last"}
+                  - if can? :update, @courses 
+                    = link_to "Edit", edit_course_path(@courses) 
+                  \#{link_to image_tag("web-app-theme/icons/show.gif", :alt=>"show") , course_path(course)}
+                  \#{link_to image_tag("web-app-theme/icons/img_icon_edit.png", :alt=>"edit") , edit_course_path(course)}
+                  \#{link_to image_tag("web-app-theme/icons/cross.png", :alt=>"delete"), course_path(course), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf

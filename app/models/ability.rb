@@ -34,6 +34,13 @@ class Ability
             can :destroy, CourseName do |courseName|
                 courseName.try(:sportLevel) == user
             end
+            
+            can :create, Course 
+            can :bigmap, Course 
+            can :update, Course
+            can :destroy, Course
+            can :download, Course
+            can :create_from_activity, Course
         end
     end
 end

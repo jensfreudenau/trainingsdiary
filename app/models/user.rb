@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
     belongs_to :role
     has_many :trainings
+    has_many :downloads
     has_many :sports
     has_many :course_names
     has_many :sport_levels

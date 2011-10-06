@@ -1,0 +1,32 @@
+%ul#coursesform
+  = form_for @course do |f|
+    -if @course.errors.any?
+      #error_explanation
+        %h3
+          = "#{pluralize(@course.errors.count, "error")} prohibited this course from being saved:"
+        %ul
+          - @course.errors.full_messages.each do |msg|
+            %li= msg
+
+    %li
+      = f.label :sport_id, t("activerecord.attributes.course.sport_id", :default => "Sport"), :class => :label
+      - @sport.each do |option| 
+        %label
+          .radio
+            = f.radio_button :sport_id, option.id
+          = t("activerecord.attributes.course.sport", :default => option.name)
+    %li
+      = f.label :name, t("activerecord.attributes.course.name", :default => "Name"), :class => :label
+      = f.text_field :name , :class => 'text_field' 
+    %li
+      = f.label :file, t("activerecord.attributes.course.file", :default => "File"), :class => :label
+      = f.file_field :file, :class => 'file_field'
+       
+    %li
+      = f.label :comment
+      = f.text_area :comment, :class => 'text_area', :cols => 20
+
+    .group.navform.wat-cf
+      %button.button{:type => "submit"}
+        = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+        = t("web-app-theme.save", :default => "Save")

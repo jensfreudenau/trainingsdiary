@@ -1,4 +1,20 @@
 Trainings1::Application.routes.draw do
+  
+#  get "courses/edit"
+#
+#  get "courses/index"
+#
+#  get "courses/new"
+#
+#  get "courses/show"
+#  get "courses/create_from_activity"
+
+  match "/courses/download", :controller => "courses", :action => "course"
+  match "/courses/bigmap", :controller => "courses", :action => "bigmap"
+  match "/courses/create_from_activity/:trainings_id", :to => 'courses#create_from_activity'
+  match '/home' => "trainings#index", :as => :user_root 
+  resources :courses
+
   devise_for :users
   
   resources :roles
@@ -14,7 +30,8 @@ Trainings1::Application.routes.draw do
     get '/signin' => 'devise/sessions#new'
     get '/logout' => 'devise/sessions#destroy'
   end
-   
+  
+  
   resources :token_authentications, :only => [:create, :destroy]
   resources :user, :controller => "user"
    
@@ -31,6 +48,7 @@ Trainings1::Application.routes.draw do
     post :sort, :on => :collection
   end
   match 'bigmap', :to => 'home#bigmap'
+  
 =begin
 	devise_for :users, :controllers => {:users => "users"}  
 		resources :user

@@ -53,6 +53,7 @@ GEM
       abstract (>= 1.0.0)
     facebox-render (0.9.9)
     ffi (1.0.9)
+    geokit (1.6.0)
     haml (3.1.2)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -132,6 +133,7 @@ DEPENDENCIES
   chronic_duration
   devise
   facebox-render
+  geokit
   haml
   haml-rails
   hpricot

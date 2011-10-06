@@ -22,3 +22,4 @@ gem "numerizer", "~> 0.1.1"
 gem 'chronic_duration'
 gem 'rubyzip'
 gem 'facebox-render'
+gem "geokit"

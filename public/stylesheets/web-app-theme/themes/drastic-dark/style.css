@@ -94,6 +94,7 @@ hr {
   padding-bottom: 20px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  min-width: 760px;
 }
 
 #main .block .content h2 {
@@ -102,7 +103,7 @@ hr {
   font-style: normal;
   font-weight: bold;
   text-transform: normal;
-  letter-spacing: 0.5em;
+  letter-spacing: 1px;
   line-height: 1.2em;
   
 }
@@ -394,6 +395,7 @@ ul.trainings {
 }
 .secondary-navigation {
   border-bottom-width: 5px;
+  min-width: 760px;
 }
 .sortup {
 	color:#1FDF00;
@@ -444,6 +446,8 @@ ul.trainings {
   padding-top: 2px;
 }
 #sortable td.name {
+  padding-top: 7px;
+  padding-left: 7px;
   width: 200px;
   font-size: 12px;
 }
@@ -451,9 +455,10 @@ ul.trainings {
   width: 100px;
   font-size: 12px;
 }
-#heartrate_chart, #Laufen, #Radfahren {
+#heartrate_chart, #height_chart, #Laufen, #Radfahren {
   border: 1px solid gray;
-  padding-top:30px;
+  margin-top:20px;
+  margin-bottom:20px;
   height: 250px; 
   width:680px;
   margin-left:auto; 
@@ -464,7 +469,7 @@ ul.trainings {
 table.training {
   /*border-collapse: collapse;*/
   padding-bottom: 20px;
-  width: 90%;
+  width: 100%;
   text-align: left;
   font-size: 12px;
 }
@@ -495,13 +500,15 @@ table.training th, table.laps th, table.trainings th {
   font-style:italic;
   border-bottom:1px solid #CCCCCC;
   text-align: left;
+  padding-left: 3px;
+  
 }
 .trainings_data {
-  padding: 20px;
-  margin-top:30px;
+  padding: 20px 20px 20px 0px;
+  margin-bottom:30px;
   margin-left:auto; 
   margin-right:auto;
-  width:640px;
+  width:690px;
   font-size:12px;
 }
 
@@ -526,6 +533,23 @@ ul#trainingsform label {
   margin-bottom: 3px;
   clear: both;
 }
+ul#coursesform {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul#coursesform li {
+  margin-bottom: 20px;
+  clear: both;
+}
+ul#coursesform label {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 3px;
+  clear: both;
+}
 #statistic #week {
   margin: 0;
   padding-top: 10px;
@@ -535,7 +559,7 @@ ul#trainingsform label {
 
 #statistic #week a, #statistic #week a:hover {
   text-decoration: none;
-  padding: 0 10px;
+  padding: 0px;
   color: #999;
 }
 
@@ -606,4 +630,12 @@ dd { margin: 0 0 0 110px; padding: 0 0 5px 0; }
 ul.listing .link_big_map {
   padding-right: 10px;
   padding-bottom: 5px;
+}
+
+.inner h3 {
+  margin-left: 20px;
+  margin-top:0px;
+}
+.inner h2 {
+  margin-bottom: 0px;
 }

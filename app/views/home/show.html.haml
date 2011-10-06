@@ -1,5 +1,5 @@
 
-= javascript_include_tag 'highcharts' 
+= javascript_include_tag 'highcharts', 'OpenLayers', 'OpenStreetMap'
 :javascript
   //base layers
   var openstreetmap = new OpenLayers.Layer.OSM();
@@ -12,52 +12,69 @@
         %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", "/"
     .content
       .inner
+        %h2
+          = home.sportname
+        %h3
+          = t("at", :default => "at")
+          = localize(home.start_time, :format => :default)
+        .trainings_data
+          %h3
+            = t("heartrate",:default => "heartrate")
+          #heartrate_chart
+          %h3
+            = t("height",:default => "height")
+          #height_chart
         .trainings_data
           %table.training
             %tr
+              %th
+                = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
               %th 
-                = t("activerecord.attributes.home.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
+                = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
               %th
-                = t("activerecord.attributes.home.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                &oslash; 
+                %br
+                Pace
               %th
-                &oslash; Pace
+                &oslash; 
+                %br
+                = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate")) 
               %th
-                = t("activerecord.attributes.home.sportname", :default => t("activerecord.labels.sportname", :default => "Kind of Sport"))
+                max 
+                %br
+                = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))  
+             
               %th
-                = t("activerecord.attributes.home.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
               %th
-                = t("activerecord.attributes.home.sportlevel", :default => t("activerecord.labels.sportlevel", :default => "Level"))  
-              %th
-                = t("activerecord.attributes.home.start_time", :default => t("activerecord.labels.start_time", :default => "Started at"))
+                = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.sportlevel", :default => "Level"))  
             %tr
               %td
                 = time2hms(to_dot_time(home.time_total.to_i))
               %td 
                 = number_to_human(home.distance_total, :units => :distance, :precision => 4)  
               %td
-                = minutesPerKm(home.distance_total, home.time_total.to_i)
+                - if home.sportname == 'Radfahren'
+                  = km_per_hours(home.distance_total, home.time_total.to_i) 
+                - else
+                  = minutes_per_km(home.distance_total, home.time_total.to_i)
               %td
-                = home.sportname
+                = home.heartrate_avg
+              %td
+                = home.heartrate_max  
               %td
                 = home.coursename
               %td
                 = home.sportlevel
-              %td
-                = localize(home.start_time, :format => :default)
-        .trainings_data
+          %p
+            = home.comment        
+          
           %h3
-            = t('comment')
-            %p
-              = home.comment        
-        #heartrate_chart
-        
-        .trainings_data
-          #laps
-            %h2
-              - if @laps.length > 1
-                = @laps.length.to_s + " " + t("laps")
-              - else 
-                = @laps.length.to_s + " " + t("lap")
+            - if @laps.length > 1
+              = @laps.length.to_s + " " + t("laps")
+            - else 
+              = @laps.length.to_s + " " + t("lap")
+          #laps 
             .outer_laps
               %table.laps
                 %tr
@@ -68,12 +85,16 @@
                   %th
                     = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
                   %th
-                    &oslash; Pace 
-                  %th
                     &oslash; 
+                    %br
+                    Pace 
+                  %th
+                    &oslash;
+                    %br
                     = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
                   %th
                     max. 
+                    %br
                     = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))  
                 //- for lap in @laps 
                 - @laps.each_with_index do |lap, index|   
@@ -85,117 +106,22 @@
                     %td
                       = time2hms(to_dot_time(lap.duration.to_i))
                     %td
-                      - if !lap.distance_total.nil? && !lap.distance_total == 0
-                        = minutesPerKm(lap.distance_total,lap.duration.to_i)
+                      - if lap.distance_total != 0
+                        - if home.sportname == 'Radfahren'
+                          = km_per_hours(lap.distance_total,lap.duration.to_i) 
+                        - else
+                          = minutes_per_km(lap.distance_total,lap.duration.to_i) 
                     %td
                       = lap.heartrate_avg
                     %td
                       = lap.heartrate_max.to_i
-        
-        .link_big_map  
-          = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
-        #map
+        .trainings_data
+          .link_big_map
+            = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
+          #map
         
 :javascript
-  createMapWithRoute( #{home.map_data}, "map");
-
-
-  var heartrates = #{home.heartrate};
-  var heartbeat = [];
-  var value;  
-  k = 0;
-  $.each( heartrates, function( intIndex, objValue ){
-     $.each( objValue, function( index, value ){
-        if (value != null) {
-          heartbeat[k] = value;
-          k++;
-        }
-     });
-  });
-  var max = heartbeat[k-1][0];
-  $(function() {
-      new Highcharts.Chart({
-        chart: {
-          height: 250,
-          renderTo: 'heartrate_chart',
-
-          margin: [10, 20, 30, 60]	
-        },
-        title: {
-          text: '',
-          x: -50, //center$maxHeight
-          y: 200
-        },
-        subtitle: {
-          text: '',
-          x: -20
-        },
-        credits: {
-          enabled: false
-        },
-        legend: {
-          enabled: false
-        },
-        xAxis: {
-          labels: {
-            formatter: function() {
-                return secondsToTime(this.value);
-            },
-            style: {
-                color: '#000000'
-            }
-          },
-          type: "Time",
-          lineWidth: 1,
-          max: max 
-        },
-
-        yAxis: [{ // Primary yAxis
-          labels: {
-            formatter: function() {
-                return this.value + ' bpm';
-            },
-            style: {
-                color: '#AA4643'
-            }
-          },
-          title: {
-            text: '',
-            margin: 80,
-            style: {
-                color: '#AA4643'
-            }
-          }
-        }],
-        plotOptions: {
-          area: {
-            fillOpacity: 0.3,
-            lineWidth: 1,
-            marker: {
-              enabled: false,
-              states: {
-                hover: {
-                  enabled: true,
-                  radius: 3
-                }
-              }
-            },
-            shadow: true,
-            states: {
-              hover: {
-                lineWidth: 1						
-              }
-            }
-          }
-        },
-        tooltip: {
-          formatter: function() {
-            return secondsToTime(this.x) +' '+ this.y + ' bpm';
-          }
-        },
-        series: [{
-          type: 'area',
-          data: heartbeat
-        }]
-      });
-    });
+  createMapWithRoute( #{home.map_data}, "map", true, true);
+  createChart( #{home.heartrate}, "heartrate_chart", "bpm");  
+  createChart( #{home.height}, "height_chart", "m");
+  

@@ -48,4 +48,14 @@ module ApplicationHelper
     
     link_to(text, options, html_options,:remote=>true)
   end
+  
+  def minutes_per_km(distance, time) 
+    res = (time.to_f*1000)/(distance.to_f*60);    
+    return sprintf('%02d:%02d', res.floor, res*60 % 60);
+  end
+  
+  def km_per_hours(distance, time) 
+    res = (distance.to_f / 1000) / (time.to_f / 3600)
+    return sprintf('%02d:%02d', res.floor, res*60 % 60);
+  end
 end

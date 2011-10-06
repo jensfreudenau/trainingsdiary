@@ -4,11 +4,14 @@
 #  - Alexander Dreher - http://github.com/alexdreher - Rails 3 update
 
 de:
-  
+  at: "am"
   blogentries: "Blog"  
   comment: "Kommentar"  
   courses: "Strecken"
-  statistics: "Statistik"
+  Download: "Download"
+  fullscreen: "Fullscreen"
+  heartrate: "Herzfrequenz"
+  height: "Höhenmeter"
   home: "Home"
   laps: "Runden"
   lap: "Runde"
@@ -17,9 +20,11 @@ de:
   sportlevels: "Intensität"
   sports: "Sportarten"
   sport: "Sportart"
+  statistics: "Statistik"
   trainings: "Training"
-  fullscreen: "Fullscreen"
+
   web-app-theme:
+    courses: "Strecken"
     delete: "löschen"
     show: "anzeigen"
     edit: "bearbeiten"
@@ -51,12 +56,13 @@ de:
       - :year
 
   time:
-    formats:
+    formats:      
       default: "%d. %B %Y, %H:%M Uhr"
       short: "%d. %B, %H:%M Uhr"
       long: "%A, %d. %B %Y, %H:%M Uhr"
       time: "%H:%M Uhr"
-      date: "%d. %B %Y"      
+      date: "%d. %B %Y" 
+      shortmonth: "%d. %b. %Y"      
     am: "vormittags"
     pm: "nachmittags"
   distance:
@@ -218,7 +224,12 @@ de:
 
 
   activerecord:
+    
     attributes:
+      course:
+        comment: "Kommentar"
+        file: "Datei"
+        name: "Name"
       training:
         distance_total: "Streckenlänge"
         time_total: "ges. Zeit"

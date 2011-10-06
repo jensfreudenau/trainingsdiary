@@ -1,0 +1,32 @@
+= javascript_include_tag 'OpenLayers', 'OpenStreetMap'
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", courses_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_path
+      %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", course_path
+  .content
+    .inner
+      %p
+        %b
+          = t("activerecord.attributes.course.name", :default => t("activerecord.labels.course", :default => "Name"))
+          \:
+        = @course.name
+      %p
+        %b
+          = t("activerecord.attributes.course.comment", :default => t("activerecord.labels.course", :default => "Comment"))
+          \:
+        = @course.comment
+      %p
+        %b
+          = t("activerecord.attributes.course.file", :default => t("activerecord.labels.file", :default => "File"))
+          \:
+        = @course.file 
+        .link_big_map
+          = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"courses", :action=>"bigmap", :id => "#{@course.id}" }, :id => 'bigmap', :class => 'iframe'
+        #map
+      .wat-cf
+        = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_course_path(@course), :class => "button"
+        = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), sport_path(@course), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+:javascript
+  createMapWithRoute( #{@route}, "map");

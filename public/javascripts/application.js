@@ -86,12 +86,14 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
      projection: WGS84,
      protocol: new OpenLayers.Protocol.WFS({
        version: "1.1.0",
-       url: "http://hazardmapping.com/geoserver/wfs",
-       featureNS :  "http://www.opengeospatial.net/cite",
-       featureType: "testblocks",
+       url: "http://demo.opengeo.org/geoserver/wfs",
+       featureNS :  "http://opengeo.org",
+       featureType: "restricted",
+       geometryName: "the_geom",
+       schema: "http://demo.opengeo.org/geoserver/wfs/DescribeFeatureType?version=1.1.0&typename=og:restricted"
      })
    });
-  map.addLayers([openstreetmap, opencyclemap, wfs_layer]);
+  map.addLayers([opencyclemap, wfs_layer]);
   
   $.each( coordinates, function( intIndex, objValue ){
      
@@ -144,10 +146,113 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
   }
      
 }
- 
+
+function createChart (data, cssId, unit) {
+  var datas = data;
+  var chartdata = [];
+  var value;  
+  k = 0;
+  $.each( datas, function( intIndex, objValue ){
+     $.each( objValue, function( index, value ){
+        if (value != null) {
+          chartdata[k] = value;
+          k++;
+        }
+     });
+  });
+  var max = chartdata[k-1][0];
+  $(function() {
+      new Highcharts.Chart({
+        chart: {
+          height: 250,
+          renderTo: cssId,
+
+          margin: [10, 20, 30, 60]	
+        },
+        title: {
+          text: '',
+          x: -50, //center$maxHeight
+          y: 200
+        },
+        subtitle: {
+          text: '',
+          x: -20
+        },
+        credits: {
+          enabled: false
+        },
+        legend: {
+          enabled: false
+        },
+        xAxis: {
+          labels: {
+            formatter: function() {
+                return secondsToTime(this.value);
+            },
+            style: {
+                color: '#000000'
+            }
+          },
+          type: "Time",
+          lineWidth: 1,
+          max: max 
+        },
+
+        yAxis: [{ // Primary yAxis
+          labels: {
+            formatter: function() {
+                return this.value + ' ' + unit;
+            },
+            style: {
+                color: '#AA4643'
+            }
+          },
+          title: {
+            text: '',
+            margin: 80,
+            style: {
+                color: '#AA4643'
+            }
+          }
+        }],
+        plotOptions: {
+          area: {
+            fillOpacity: 0.3,
+            lineWidth: 1,
+            marker: {
+              enabled: false,
+              states: {
+                hover: {
+                  enabled: true,
+                  radius: 3
+                }
+              }
+            },
+            shadow: true,
+            states: {
+              hover: {
+                lineWidth: 1						
+              }
+            }
+          }
+        },
+        tooltip: {
+          formatter: function() {
+            return secondsToTime(this.x) +' '+ this.y + ' ' +unit;
+          }
+        },
+        series: [{
+          type: 'area',
+          data: chartdata
+        }]
+      });
+    });
+  
+}
+
+
 
 $(document).ready(function () {
-  
 	  $("a#bigmap").fancybox({
   		'hideOnContentClick': true,
       'width': '100%',

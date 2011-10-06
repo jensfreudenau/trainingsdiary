@@ -1,0 +1,11 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", courses_path
+      %li.active= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_path
+  .content
+    %h2.title
+      = t("web-app-theme.new_course", :default => "New Download")
+    .inner
+      = form_for :course, :url => courses_path, :html => { :id => 'course', :class => :form, :multipart => true } do |f|
+        = render :partial => "form", :locals => {:f => f}
