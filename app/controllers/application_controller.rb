@@ -69,9 +69,11 @@ class ApplicationController < ActionController::Base
             :select => 'trainings.id,
                             course_names.name as coursename,
                             sport_levels.name as sportlevel,
+                            sport_levels.css as css,
                             sports.name as sportname,
                             time_total,
                             comment,
+                            
                             trainings.start_time as start_time,
                             distance_total',
             :order => 'start_time',

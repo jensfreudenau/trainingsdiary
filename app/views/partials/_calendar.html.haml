@@ -7,13 +7,19 @@
     .content
     
       - calendar_for @calendartrainings, :year => @date.year, :month => @date.month, :first_day_of_week=>1 do |calendar|
+        
         = calendar.head(t("date.calendar_days"))
         - calendar.day(:day_method => :start_time) do |date, trainings|
+         
           = date.day
           - if user_signed_in?
             %ul
               - for training in trainings
-                %li
+                :css
+                  li.#{training.sportlevel.to_s} a.tip{
+                    border-bottom-color: ##{training.css.to_s} !important ;
+                  }
+                %li{:class => training.sportlevel.to_s}
                   = link_to(training,:class => "tip") do
                     = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))     
                     - if(training.comment != '')

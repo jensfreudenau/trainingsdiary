@@ -13,7 +13,10 @@
 
 /* Hides from IE-mac \*/
 * html .wat-cf {height: 1%;}
-.wat-cf {display: block;}
+.wat-cf {
+  display: block;
+  padding-top: 50px;
+}
 /* End hide from IE-mac */
 
 h1 { margin: 15px 0; font-size: 22px; font-weight: normal; }
