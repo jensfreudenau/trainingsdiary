@@ -4,7 +4,7 @@ require 'json'
 load "fileutils.rb"
 class CoursesController < ApplicationController
   #@log = Logger.new('log/courses.log')
-  before_filter :authenticate_user!, :except => [:index, :show, :find_club]
+  before_filter :authenticate_user!, :except => [:index, :show]
   before_filter :init
   load_and_authorize_resource
   include Trainingsdata
@@ -139,7 +139,7 @@ class CoursesController < ApplicationController
 #      :select => 'id, name',
 #      :conditions => {:user_id => current_user.id}
 #    )
-    
+
     @training = Training.find(:first,
                     :select => 'trainings.map_data, trainings.distance_total, trainings.time_total, trainings.start_time',
                     :conditions => ['trainings.user_id = ? AND trainings.id = ?', current_user , params[:trainings_id]])
@@ -158,10 +158,16 @@ class CoursesController < ApplicationController
     path = @course_path.to_s + '/' + params[:id].to_s + '/' + 'glucks'
     td = Trainingsdata::Forerunner.new(path, true)
     td.create_trainings_file(@deg, @training)
-    
+
   end
   
-  
+  def testform 
+    @course = Course.new(params[:trainings_id]) 
+    if request.post? && @course.save
+      flash[:notice] = "dv"
+      redirect_to "/" 
+    end
+  end
   
   def cleanup
     File.delete(@file) if File.exist?(@file)

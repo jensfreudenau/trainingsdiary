@@ -253,14 +253,31 @@ function createChart (data, cssId, unit) {
 
 
 $(document).ready(function () {
-	  $("a#bigmap").fancybox({
+	$("a#bigmap").fancybox({
   		'hideOnContentClick': true,
       'width': '100%',
       'height': '100%'
   	});
      
-  	 
   	   
+  $("#training").validate({
+    rules: {
+        'training[sport_id]' : { required: true }
+    },
+    messages: {
+        'training[sport_id]' : "You must select a sport type"
+    }
+  });
+  
+  $('#datepicker').datetimepicker();  
+  
+  $("li.distance").mouseover(function () {
+    $(".comment").dialog();
+  });
+  $("li.distance").mouseout(function () {
+    $(".comment").hide();
+  });
+  
   $("input, textarea, select, button").uniform(); 
-  $( "#datepicker" ).datepicker();
+    $( "#datepicker" ).datepicker();
 });

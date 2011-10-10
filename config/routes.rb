@@ -12,6 +12,7 @@ Trainings1::Application.routes.draw do
   match "/courses/download", :controller => "courses", :action => "course"
   match "/courses/bigmap", :controller => "courses", :action => "bigmap"
   match "/courses/create_from_activity/:trainings_id", :to => 'courses#create_from_activity'
+  match "/courses/testform/:trainings_id", :to => 'courses#testform'
   match '/home' => "trainings#index", :as => :user_root 
   resources :courses
 

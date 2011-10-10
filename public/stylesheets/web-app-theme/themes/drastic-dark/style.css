@@ -298,7 +298,10 @@ hr {
 .form .navform a {
   color: #cc0000;
 }
-
+.form label .error {
+  color:red;
+  width: 400px;
+} 
 /* flash-messages */
 .flash .message {
   -moz-border-radius: 3px;
@@ -615,10 +618,11 @@ table.table tr.training_data td{
 tr.empty{
   height:20px;
 }
-dl.floated { padding: 17px; float:left;} 
-dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green; } 
-dt:after { content: ":"; } 
-dd { margin: 0 0 0 110px; padding: 0 0 5px 0; }
+
+.block dl.floated { padding: 17px; float:left;} 
+.block dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green; } 
+.block dt:after { content: ":"; } 
+.block dd { margin: 0 0 0 110px; padding: 0 0 5px 0; }
 
 .courves h3 {
   padding: 30px 0 10px 100px;

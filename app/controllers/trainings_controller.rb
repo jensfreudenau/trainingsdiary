@@ -20,7 +20,6 @@ class TrainingsController < ApplicationController
    # end
     #
     items_per_page = 5
-
     sort = case params['sort']
               when "name"  then "name"
               when "sportlevel"   then "sport_levels.name"
@@ -95,23 +94,12 @@ class TrainingsController < ApplicationController
   # GET /trainings/new.xml
   def new
     
-    @training = current_user.trainings.new
+    @training   = current_user.trainings.new
 
-    @sportlevel = SportLevel.find(
-                                        :all,
-                                        :select => 'id, name',
-                                        :conditions => {:user_id => current_user.id}
-                                      )
-    @sport = Sport.find(
-                            :all,
-                            :select => 'id, name',
-                            :conditions => {:user_id => current_user.id}
-                          )
-    @coursename = CourseName.find(
-                                        :all,
-                                        :select => 'id, name',
-                                        :conditions => {:user_id => current_user.id}
-                                      )
+    @sportlevel = Training.get_sportlevel(current_user.id)
+    @sport      = Training.get_sports(current_user.id)    
+    @coursename = Training.get_coursename(current_user.id)
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @training }
@@ -121,8 +109,8 @@ class TrainingsController < ApplicationController
   # GET /trainings/1/edit
   def edit
     @training = Training.find(:first,
-    :conditions => {:user_id => current_user.id , :id => params[:id]},
-    :select => 'id,
+                        :conditions => {:user_id => current_user.id , :id => params[:id]},
+                        :select => 'id,
                         user_id,
                         start_time,
                         sport_level_id,
@@ -132,51 +120,31 @@ class TrainingsController < ApplicationController
                         time_total,
                         distance_total'
     )
-
-    @sportlevel = SportLevel.find(
-                                        :all,
-                                        :select => 'id, name',
-                                        :conditions => {:user_id => current_user.id}
-                                        )
-    @sport = Sport.find(
-                            :all,
-                            :select => 'id, name',
-                            :conditions => {:user_id => current_user.id}
-                            )
-    @coursename = CourseName.find(
-                                        :all,
-                                        :select => 'id, name',
-                                        :conditions => {:user_id => current_user.id}
-                                        )
+    
+    @sportlevel = Training.get_sportlevel(current_user.id)
+    @sport      = Training.get_sports(current_user.id)    
+    @coursename = Training.get_coursename(current_user.id)
   end
 
   # POST /trainings
   # POST /trainings.xml
   def create
     Training.mounting
-    file_data = params[:training][:filename]
-        
+    
     if params[:training][:start_time].empty?
       params[:training][:start_time] = Time.now.to_s(:db)
     end
     
-    @sportlevel = SportLevel.find(
-      :all,
-      :select => 'id, name',
-      :conditions => {:user_id => current_user.id}
-    )
-    @sport = Sport.find(
-      :all,
-      :select => 'id, name',
-      :conditions => {:user_id => current_user.id}
-    )
-    @coursename = CourseName.find(
-      :all,
-      :select => 'id, name',
-      :conditions => {:user_id => current_user.id}
-    )
-    @training = current_user.trainings.new(params[:training])
+    if !params[:training][:time_total].nil?
+      params[:training][:time_total] = ChronicDuration::parse((params[:training][:time_total]))
+    end
     
+    @sportlevel = Training.get_sportlevel(current_user.id)
+    @sport      = Training.get_sports(current_user.id)    
+    @coursename = Training.get_coursename(current_user.id)
+    @training   = current_user.trainings.new(params[:training])
+    
+    file_data = params[:training][:filename]
     respond_to do |format|
       if @training.update_attributes(params[:training])
         if file_data           
@@ -196,16 +164,21 @@ class TrainingsController < ApplicationController
   # PUT /trainings/1
   # PUT /trainings/1.xml#
   def update
-     
+    @log = Logger.new('log/trainings.log') 
     params[:training][:user_id] = current_user.id
     Training.mounting
     file_data = params[:training][:filename]
     params[:training][:time_total] = ChronicDuration.parse(params[:training][:time_total].to_s)
+    
     if params[:training][:start_time].nil?
       params[:training][:start_time] = Time.now.to_s(:db)
     end
+    
+    if !params[:training][:time_total].nil?
+      params[:training][:time_total] = params[:training][:time_total].to_f
+    end
     @training = Training.find(params[:id])
-
+    @log.debug(@training.to_yaml)
     respond_to do |format|
 
       if @training.update_attributes(params[:training])
@@ -237,112 +210,109 @@ class TrainingsController < ApplicationController
   end
 
   protected
+    def add_attachment
+      # get file name
+      file_name = params[:qqfile]
+      # get file content type
+      att_content_type = (request.content_type.to_s == "") ? "application/octet-stream" : request.content_type.to_s
+      # create temporal file
+      file = Tempfile.new(file_name)
+      # put data into this file from raw post request
+      file.print request.raw_post
 
+      # create several required methods for this temporal file
+      Tempfile.send(:define_method, "content_type") {return att_content_type}
+      Tempfile.send(:define_method, "original_filename") {return file_name}
 
+      # save file into attachment
+      attach = Attachment.new(:uploaded_data => file)
+      attach.person_id = params[:person_id]
+      attach.save!
 
-  def add_attachment
-    # get file name
-    file_name = params[:qqfile]
-    # get file content type
-    att_content_type = (request.content_type.to_s == "") ? "application/octet-stream" : request.content_type.to_s
-    # create temporal file
-    file = Tempfile.new(file_name)
-    # put data into this file from raw post request
-    file.print request.raw_post
-
-    # create several required methods for this temporal file
-    Tempfile.send(:define_method, "content_type") {return att_content_type}
-    Tempfile.send(:define_method, "original_filename") {return file_name}
-
-    # save file into attachment
-    attach = Attachment.new(:uploaded_data => file)
-    attach.person_id = params[:person_id]
-    attach.save!
-
-    respond_to do |format|
-      format.json{render(:layout => false , :json => {"success" => true, "data" => attach}.to_json )}
-      format.html{render(:layout => false , :json => attach.to_json )}
-    end
-    rescue Exception => err
       respond_to do |format|
-        format.json{render(:layout => false , :json => {"error" => err.to_s}.to_json )}
-    end
-  end
-  
-  def save_file_data(file_data)
-    path = "public/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
-    begin
-      td = Trainingsdata::Forerunner.new(path)
-      td.start_import
-      td.laps.each do |value|
-        @training.laps.create(
-              :distance_total => value[:distance],
-              :heartrate_avg  => value[:heartrate_avg],
-              :calories       => value[:calories],
-              :heartrate_max  => value[:heartrate_max],
-              :duration       => value[:duration],
-              :heartrate      => value[:heartrate].to_json,
-              :height         => value[:height].to_json,
-              :map            => value[:map].to_json,
-              :start_time     => value[:time]
-            )
-      end   
-     
-      @training.start_time      = td.start_time
-      @training.distance_total  = td.distance_total
-      @training.time_total      = td.time_total
-      @training.map_data        = td.map_data
-      @training.heartrate       = td.heartrate
-      @training.height          = td.height
-      @training.heartrate_avg   = td.heartrate_avg
-      @training.heartrate_max   = td.heartrate_max
-      
-    end     
-  end
-  
-  def batch (file)
-    f = File.open(file, "r")
-    @training = current_user.trainings.new()
-    @training.user_id = @training.user_id
-    @training.sport_id = 5
-    @training.sport_level_id = 1
-    @training.course_name_id = 4
-    @training.filename = File.basename(file).to_s
-    @training_orl = Training.find(:first,
-    :conditions => {:user_id => @training.user_id , :filename => @training.filename},
-    :select => 'id')
-
-    if @training_orl.nil?
-      @training.save
-
-      FileUtils.mv file, "public/tracks/uploader/ok/"+File.basename(file).to_s
-      begin
-    
-        td = Trainingsdata::Forerunner.new(f)
-
-        td.laps.each_with_index do |value|
-
-          @training.laps.create(
-                :distance_total => value[:distance],
-                :heartrate_avg => value[:heartrate_avg],
-                :calories => value[:calories],
-                :heartrate_max => value[:heartrate_max],
-                :duration => value[:duration],
-                :heartrate => value[:heartrate].to_json,
-                :height => value[:height].to_json,
-                :map => value[:map].to_json,
-                :start_time => value[:time]
-              )
-        end      
-        @training.distance_total = td.distance_total
-        @training.time_total = td.time_total
-        @training.map_data = td.map_data
-        @training.heartrate = td.heartrate
-        @training.heartrate_avg = td.heartrate_avg
-        @training.heartrate_max = td.heartrate_max
-        @training.height = td.height
-        @training.save
+        format.json{render(:layout => false , :json => {"success" => true, "data" => attach}.to_json )}
+        format.html{render(:layout => false , :json => attach.to_json )}
+      end
+      rescue Exception => err
+        respond_to do |format|
+          format.json{render(:layout => false , :json => {"error" => err.to_s}.to_json )}
       end
     end
-  end
+
+    def save_file_data(file_data)
+      path = "public/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
+      begin
+        td = Trainingsdata::Forerunner.new(path)
+        td.start_import
+        td.laps.each do |value|
+          @training.laps.create(
+                :distance_total => value[:distance],
+                :heartrate_avg  => value[:heartrate_avg],
+                :calories       => value[:calories],
+                :heartrate_max  => value[:heartrate_max],
+                :duration       => value[:duration],
+                :heartrate      => value[:heartrate].to_json,
+                :height         => value[:height].to_json,
+                :map            => value[:map].to_json,
+                :start_time     => value[:time]
+              )
+        end   
+
+        @training.start_time      = td.start_time
+        @training.distance_total  = td.distance_total
+        @training.time_total      = td.time_total
+        @training.map_data        = td.map_data
+        @training.heartrate       = td.heartrate
+        @training.height          = td.height
+        @training.heartrate_avg   = td.heartrate_avg
+        @training.heartrate_max   = td.heartrate_max
+
+      end     
+    end
+
+    def batch (file)
+      f = File.open(file, "r")
+      @training = current_user.trainings.new()
+      @training.user_id = @training.user_id
+      @training.sport_id = 5
+      @training.sport_level_id = 1
+      @training.course_name_id = 4
+      @training.filename = File.basename(file).to_s
+      @training_orl = Training.find(:first,
+      :conditions => {:user_id => @training.user_id , :filename => @training.filename},
+      :select => 'id')
+
+      if @training_orl.nil?
+        @training.save
+
+        FileUtils.mv file, "public/tracks/uploader/ok/"+File.basename(file).to_s
+        begin
+
+          td = Trainingsdata::Forerunner.new(f)
+
+          td.laps.each_with_index do |value|
+
+            @training.laps.create(
+                  :distance_total => value[:distance],
+                  :heartrate_avg => value[:heartrate_avg],
+                  :calories => value[:calories],
+                  :heartrate_max => value[:heartrate_max],
+                  :duration => value[:duration],
+                  :heartrate => value[:heartrate].to_json,
+                  :height => value[:height].to_json,
+                  :map => value[:map].to_json,
+                  :start_time => value[:time]
+                )
+          end      
+          @training.distance_total = td.distance_total
+          @training.time_total = td.time_total
+          @training.map_data = td.map_data
+          @training.heartrate = td.heartrate
+          @training.heartrate_avg = td.heartrate_avg
+          @training.heartrate_max = td.heartrate_max
+          @training.height = td.height
+          @training.save
+        end
+      end
+    end
 end

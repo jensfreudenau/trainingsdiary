@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
     before_filter :authenticate_user!, :except => [:index, :show]
     before_filter :set_locale, :set_time_zone, :list_last_trainings, :calendar, :statistic
     protect_from_forgery
+    
     rescue_from CanCan::AccessDenied do |exception|
         Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
         flash[:error] = exception.message
@@ -70,6 +71,7 @@ class ApplicationController < ActionController::Base
                             sport_levels.name as sportlevel,
                             sports.name as sportname,
                             time_total,
+                            comment,
                             trainings.start_time as start_time,
                             distance_total',
             :order => 'start_time',

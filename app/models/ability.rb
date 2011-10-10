@@ -41,6 +41,7 @@ class Ability
             can :destroy, Course
             can :download, Course
             can :create_from_activity, Course
+            can :testform, Course
         end
     end
 end

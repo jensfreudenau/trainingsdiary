@@ -1,0 +1,25 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", courses_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_path
+  .content
+    %h2.title
+      = t("web-app-theme.new", :default => "New")
+
+    .inner
+      = form_for :course, :html => { :id => 'course', :class => :form, :multipart => true} do |f|
+        %ul#coursesform
+          %li
+            = f.label :created_at
+            = f.text_field :name , :class => 'text_field' 
+          %li
+            = f.file_field :file, :class => 'file_field'
+
+          %li
+            = f.text_area :comment, :class => 'text_area', :cols => 20
+
+          .group.navform.wat-cf
+            %button.button{:type => "submit"}
+              = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+              = t("web-app-theme.save", :default => "Save")

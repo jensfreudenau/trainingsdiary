@@ -50,12 +50,21 @@ module ApplicationHelper
   end
   
   def minutes_per_km(distance, time) 
-    res = (time.to_f*1000)/(distance.to_f*60);    
-    return sprintf('%02d:%02d', res.floor, res*60 % 60);
+    begin
+      res = (time.to_f*1000)/(distance.to_f*60);    
+      return sprintf('%02d:%02d', res.floor, res*60 % 60);
+    rescue
+      return 0
+    end
+    
   end
   
   def km_per_hours(distance, time) 
-    res = (distance.to_f / 1000) / (time.to_f / 3600)
-    return sprintf('%02d:%02d', res.floor, res*60 % 60);
+    begin
+      res = (distance.to_f / 1000) / (time.to_f / 3600)
+      return sprintf('%02d:%02d', res.floor, res*60 % 60);
+    rescue
+      return 0
+    end
   end
 end

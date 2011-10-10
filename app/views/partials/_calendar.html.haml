@@ -14,4 +14,8 @@
             %ul
               - for training in trainings
                 %li
-                = link_to h(number_to_human(training.distance_total, :units => :distance, :precision => 3)), training
+                  = link_to(training,:class => "tip") do
+                    = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))     
+                    - if(training.comment != '')
+                      %span
+                        = training.comment
