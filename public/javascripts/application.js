@@ -269,6 +269,17 @@ $(document).ready(function () {
     }
   });
   
+  $("#course").validate({
+    rules: {
+        'course[sport_id]' : { required: true },
+        'course[name]' : { required: true }
+    },
+    messages: {
+        'course[sport_id]' : "You must select a sport type",
+        'course[name]' : "You must select a name"
+    }
+  });
+  
   $('#datepicker').datetimepicker();  
   
   $("li.distance").mouseover(function () {

@@ -21,6 +21,12 @@ module Trainingsdata
       @calories       = 0
       @start_time     = 0
       @course         = ''
+      @distance       = 0;
+      @deg            = ''  
+      @training       = ''
+      @time           = ''
+      @prev_lat       = ''
+      @prev_lon       = ''
     end
     
     def start_import
@@ -30,10 +36,9 @@ module Trainingsdata
       self.cleanup
     end
     
-    def create_trainings_file(deg, training)
+    def create_trainings_file(deg, training, name)
       @deg        = deg
       @training   = training
-      name        = "Steigerwald"
       begin_lat   = @deg.first[0]
       begin_lon   = @deg.first[1]
       end_lat     = @deg.last[0]
@@ -76,7 +81,7 @@ module Trainingsdata
                 
                 @lat = item[0] 
                 @lon = item[1]
-                
+                @time = @training.start_time
                 if (index > 0 )                
                   
                   @prev_lat = @deg[index-1][0]
@@ -85,7 +90,7 @@ module Trainingsdata
                   self.calculate_time
                   
                 else
-                  @time = @training.start_time
+                  
                   @prev_lat = begin_lat
                   @prev_lon = begin_lon
                   self.calculate_distance
@@ -119,9 +124,13 @@ module Trainingsdata
       
     end
     def calculate_distance 
-      first_loc=LatLng.new(@prev_lat, @prev_lon)
-      second_loc=LatLng.new(@lat,@lon)
-      @distance = first_loc.distance_to(second_loc, :units=>:kms)
+      begin
+        first_loc=LatLng.new(@prev_lat, @prev_lon)
+        second_loc=LatLng.new(@lat,@lon)
+        @distance = first_loc.distance_to(second_loc, :units=>:kms)
+      rescue
+        @distance = 0
+      end
     end
     
     

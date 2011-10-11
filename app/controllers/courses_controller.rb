@@ -10,9 +10,9 @@ class CoursesController < ApplicationController
   include Trainingsdata
   
   def init
-    @log = Logger.new('log/courses.log')  
-    @course_path = Rails.root + 'public/uploads/course/file/' + current_user.id.to_s
-   
+    @log          = Logger.new('log/courses.log')  
+    @course_path  = Rails.root + 'public/uploads/course/file/' + current_user.id.to_s
+    @name         = 'Trainingsdiary'
   end
   
   # GET /courses
@@ -28,7 +28,6 @@ class CoursesController < ApplicationController
   def download
     filename  = params[:filename]
     send_file @course_path.to_s + '/' + params[:id].to_s + '/' + filename.to_s, :type=>"application/text"
-    
   end
 
   # GET /courses/1
@@ -87,7 +86,6 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
     @course.user = current_user
     respond_to do |format|
-      
        
       if @course.save
         format.html { redirect_to(@course, :notice => 'Course was successfully created.') }
@@ -132,56 +130,80 @@ class CoursesController < ApplicationController
     end
   end
   
-  def create_from_activity
-#    @course = Course.new
-#    @sport = Sport.find(
-#      :all,
-#      :select => 'id, name',
-#      :conditions => {:user_id => current_user.id}
-#    )
-
-    @training = Training.find(:first,
-                    :select => 'trainings.map_data, trainings.distance_total, trainings.time_total, trainings.start_time',
-                    :conditions => ['trainings.user_id = ? AND trainings.id = ?', current_user , params[:trainings_id]])
-   
+  def create_file_from_activity(id)
     @training.map_data = @training.map_data.squeeze("]]")
-    
     @training.map_data.slice!(0..2)
-    degrees = @training.map_data.split('],[')
+    degrees = 0
     @deg = Array.new
+    
+    degrees = @training.map_data.split('],[')
     degrees.each do |item| 
+      item = item.gsub(/[\[\]]/,'') 
       pair = item.split(',')
       if (pair.count() == 2)
         @deg << pair
       end
     end
-    path = @course_path.to_s + '/' + params[:id].to_s + '/' + 'glucks'
-    td = Trainingsdata::Forerunner.new(path, true)
-    td.create_trainings_file(@deg, @training)
+    Dir.mkdir(@course_path.to_s + '/' + id.to_s) 
+    path  = @course_path.to_s + '/' + id.to_s + '/' + @course.name
+    td    = Trainingsdata::Forerunner.new(path, true)
+    td.create_trainings_file(@deg, @training, @name)
 
   end
   
-  def testform 
-    @course = Course.new(params[:trainings_id]) 
-    if request.post? && @course.save
-      flash[:notice] = "dv"
-      redirect_to "/" 
+  def save_route_from_training
+    @course       = Course.new(params[:course])
+    @name         = params[:course][:name]
+    @course.user  = current_user
+    @training     = Training.find(:first,
+                                  :select => 'trainings.map_data, trainings.time_total,trainings.start_time, trainings.distance_total',
+                                  :conditions => ['trainings.user_id = ? AND trainings.id = ?', current_user , params[:course][:trainings_id].to_i]
+                                )
+    @training.distance_total  = params[:course][:distance]                           
+    @course.file              = @name + '.tcx'
+    if @course.save      
+      self.create_file_from_activity(@course.id)
+      flash[:notice] = "course created"
+      redirect_to "/courses" 
+    else
+      flash[:notice] = "course not created"
+      redirect_to "/courses" 
     end
+  end
+  
+  def route_from_training
+    @course = Course.new
+    @sport  = Sport.get_sports_by_user(current_user.id)
+     
+    @training = Training.find(:first,
+                :select => 'trainings.start_time, trainings.id, trainings.map_data, trainings.distance_total, trainings.time_total, trainings.sport_id, trainings.course_name_id',
+                :conditions => ['trainings.user_id = ? AND trainings.id = ?', current_user , params[:trainings_id]],
+                :joins => [:sport, :course_name]
+              )
+              
+    respond_to do |format|
+      format.html # create_fro_activity.html.erb
+      format.xml  { render :xml => @course }
+    end
+    
   end
   
   def cleanup
     File.delete(@file) if File.exist?(@file)
-    (@filetree).rmtree if @filetree.directory?
-
+    begin
+      FileUtils.remove_dir(@filetree)
+    rescue
+    end
+    
   end
   
   def bigmap
     id        = params[:id]
-    @course = Course.find(id)
-    file = @course_path.to_s + '/' + params[:id].to_s + '/' +  @course.file.to_s   
-    td = Trainingsdata::Forerunner.new(file)
+    @course   = Course.find(id)
+    file      = @course_path.to_s + '/' + params[:id].to_s + '/' +  @course.file.to_s   
+    td        = Trainingsdata::Forerunner.new(file)
     td.generate_course
-    @course = td.course.to_s                    
+    @course   = td.course.to_s                    
     render :partial => 'bigmap.html.haml'
   end
 end

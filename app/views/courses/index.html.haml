@@ -17,7 +17,7 @@
               %tr
                 %td{:class => "name"}
                   = course.name
-                  = link_to t("Download"), :controller => "courses", :action =>"course", :id=>course.id.to_s, :filename => course.file.to_s
+                  = link_to t("Download"), :controller => "courses", :action =>"download", :id=>course.id.to_s, :filename => course.file.to_s
                 %td{:class => "last"}
                   - if can? :update, @courses 
                     = link_to "Edit", edit_course_path(@courses) 

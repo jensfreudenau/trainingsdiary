@@ -2,7 +2,7 @@
   #calendar
     %h3#month
       = link_to "<", :month => (@date.beginning_of_month-1).strftime("%d-%m-%Y") , :remote=>true
-      = @date.strftime("%B %Y")
+      = localize(@date, :format =>:calendar)
       = link_to ">", :month => (@date.end_of_month+1).strftime("%d-%m-%Y"), :remote=>true
     .content
     

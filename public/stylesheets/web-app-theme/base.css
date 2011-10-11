@@ -15,6 +15,8 @@
 * html .wat-cf {height: 1%;}
 .wat-cf {
   display: block;
+}
+.trainings_data .wat-cf {
   padding-top: 50px;
 }
 /* End hide from IE-mac */

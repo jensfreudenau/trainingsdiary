@@ -40,8 +40,8 @@ class Ability
             can :update, Course
             can :destroy, Course
             can :download, Course
-            can :create_from_activity, Course
-            can :testform, Course
+            can :route_from_training, Course
+            can :save_route_from_training, Course
         end
     end
 end

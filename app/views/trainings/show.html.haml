@@ -7,6 +7,7 @@
         %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", trainings_path
         %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_training_path
         %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", training_path
+        %li= link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" } 
     .content
       .inner
         %h2 
@@ -14,7 +15,6 @@
         %h3
           = t("at", :default => "at")
           = localize(training.start_time, :format => :default)
-        
         .trainings_data
           %table.training
             %tr

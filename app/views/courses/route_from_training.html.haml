@@ -1,0 +1,43 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", courses_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_path
+  .content
+    %h2.title
+      = t("create trainings route", :default => "create trainings route")
+      = @course.file
+    .inner
+     
+      = form_for @course, :url => { :action => "save_route_from_training" },:html => { :id => 'course', :class => :form }, :method => "post" do |f|
+        -if @course.errors.any?
+          #error_explanation
+            %h3
+              = t('activerecord.errors.template.header', :model => Training.model_name.human, :count => @training.errors.count)
+            %ul
+              - @training.errors.full_messages.each do |msg|
+                %li= msg
+        %ul#coursesform
+          %li
+            = f.label :sport_id, t("activerecord.attributes.course.sport_id", :default => "Sport"), :class => :label
+            - @sport.each do |option| 
+              %label
+                .radio
+                  = f.radio_button :sport_id, option.id
+                = t("activerecord.attributes.course.sport", :default => option.name)
+          %li
+            = f.label :name, t("activerecord.attributes.course.name", :default => "Name"), :class => :label
+            = f.text_field :name , :class => 'text_field required' , :value => @training.course_name.name.to_s
+          %li
+            = f.label :distance, t("activerecord.attributes.course.distance", :default => "Distance"), :class => :label
+            = f.text_field :distance, :class => 'text_field', :value => @training.distance_total.to_i
+          %li
+            = f.label :comment
+            = f.text_area :comment, :class => 'text_area', :cols => 40
+
+          = f.hidden_field :trainings_id, :class => 'text_field', :value => @training.id
+
+          .group.navform.wat-cf
+            %button.button{:type => "submit"}
+              = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+              = t("web-app-theme.save", :default => "Save")

@@ -23,7 +23,8 @@ de:
   sport: "Sportart"
   statistics: "Statistik"
   trainings: "Training"
-
+  map: "Karte"
+  create trainings route: "Trainingsroute anlegen"
   web-app-theme:
     courses: "Strecken"
     delete: "löschen"
@@ -46,6 +47,7 @@ de:
       short: "%e. %b"
       long: "%e. %B %Y"
       only_day: "%e"
+      calendar: "%B %Y"
     day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
     abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
     calendar_days: [Mo, Di, Mi, Do, Fr, Sa, So]

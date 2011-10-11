@@ -96,9 +96,9 @@ class TrainingsController < ApplicationController
     
     @training   = current_user.trainings.new
 
-    @sportlevel = Training.get_sportlevel(current_user.id)
-    @sport      = Training.get_sports(current_user.id)    
-    @coursename = Training.get_coursename(current_user.id)
+    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)    
+    @coursename = CourseName.get_coursename_by_user(current_user.id)
     
     respond_to do |format|
       format.html # new.html.erb
@@ -121,9 +121,9 @@ class TrainingsController < ApplicationController
                         distance_total'
     )
     
-    @sportlevel = Training.get_sportlevel(current_user.id)
-    @sport      = Training.get_sports(current_user.id)    
-    @coursename = Training.get_coursename(current_user.id)
+    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)   
+    @coursename = CourseName.get_coursename_by_user(current_user.id)
   end
 
   # POST /trainings
@@ -139,9 +139,9 @@ class TrainingsController < ApplicationController
       params[:training][:time_total] = ChronicDuration::parse((params[:training][:time_total]))
     end
     
-    @sportlevel = Training.get_sportlevel(current_user.id)
-    @sport      = Training.get_sports(current_user.id)    
-    @coursename = Training.get_coursename(current_user.id)
+    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)   
+    @coursename = CourseName.get_coursename_by_user(current_user.id)
     @training   = current_user.trainings.new(params[:training])
     
     file_data = params[:training][:filename]
@@ -164,21 +164,22 @@ class TrainingsController < ApplicationController
   # PUT /trainings/1
   # PUT /trainings/1.xml#
   def update
-    @log = Logger.new('log/trainings.log') 
-    params[:training][:user_id] = current_user.id
+    
     Training.mounting
     file_data = params[:training][:filename]
-    params[:training][:time_total] = ChronicDuration.parse(params[:training][:time_total].to_s)
+    
+    
     
     if params[:training][:start_time].nil?
       params[:training][:start_time] = Time.now.to_s(:db)
     end
     
+    params[:training][:time_total] = ChronicDuration.parse(params[:training][:time_total].to_s)
     if !params[:training][:time_total].nil?
       params[:training][:time_total] = params[:training][:time_total].to_f
     end
-    @training = Training.find(params[:id])
-    @log.debug(@training.to_yaml)
+    @training       = Training.find(params[:id])
+    @training.user  = current_user
     respond_to do |format|
 
       if @training.update_attributes(params[:training])

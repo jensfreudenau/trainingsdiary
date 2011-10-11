@@ -298,7 +298,7 @@ hr {
 .form .navform a {
   color: #cc0000;
 }
-.form label .error {
+.form label.error {
   color:red;
   width: 400px;
 } 

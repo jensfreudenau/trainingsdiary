@@ -1,18 +1,9 @@
 Trainings1::Application.routes.draw do
   
-#  get "courses/edit"
-#
-#  get "courses/index"
-#
-#  get "courses/new"
-#
-#  get "courses/show"
-#  get "courses/create_from_activity"
-
-  match "/courses/download", :controller => "courses", :action => "course"
+  match "/courses/download", :controller => "courses", :action => "download"
   match "/courses/bigmap", :controller => "courses", :action => "bigmap"
-  match "/courses/create_from_activity/:trainings_id", :to => 'courses#create_from_activity'
-  match "/courses/testform/:trainings_id", :to => 'courses#testform'
+  match "/courses/route_from_training"  , :to => 'courses#route_from_training'
+  match "/courses/save_route_from_training"  , :to => 'courses#save_route_from_training'
   match '/home' => "trainings#index", :as => :user_root 
   resources :courses
 

@@ -18,13 +18,13 @@
           = t("at", :default => "at")
           = localize(home.start_time, :format => :default)
         .trainings_data
-          %h3
-            = t("heartrate",:default => "heartrate")
-          #heartrate_chart
-          %h3
-            = t("height",:default => "height")
-          #height_chart
-        .trainings_data
+          %table.training
+            %tr
+              %th
+                = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
+            %tr
+              %td
+                = home.comment
           %table.training
             %tr
               %th
@@ -66,14 +66,6 @@
                 = home.coursename
               %td
                 = home.sportlevel
-          %p
-            = home.comment        
-          
-          %h3
-            - if @laps.length > 1
-              = @laps.length.to_s + " " + t("laps")
-            - else 
-              = @laps.length.to_s + " " + t("lap")
           #laps 
             .outer_laps
               %table.laps
@@ -116,9 +108,18 @@
                     %td
                       = lap.heartrate_max.to_i
         .trainings_data
-          .link_big_map
-            = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
-          #map
+          - if(!home.heartrate.nil?)
+            %h3
+              = t("heartrate",:default => "heartrate")
+            #heartrate_chart
+           
+        .trainings_data
+          - if(!home.map_data.nil?)
+            %h3
+              = t("map",:default => "Map")
+            #map
+            .link_big_map
+              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
         
 :javascript
   createMapWithRoute( #{home.map_data}, "map", true, true);
