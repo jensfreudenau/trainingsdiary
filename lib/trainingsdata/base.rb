@@ -12,13 +12,13 @@ module Trainingsdata
     #
     def load_lap_data (index)
       
-      @laps[index.to_i] ||= {}
-      @laps[index.to_i][:duration]          = @runner[index.to_i][:seconds_total]
-      @laps[index.to_i][:distance]          = @runner[index.to_i][:distance_lap]
-      @laps[index.to_i][:heartrate_avg]     = @runner[index.to_i][:heartrate_avg]
-      @laps[index.to_i][:heartrate_max]     = @runner[index.to_i][:heartrate_max]
-      @laps[index.to_i][:calories]          = @runner[index.to_i][:calories]
-
+      @laps[index] ||= {}
+      @laps[index][:duration]          = @runner[index.to_i][:seconds_total]
+      @laps[index][:distance]          = @runner[index.to_i][:distance_lap]
+      @laps[index][:heartrate_avg]     = @runner[index.to_i][:heartrate_avg]
+      @laps[index][:heartrate_max]     = @runner[index.to_i][:heartrate_max]
+      @laps[index][:calories]          = @runner[index.to_i][:calories]
+      
       @diagramm << @runner[index.to_i][:laps].sort
       
     end
@@ -29,7 +29,7 @@ module Trainingsdata
     #  
     def save_file_data
 
-      @laps             = []
+      @laps             = Hash.new
       @diagramm         = []
       @file             = '' 
       @runner           = self.rounds
@@ -41,7 +41,7 @@ module Trainingsdata
       @runner.each_with_index do |value, index|
         self.load_lap_data(index)
       end
-   
+
       f = @diagramm.sort
       f.each do |data|
         self.load_track_data(data)
@@ -49,7 +49,7 @@ module Trainingsdata
         local_heartrate << @lap_heartrate
         local_height << @lap_height
       end
-       
+      @laps = @laps.sort 
       @distance_total = self.distance_total
       @time_total     = self.time_total
       @start_time     = self.start_time
