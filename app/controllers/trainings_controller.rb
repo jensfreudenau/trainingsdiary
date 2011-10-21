@@ -245,7 +245,8 @@ class TrainingsController < ApplicationController
       begin
         td = Trainingsdata::Forerunner.new(path)
         td.start_import
-        td.laps.each do |value|
+        td.laps.each do |index, value|
+          
           @training.laps.create(
                 :distance_total => value[:distance],
                 :heartrate_avg  => value[:heartrate_avg],
