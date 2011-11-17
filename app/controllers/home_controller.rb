@@ -1,20 +1,10 @@
-
 class HomeController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show, :bigmap]
-  
+  #before_filter :authenticate_user!, :except => [:index, :show, :bigmap]
+   
   def index 
     #@log = Logger.new('log/home.log')   
     items_per_page = 7
-    sort = case params['sort']
-    when "name"  then "name"
-    when "sportlevel"   then "sport_levels.name"
-    when "sports.name" then "sports.name"
-    when "start_time"  then "start_time ASC"
-    when "time_total"   then "time_total ASC"
-    when "distance" then "distance_total"
-    else
-    "trainings.start_time DESC"
-    end
+
     trainings = Training.find(:all,                                    
                                     :select => '
                                         trainings.id,
