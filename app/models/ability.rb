@@ -8,6 +8,7 @@ class Ability
         else
             can :read, :all
             can :create, Training 
+            can :create, Course 
             can :update, Training 
             #can :update, Training do |training|
             #    training.try(:user) == user
@@ -34,14 +35,6 @@ class Ability
             can :destroy, CourseName do |courseName|
                 courseName.try(:sportLevel) == user
             end
-            
-            can :create, Course 
-            can :bigmap, Course 
-            can :update, Course
-            can :destroy, Course
-            can :download, Course
-            can :route_from_training, Course
-            can :save_route_from_training, Course
         end
     end
 end
