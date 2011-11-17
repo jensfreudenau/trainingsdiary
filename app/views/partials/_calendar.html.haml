@@ -1,9 +1,9 @@
-.block.notice
+.block.notice 
   #calendar
     %h3#month
-      = link_to "<", :month => (@date.beginning_of_month-1).strftime("%d-%m-%Y") , :remote=>true
+      = link_to "<", :month => (@date.beginning_of_month-1).strftime("%d-%m-%Y")
       = localize(@date, :format =>:calendar)
-      = link_to ">", :month => (@date.end_of_month+1).strftime("%d-%m-%Y"), :remote=>true
+      = link_to ">", :month => (@date.end_of_month+1).strftime("%d-%m-%Y"), :url => {:action => 'calendar'}
     .content
     
       - calendar_for @calendartrainings, :year => @date.year, :month => @date.month, :first_day_of_week=>1 do |calendar|
@@ -20,8 +20,13 @@
                     border-bottom-color: ##{training.css.to_s} !important ;
                   }
                 %li{:class => training.sportlevel.to_s}
-                  = link_to(training,:class => "tip") do
-                    = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))     
+                  
+                  = link_to training_path(training, :month => (@date.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
+                    
+                    = h(number_to_human(training.distance_total, :units => :distance, :precision => 3)) 
+                    
                     - if(training.comment != '')
                       %span
                         = training.comment
+
+                   
