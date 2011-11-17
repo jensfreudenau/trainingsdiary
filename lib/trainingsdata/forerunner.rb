@@ -118,9 +118,7 @@ module Trainingsdata
       # 
       
       t = @time.to_i
-      @log.debug(@time)
       @time = @time+10
-      @log.debug(@time)
       
     end
     def calculate_distance 

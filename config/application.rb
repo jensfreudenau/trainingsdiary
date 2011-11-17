@@ -44,6 +44,6 @@ module Trainings1
         config.filter_parameters += [:password]
         config.to_prepare do
             Devise::SessionsController.layout "sign"
-		    end
+	end
     end
 end

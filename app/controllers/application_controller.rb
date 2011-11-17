@@ -72,8 +72,7 @@ class ApplicationController < ActionController::Base
                             sport_levels.css as css,
                             sports.name as sportname,
                             time_total,
-                            comment,
-                            
+                            comment,                    
                             trainings.start_time as start_time,
                             distance_total',
             :order => 'start_time',

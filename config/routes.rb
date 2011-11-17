@@ -4,7 +4,9 @@ Trainings1::Application.routes.draw do
   match "/courses/bigmap", :controller => "courses", :action => "bigmap"
   match "/courses/route_from_training"  , :to => 'courses#route_from_training'
   match "/courses/save_route_from_training"  , :to => 'courses#save_route_from_training'
-  match '/home' => "trainings#index", :as => :user_root 
+
+  
+  
   resources :courses
 
   devise_for :users
