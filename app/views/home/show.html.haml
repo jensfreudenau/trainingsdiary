@@ -122,7 +122,6 @@
               = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
         
 :javascript
-  createMapWithRoute( #{home.map_data}, "map", true, true);
-  createChart( #{home.heartrate}, "heartrate_chart", "bpm");  
-  createChart( #{home.height}, "height_chart", "m");
+  createMapWithRoute( #{home.map_data}, "map", true, true, google);
+  createChart( #{home.heartrate}, "heartrate_chart", "bpm", 50);
   

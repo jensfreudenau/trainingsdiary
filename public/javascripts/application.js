@@ -78,9 +78,30 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
   if (withControl == true) {
     var map = new OpenLayers.Map (cssId);
   }
+  map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+  
+  var gphy = new OpenLayers.Layer.Google(
+        "Google Physical",
+        {type: google.maps.MapTypeId.TERRAIN}
+    );
+  var gmap = new OpenLayers.Layer.Google(
+      "Google Streets", // the default
+      {numZoomLevels: 20}
+  );
+  var ghyb = new OpenLayers.Layer.Google(
+      "Google Hybrid",
+      {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
+  );
+  var gsat = new OpenLayers.Layer.Google(
+      "Google Satellite",
+      {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
+  );
   //base layers
   var openstreetmap = new OpenLayers.Layer.OSM();
   var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+
+
   var wfs_layer = new OpenLayers.Layer.Vector("Blocks", {
      strategies: [new OpenLayers.Strategy.BBOX()],
      projection: WGS84,
@@ -93,7 +114,7 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
        schema: "http://demo.opengeo.org/geoserver/wfs/DescribeFeatureType?version=1.1.0&typename=og:restricted"
      })
    });
-  map.addLayers([opencyclemap, wfs_layer]);
+  map.addLayers([opencyclemap,gphy,gmap, ghyb, gsat, wfs_layer]);
   
   $.each( coordinates, function( intIndex, objValue ){
      
@@ -147,7 +168,7 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
      
 }
 
-function createChart (data, cssId, unit) {
+function createChart (data, cssId, unit, min) {
   var datas = data;
   var chartdata = [];
   var value;  
@@ -161,6 +182,7 @@ function createChart (data, cssId, unit) {
      });
   });
   var max = chartdata[k-1][0];
+  var min = min;
   $(function() {
       new Highcharts.Chart({
         chart: {
@@ -195,7 +217,7 @@ function createChart (data, cssId, unit) {
           },
           type: "Time",
           lineWidth: 1,
-          max: max 
+          max: max
         },
 
         yAxis: [{ // Primary yAxis
@@ -213,7 +235,8 @@ function createChart (data, cssId, unit) {
             style: {
                 color: '#AA4643'
             }
-          }
+          }, 
+          min: min
         }],
         plotOptions: {
           area: {
@@ -253,6 +276,7 @@ function createChart (data, cssId, unit) {
 
 
 $(document).ready(function () {
+  
 	$("a#bigmap").fancybox({
   		'hideOnContentClick': true,
       'width': '100%',
