@@ -1,6 +1,7 @@
 %html
   %head
     %title My Trainings
+    %script{:type => "text/javascript", :src  => "http://maps.google.com/maps/api/js?v=3.5&sensor=false"}
     = stylesheet_link_tag 'web-app-theme/base', 
                           'web-app-theme/themes/drastic-dark/style', 
                           'web-app-theme/override', 
@@ -9,6 +10,7 @@
                           'fancybox/jquery.fancybox-1.3.4', 
                           'flick/jquery-ui-1.8.16.custom',
                           'timepicker/jquery-ui-timepicker-addon',
+                          'layerstyle',
                           :cache => true
 
     
@@ -18,8 +20,6 @@
                           'jquery.validate',
                           'rails', 
                           'application',
-                          'OpenLayers', 
-                          'OpenStreetMap',
                           'timepicker/jquery-ui-timepicker-addon',
                           'localization/jquery.ui.datepicker-de',
                           'fancybox/jquery.fancybox-1.3.4.pack', :cache => true                          
