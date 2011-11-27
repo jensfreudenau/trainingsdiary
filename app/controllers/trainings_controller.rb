@@ -11,7 +11,7 @@ class TrainingsController < ApplicationController
   include Trainingsdata
   
   def index
-    #@log = Logger.new('log/trainings.log')
+    @log = Logger.new('log/trainings.log')
     #@files = Dir.glob("public/tracks/uploader/temp/*.TCX", File::FNM_CASEFOLD)
     #
     #for file in @files
@@ -30,7 +30,14 @@ class TrainingsController < ApplicationController
               else
               "trainings.start_time DESC"
             end
-
+     
+    dir = case params['dir']
+            when "asc" then "ASC"
+            when "desc" then "DESC"
+            else 
+            "ASC"
+          end
+            
     trainings = Training.find(
       :all,
       :conditions => ['trainings.user_id = ?', current_user ],
@@ -47,11 +54,14 @@ class TrainingsController < ApplicationController
                           sport_levels.css as css,
                           start_time,
                           sports.name as sportname',
-      :order => sort,
+      :order => sort,      
       :joins => [:sport_level, :sport, :course_name]
     )
-    @trainings = trainings.paginate:page => params[:page], :per_page => items_per_page
 
+    #trainings = Training.search(current_user.id, params[:start_date], params[:end_date], sort)
+    
+    @trainings = trainings.paginate:page => params[:page], :per_page => items_per_page
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trainings }
@@ -129,6 +139,7 @@ class TrainingsController < ApplicationController
   # POST /trainings
   # POST /trainings.xml
   def create
+    @log = Logger.new('log/trainings.log')
     Training.mounting
     
     if params[:training][:start_time].empty?
@@ -245,8 +256,16 @@ class TrainingsController < ApplicationController
       begin
         td = Trainingsdata::Forerunner.new(path)
         td.start_import
+        
+        @distances          = Array.new
+        @heartrate_avg      = Array.new
+        @calc_heartrate_avg = 0
+
         td.laps.each do |index, value|
-          
+
+          @distances[index.to_i]      = value[:distance]
+          @heartrate_avg[index.to_i]  = value[:heartrate_avg]
+
           @training.laps.create(
                 :distance_total => value[:distance],
                 :heartrate_avg  => value[:heartrate_avg],
@@ -258,18 +277,26 @@ class TrainingsController < ApplicationController
                 :map            => value[:map].to_json,
                 :start_time     => value[:time]
               )
-        end   
-
+        end  
+        
         @training.start_time      = td.start_time
         @training.distance_total  = td.distance_total
         @training.time_total      = td.time_total
         @training.map_data        = td.map_data
         @training.heartrate       = td.heartrate
         @training.height          = td.height
-        @training.heartrate_avg   = td.heartrate_avg
+        @training.heartrate_avg   = self.calculate_avg_heartrate (td.distance_total)
         @training.heartrate_max   = td.heartrate_max
 
       end     
+    end
+
+    def calculate_avg_heartrate (distance_total)
+      calc_heartrate_sum = 0
+      @distances.each_with_index do |value, index| 
+        calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
+      end
+      return calc_heartrate_sum/distance_total
     end
 
     def batch (file)
