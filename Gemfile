@@ -1,7 +1,7 @@
 # A sample Gemfile
 source "http://rubygems.org"
 
-gem "rails"
+gem 'rails'
 gem 'haml-rails'
 gem "haml"
 gem 'will_paginate', '~> 3.0'
