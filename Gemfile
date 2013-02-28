@@ -5,7 +5,7 @@ gem "rails"
 gem 'haml-rails'
 gem "haml"
 gem 'will_paginate', '~> 3.0'
-#gem 'pg'
+gem 'pg'
 gem 'devise'
 gem 'cancan'
 gem 'jquery-rails'
