@@ -1,15 +1,13 @@
 
-= javascript_include_tag 'highcharts', 'OpenLayers', 'OpenStreetMap'
-:javascript
-  //base layers
-  var openstreetmap = new OpenLayers.Layer.OSM();
-  var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+= javascript_include_tag 'highcharts', 'OpenLayers', 'OpenStreetMap', 'util'
+ 
 - for home in @home
   - heartrate = [home.heartrate]
   .block
     .secondary-navigation
       %ul.wat-cf
         %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", "/"
+        %li= link_to "#{t("web-app-theme.listen", :default => "List")}", "/listen"
     .content
       .inner
         %h2
@@ -108,11 +106,10 @@
                     %td
                       = lap.heartrate_max.to_i
         .trainings_data
-          - if(!home.heartrate.nil?)
+          - if(home.heartrate.to_s != '[[]]')
             %h3
               = t("heartrate",:default => "heartrate")
             #heartrate_chart
-           
         .trainings_data
           - if(!home.map_data.nil?)
             %h3
@@ -122,6 +119,7 @@
               = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
         
 :javascript
-  createMapWithRoute( #{home.map_data}, "map", true, true, google);
-  createChart( #{home.heartrate}, "heartrate_chart", "bpm", 50);
+  createMapWithRoute( #{home.map_data}, "map", true, true);
+  createChart( #{home.heartrate}, "heartrate_chart", "bpm");  
+  createChart( #{home.height}, "height_chart", "m");
   

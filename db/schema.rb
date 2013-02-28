@@ -40,19 +40,38 @@ ActiveRecord::Schema.define(:version => 20111010131120) do
     t.integer  "trainings_id"
   end
 
+  create_table "downloads", :force => true do |t|
+    t.string   "name"
+    t.string   "file"
+    t.text     "comment"
+    t.integer  "sport_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "laps", :force => true do |t|
+    t.integer  "trainings_id"
     t.float    "distance_total"
     t.float    "heartrate_max"
     t.float    "calories"
+    t.integer  "heartrate_avg"
+    t.float    "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "training_id"
-    t.integer  "heartrate_avg"
-    t.float    "duration"
     t.text     "map"
     t.text     "heartrate"
     t.text     "height"
     t.datetime "start_time"
+  end
+
+  create_table "posts", :force => true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roles", :force => true do |t|
@@ -85,13 +104,13 @@ ActiveRecord::Schema.define(:version => 20111010131120) do
     t.integer  "course_name_id"
     t.float    "time_total"
     t.float    "distance_total"
-    t.text     "map_data"
+    t.text     "map_data",       :limit => 2147483647
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_time"
-    t.text     "heartrate"
-    t.text     "height"
+    t.text     "heartrate",      :limit => 2147483647
+    t.text     "height",         :limit => 2147483647
     t.text     "comment"
     t.integer  "heartrate_avg"
     t.integer  "heartrate_max"

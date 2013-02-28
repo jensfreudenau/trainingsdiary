@@ -1,1 +1,0 @@
-/Users/jensfreudenau/htdocs/trainings1/itslog/ruby/1.8/gems/ffi-1.0.9/ext/ffi_c/libffi/src/x86/ffitarget.h

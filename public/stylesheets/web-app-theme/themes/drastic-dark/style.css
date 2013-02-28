@@ -392,6 +392,10 @@ ul.list li .item .avatar {
 .block {
   box-shadow: 0 0 5px #999;
 }
+.block .left {
+  float:left; 
+  width:320px;
+}
 ul.trainings {
   list-style-type: disc !important;
   padding-left: 22px !important;
@@ -462,7 +466,7 @@ ul.trainings {
   border: 1px solid gray;
   margin-top:20px;
   margin-bottom:20px;
-  height: 250px; 
+  height: 350px; 
   width:680px;
   margin-left:auto; 
   margin-right:auto;
@@ -620,9 +624,9 @@ tr.empty{
 }
 
 .block dl.floated { padding: 17px; float:left;} 
-.block dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green; } 
+.block dt { float: left; clear: left; width: 100px; text-align: right; font-weight: bold; color: green;  line-height:15px;} 
 .block dt:after { content: ":"; } 
-.block dd { margin: 0 0 0 110px; padding: 0 0 5px 0; }
+.block dd { margin: 0 0 0 110px; padding: 0; line-height:15px; }
 
 .courves h3 {
   padding: 30px 0 10px 100px;

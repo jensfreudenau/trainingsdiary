@@ -1,8 +1,7 @@
 %html
   %head
     %title My Trainings
-    %script{:type => "text/javascript", :src  => "http://maps.google.com/maps/api/js?v=3.5&sensor=false"}
-    = stylesheet_link_tag 'web-app-theme/base', 
+    = stylesheet_link_tag 'web-app-theme/base',
                           'web-app-theme/themes/drastic-dark/style', 
                           'web-app-theme/override', 
                           'calendar', 
@@ -21,7 +20,6 @@
                           'rails', 
                           'application',
                           'timepicker/jquery-ui-timepicker-addon',
-                          'localization/jquery.ui.datepicker-de',
                           'fancybox/jquery.fancybox-1.3.4.pack', :cache => true                          
     = csrf_meta_tag
   %body
@@ -48,8 +46,9 @@
             - if user_signed_in?
               %li{ :class => (params[:controller] == "trainings" ? "active" : nil) }
                 = link_to t("trainings"), trainings_path 
-              %li{ :class => (params[:controller] == "statistics" ? "active" : nil) }
-                = link_to t("statistics"), statistics_path 
+            %li{ :class => (params[:controller] == "statistics" ? "active" : nil) }
+              = link_to t("statistics"), statistics_path
+            - if user_signed_in?  
               %li{ :class => (params[:controller] == "course_names" ? "active" : nil) }
                 = link_to t("course names"), course_names_path
               %li{ :class => (params[:controller] == "sports" ? "active" : nil) }
@@ -69,13 +68,15 @@
             = render :partial => "partials/footer"
         #sidebar
           = render :partial => "partials/calendar" 
-          - if user_signed_in?
-            = render :partial => "partials/statistic", :locals => { :report => @report }
-          - if user_signed_in?
-            .block
-              %h3
-                = t('last_trainings')
-              %ul{:class => "navigation trainings"}
-                = render :partial => "partials/last_training", :collection => @last_trainings
+          = render :partial => "partials/statistic", :locals => { :report => @report }
+          .block
+            %h3
+              = t('last_trainings')
+            %ul{:class => "navigation trainings"}
+              = render :partial => "partials/last_training", :collection => @last_trainings
+  
 
+
+
+             
  

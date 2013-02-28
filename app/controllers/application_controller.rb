@@ -31,10 +31,10 @@ class ApplicationController < ActionController::Base
                                                     sport_levels.name as sportlevel,
                                                     sport_levels.css as css,
                                                     sports.name as sportname,
-                                                    time_total,
+                                                    trainings.time_total,
                                                     trainings.start_time,
                                                     distance_total as distance',
-                                                :order => 'trainings.start_time',
+                                                :order => 'trainings.start_time DESC',
                                                 :joins => [:sport_level, :sport, :course_name],
                                                 :limit => 3)
     end
@@ -43,8 +43,7 @@ class ApplicationController < ActionController::Base
         #@log = Logger.new('log/applic.log')
         @sports = Sport.find(
             :all,
-            :select => 'id, name',
-            :conditions => ['sports.user_id = ?', current_user]
+            :select => 'id, name'
         )
         if params[:week] 
           @from_date = DateTime.parse(params[:week])
@@ -55,7 +54,6 @@ class ApplicationController < ActionController::Base
         @sports.each do |sport|
           @report[sport.name.to_s] = Training.sum('distance_total', :conditions => { 
                                                               :sport_id => sport.id,  
-                                                              :user_id => current_user, 
                                                               :start_time => @from_date.beginning_of_week..@from_date.end_of_week })
         
         end       
@@ -65,14 +63,15 @@ class ApplicationController < ActionController::Base
     def calendar
         @calendartrainings = Training.find(
             :all,
-            :conditions => ['trainings.user_id = ?', current_user ],
+            
             :select => 'trainings.id,
                             course_names.name as coursename,
                             sport_levels.name as sportlevel,
                             sport_levels.css as css,
                             sports.name as sportname,
                             time_total,
-                            comment,                    
+                            comment,
+                            
                             trainings.start_time as start_time,
                             distance_total',
             :order => 'start_time',

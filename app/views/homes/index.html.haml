@@ -1,0 +1,69 @@
+= javascript_include_tag 'OpenLayers', 'OpenStreetMap'
+:javascript
+  //base layers
+  var openstreetmap = new OpenLayers.Layer.OSM();
+  var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap"); 
+  
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", "/"
+      %li= link_to "#{t("web-app-theme.listen", :default => "List")}", "listen"
+      - if user_signed_in?
+        %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_training_path
+  .content
+    %h2.title
+      = t("web-app-theme.all_trainings", :default => "All")
+    #training
+      .inner
+        %ul.listing
+          - @trainings.each do |home|
+            .block
+              %h3
+                = home.sportname
+              %li{:id => "home_#{home.id}", :class => "list_overview" } 
+                .left
+                  %dl.floated
+                    %dt
+                      = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.subject", :default => "Sportlevel."))
+                    %dd
+                      %strong
+                        = home.sportlevel
+                    %dt
+                      = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
+                    %dd
+                      = number_to_human(home.distance_total, :units => :distance, :precision => 3)
+                    %dt
+                      = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                    %dd
+                      = time2hms(to_dot_time(home.time_total.to_i))
+                  
+                    %dt
+                      = t("activerecord.attributes.training.sportname", :default => t("activerecord.labels.sportname", :default => "Sport"))
+                    %dd
+                      = home.sportname
+                    %dt
+                      = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                    %dd
+                      = home.coursename
+                    %dt
+                      = t("activerecord.attributes.training.start_time", :default => t("activerecord.labels.start_time", :default => "Started at"))
+                    %dd
+                      = localize(home.start_time, :format => :default)
+                    %dt
+                      = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "Comment"))
+                    %dd
+                      = home.comment
+                    %br/
+                  %p
+                    \#{link_to image_tag("web-app-theme/icons/show.gif", :alt=>"show") , home_path(home)}
+                .link_big_map
+                  = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"homes", :action=>"bigmap", :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
+                .map{:class => 'minimap', :id => "map_#{home.id.to_s}"}
+                  :javascript
+                    createMapWithRoute( #{home.map_data}, "map_#{home.id.to_s}", false, false);                
+            .clear
+        .clear
+    .actions-bar.wat-cf
+      .actions
+      = #will_paginate @trainings

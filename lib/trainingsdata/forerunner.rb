@@ -27,13 +27,14 @@ module Trainingsdata
       @time           = ''
       @prev_lat       = ''
       @prev_lon       = ''
+      @running_total  = 0
     end
     
     def start_import
       self.generate_laps
-      
       self.save_file_data
       self.cleanup
+      @log.debug(@running_total.to_i)
     end
     
     def create_trainings_file(deg, training, name)
@@ -120,6 +121,7 @@ module Trainingsdata
       t = @time.to_i
       @time = @time+10
       
+      
     end
     def calculate_distance 
       begin
@@ -134,11 +136,11 @@ module Trainingsdata
     
     def generate_course
       @source_doc.root.children.children.children.each do |node|    
-        @log.debug(node.name.to_yaml)
+        
         if node.name.to_s == 'Track'   
-          @log.debug(node.text.to_yaml)
+          
           node.children.children.each do |sub_node|
-            @log.debug(sub_node.to_yaml)
+             
             if sub_node.name == 'Position'
               @course += '[' + sub_node.children[0].text.to_s + ',' + sub_node.children[1].text.to_s + '],'
             end            
@@ -155,6 +157,7 @@ module Trainingsdata
       counter = 0
       round = 0
       trackpoint = 0
+      
       @source_doc.root.children.children.children.each do |node|
         if node.name == 'Lap'          
           counter +=1
@@ -167,7 +170,7 @@ module Trainingsdata
 
           @rounds[round]||= {}
           @rounds[round][:lap_start_time] = node["StartTime"].to_s				  
-
+          
           node.children.each do |main_sub_node|
 
             if main_sub_node.name == 'MaximumHeartRateBpm'
@@ -188,7 +191,7 @@ module Trainingsdata
               @rounds[round][:seconds_total] = main_sub_node.text.to_f
               @time_total += main_sub_node.text.to_f
             end
-
+            
             if main_sub_node.name == 'DistanceMeters'
               @rounds[round] ||= {}
               @rounds[round][:distance_lap] = main_sub_node.text.to_f
@@ -219,7 +222,9 @@ module Trainingsdata
                 if working_node.name == 'Time'
                   @rounds[round][:laps][trackpoint.to_i] ||= {}
                   @rounds[round][:laps][trackpoint.to_i][:time] = working_node.inner_text.to_s 
+               
                 end
+                 
                 if working_node.name == 'Position' && !working_node.children[0].text.to_s.nil? &&  !working_node.children[1].text.nil? 
 
                   @rounds[round][:laps][trackpoint.to_i] ||= {}

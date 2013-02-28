@@ -4,9 +4,8 @@ Trainings1::Application.routes.draw do
   match "/courses/bigmap", :controller => "courses", :action => "bigmap"
   match "/courses/route_from_training"  , :to => 'courses#route_from_training'
   match "/courses/save_route_from_training"  , :to => 'courses#save_route_from_training'
-
-  
-  
+  match '/home' => "home#index", :as => :user_root 
+  match 'listen' => 'home#listen'
   resources :courses
 
   devise_for :users
@@ -19,7 +18,7 @@ Trainings1::Application.routes.draw do
   resources :trainings
   resources :statistics
   resources :blog_entries
-	#resources :users
+	
   devise_scope :user do
     get '/signin' => 'devise/sessions#new'
     get '/logout' => 'devise/sessions#destroy'

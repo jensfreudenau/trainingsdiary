@@ -1,7 +1,7 @@
 class StatisticsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
   def index
-    @log = Logger.new('log/home.log')
+
  
     @current_week = DateTime.now.beginning_of_week.beginning_of_day
      
@@ -10,10 +10,9 @@ class StatisticsController < ApplicationController
     @sports = Sport.unscoped.find(
       :all,
       :select => 'id, name',
-      :order => 'sort_order DESC',
-      :conditions => ['sports.user_id = ?', current_user.id]
+      :order => 'sort_order DESC'
     )
-    @log.debug(@sports)
+     
     
     @statistic = Hash.new
     @sports.each do |sport|
@@ -23,7 +22,6 @@ class StatisticsController < ApplicationController
         training = Training.sum( 'distance_total',
             :conditions => {
               :sport_id => sport.id,
-              :user_id => current_user,
               :start_time => @week..@week.end_of_week })
         
         
@@ -34,8 +32,9 @@ class StatisticsController < ApplicationController
       end
       @week = DateTime.now.months_ago(8).beginning_of_week.beginning_of_day
     end
-    @statistic['Radfahren'] = @statistic['Radfahren'].sort
+    
     @statistic['Laufen'] = @statistic['Laufen'].sort
+    @statistic['Radfahren'] = @statistic['Radfahren'].sort
     @statistic = @statistic.to_json
 
     respond_to do |format|

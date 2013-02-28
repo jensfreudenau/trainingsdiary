@@ -1,0 +1,148 @@
+= stylesheet_link_tag 'dataTables/jquery.dataTables.css'
+= javascript_include_tag 'jquery.dataTables.min'
+:javascript
+  jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+      "alt-string-pre": function ( a ) {
+          return a.match(/alt="(.*?)"/)[1].toLowerCase();
+      },
+       
+      "alt-string-asc": function( a, b ) {
+          return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+      },
+   
+      "alt-string-desc": function(a,b) {
+          return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+      },
+      
+      "formatted-num-pre": function ( a ) {
+          a = (a==="-") ? 0 : a.replace( /[^\d\-\,]/g, "" );
+          return parseFloat( a );
+      },
+
+      "formatted-num-asc": function ( a, b ) {
+          return a - b;
+      },
+
+      "formatted-num-desc": function ( a, b ) {
+          return b - a;
+      },
+      "date-eu-pre": function ( date ) {
+          var date = date.replace(" ", "");
+
+          if (date.indexOf('.') > 0) {
+              /*date a, format dd.mn.(yyyy) ; (year is optional)*/
+              var eu_date = date.split('.');
+          } else {
+              /*date a, format dd/mn/(yyyy) ; (year is optional)*/
+              var eu_date = date.split('/');
+          }
+
+          /*year (optional)*/
+          if (eu_date[2]) {
+              var year = eu_date[2];
+          } else {
+              var year = 0;
+          }
+
+          /*month*/
+          var month = eu_date[1];
+          if (month.length == 1) {
+              month = 0+month;
+          }
+
+          /*day*/
+          var day = eu_date[0];
+          if (day.length == 1) {
+              day = 0+day;
+          }
+
+          return (year + month + day) * 1;
+      },
+
+      "date-eu-asc": function ( a, b ) {
+          return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+      },
+
+      "date-eu-desc": function ( a, b ) {
+          return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+      }
+  } );
+  $(document).ready(function() {
+  
+  	$('#list').dataTable({
+  	  "iDisplayLength": 50,
+  	   
+  	  "aoColumns": [
+                    { "bSortable": false },
+                    { "sType": "alt-string" },
+                    { "sType": "date-eu" },
+                    null,
+                    null,
+                    { "sType": "formatted-num" },
+                    null,
+                    null,
+                    null
+                ]
+  	 
+     
+            
+  	});
+  } );
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", "/"
+      %li= link_to "#{t("web-app-theme.listen", :default => "List")}", "listen"
+  .content
+    %h2.title
+      = t("web-app-theme.all_trainings", :default => "All")
+
+    #training
+      .inner
+        .listing
+          %table.list#list
+            %thead
+              %tr.datalist
+                %th.sport
+                  &nbsp;
+                %th= image_tag('athletik.png', :height=>"15px")
+                %th= t("activerecord.attributes.training.start_time", :default => t("activerecord.labels.start_time", :default => "Started at"))
+                %th= t("activerecord.attributes.training.avg", :default => t("activerecord.labels.avg", :default => "Avg."))
+                %th= t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                %th= t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
+                %th= t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                %th= t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                %th= t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "Comment")) 
+            %tbody
+              - @trainings.each do |home|
+                
+                %tr
+                  :css
+                    table.list td .#{home.sportlevel}{
+                      height: 10px;
+                      width: 10px;
+                      border: 1px solid ##{home.css};
+                      color: ##{home.css};
+                    }
+                  %td{:width=>"10px"}
+                    %div{:class => home.sportlevel.to_s}
+                  %td
+                    = link_to image_tag(home.sportname.to_s.downcase + '.png', :height=>"10px"), home_path(home)
+                  %td
+                    = link_to localize(home.start_time, :format => :shortall), home_path(home)
+                  %td
+                    - if home.sportname == 'Radfahren'
+                      = link_to  km_per_hours(home.distance_total, home.time_total.to_i), home_path(home)
+                    - else
+                      = link_to minutes_per_km(home.distance_total, home.time_total.to_i), home_path(home)
+                  %td= link_to home.heartrate_avg, home_path(home) if !home.heartrate_avg.nil?      
+                  
+                  %td= link_to number_to_human(home.distance_total, :units => :distance, :precision => 3), home_path(home) if !home.distance_total.nil? 
+                  
+                  %td= link_to time2hms(to_dot_time(home.time_total.to_i)), home_path(home)
+                  %td= link_to home.coursename, home_path(home)
+                  %td{:width=>"200px"}= link_to home.comment, home_path(home)
+          .clear
+
+         
+

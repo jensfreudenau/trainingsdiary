@@ -8,20 +8,27 @@
     
       - calendar_for @calendartrainings, :year => @date.year, :month => @date.month, :first_day_of_week=>1 do |calendar|
         
-        = calendar.head(t("date.calendar_days"))
+        = calendar
         - calendar.day(:day_method => :start_time) do |date, trainings|
          
-          = date.day
-          - if user_signed_in?
-            %ul
-              - for training in trainings
-                :css
-                  li.#{training.sportlevel.to_s} a.tip{
-                    border-bottom-color: ##{training.css.to_s} !important ;
-                  }
-                %li{:class => training.sportlevel.to_s}
-                  
+          
+          %ul
+            - for training in trainings
+              :css
+                li.#{training.sportlevel.to_s} a.tip{
+                  border-bottom-color: ##{training.css.to_s} !important ;
+                }
+              %li{:class => training.sportlevel.to_s}
+                - if user_signed_in?
                   = link_to training_path(training, :month => (@date.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
+                    
+                    = h(number_to_human(training.distance_total, :units => :distance, :precision => 3)) 
+                    
+                    - if(training.comment != '')
+                      %span
+                        = training.comment
+                - else
+                  = link_to home_path(training, :month => (@date.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
                     
                     = h(number_to_human(training.distance_total, :units => :distance, :precision => 3)) 
                     

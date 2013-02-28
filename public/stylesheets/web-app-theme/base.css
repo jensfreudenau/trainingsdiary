@@ -447,3 +447,25 @@ a:hover.tip span {
 	display: block;
 }
 
+table.list{
+    width: 100%;
+	padding: 10px;
+}
+table.list thead td{
+    font-size: 10px;
+    padding:2px;
+    padding-top: 3px;
+    border-bottom: 1px solid gray;
+}
+table.list td{
+    font-size: 10px;
+    padding:2px;
+    padding-top: 3px;
+    border-bottom: 1px solid gray;
+}
+#infos {
+    width:100%;
+} 
+#imges {
+    width:35%;
+}

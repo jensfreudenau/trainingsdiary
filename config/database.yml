@@ -4,22 +4,24 @@
 #   gem install mysql2
 #
 # And be sure to use new-style password hashing:
-
 development:
-  adapter: postgresql
-  encoding: unicode
-  database: coach
-  pool: 5
-  username: postgres
-  password: 12345
+  adapter: mysql2
+  encoding: utf8
+  database: trainings
+ 
+  username: root
+  password: sa 
+  # JRuby doesn't support socket:
+  host: 127.0.0.1
+  port: 3306
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
  
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: coach
-  pool: 5
-  username: postgres
-  password: 12345
+# production:
+  # adapter: postgresql
+  # encoding: unicode
+  # database: coach
+  # pool: 5
+  # username: postgres
+  # password: 12345

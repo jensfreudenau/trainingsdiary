@@ -7,5 +7,7 @@ require File.expand_path('../application', __FILE__)
 Trainings1::Application.initialize!
 
 Haml::Template.options[:format] = :xhtml
+require "will_paginate"
+
 
 

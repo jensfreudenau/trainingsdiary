@@ -52,6 +52,37 @@ function splitData(data) {
 	var txt = new String(data);  
   return txt.split(',');
 }
+/*
+* Schaltet die Beschreibung der Karte an- und aus.
+* Toggles the description of the map.
+*/
+function toggleInfo() {
+   var state = document.getElementById('description').className;
+   if (state == 'hide') {
+      // Info anzeigen
+      document.getElementById('description').className = '';
+      document.getElementById('descriptionToggle').innerHTML = text[1];
+   }
+   else {
+      // Info verstecken
+      document.getElementById('description').className = 'hide';
+      document.getElementById('descriptionToggle').innerHTML = text[0];
+   }	
+}
+function osm_getTileURL(bounds) {
+    var res = this.map.getResolution();
+    var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+    var y = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+    var z = this.map.getZoom();
+    var limit = Math.pow(2, z);
+
+    if (y < 0 || y >= limit) {
+        return OpenLayers.Util.getImagesLocation() + "404.png";
+    } else {
+        x = ((x % limit) + limit) % limit;
+        return this.url + z + "/" + x + "/" + y + "." + this.type;
+    }
+}
 
 function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
   withControl = typeof(withControl) != 'undefined' ? withControl : true;
@@ -60,62 +91,152 @@ function createMapWithRoute (coordinates, cssId, withControl, zoomControl) {
   var maxLat = 0;
   var minLong = 100000;
   var maxLong = 0;
-  
+  var map;
   var points = [];
   var point = [];
   //set up projections
   // World Geodetic System 1984 projection
   var WGS84 = new OpenLayers.Projection("EPSG:4326");
   
-  // WGS84 Google Mercator projection
-  var WGS84_google_mercator = new OpenLayers.Projection("EPSG:900913");
   
-  //Initialize the map
-  //creates a new openlayers map in the <div> html element id map
-  if (withControl == false) {    
-    var map = new OpenLayers.Map (cssId, { controls: [] });
-  }
-  if (withControl == true) {
-    var map = new OpenLayers.Map (cssId);
-  }
-  map.addControl(new OpenLayers.Control.LayerSwitcher());
+  
+   
+  map = new OpenLayers.Map(cssId, {
+                    controls: [
+                    new OpenLayers.Control.Navigation(),
+                    new OpenLayers.Control.LayerSwitcher(),
+                    new OpenLayers.Control.PanZoomBar({zoomStopHeight: 0}),
+                    new OpenLayers.Control.Attribution(),
+                    new OpenLayers.Control.MousePosition(),
+                    new OpenLayers.Control.KeyboardDefaults(),
+                    new OpenLayers.Control.ScaleLine({geodesic:true}),
+                    ],
+                    theme: null,
+                    projection: new OpenLayers.Projection("EPSG:900913"),
+                    displayProjection: new OpenLayers.Projection("EPSG:4326"),
+                    units: "m",
+                    numZoomLevels: 18,
+                    maxResolution: 156543.0339,
+                    //maxResolution: "auto",
+                    maxExtent: new OpenLayers.Bounds(-20037508, -20037508,
+                                       20037508, 20037508.34)
+                    });
+                    
+ 
+                      
 
   
-  var gphy = new OpenLayers.Layer.Google(
-        "Google Physical",
-        {type: google.maps.MapTypeId.TERRAIN}
+  
+    //base layers
+    var hikebike = new OpenLayers.Layer.TMS(
+              "Hike & Bike Map",
+        "http://toolserver.org/tiles/hikebike/",
+              {
+                      type: 'png', getURL: osm_getTileURL,
+                      displayOutsideMaxExtent: true, isBaseLayer: true,
+                      attribution: 'Map Data from <a href="http://www.openstreetmap.org/">OpenStreetMap</a> (<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-by-SA 2.0</a>)'
+                  }
+              );
+    var osm       = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+    var cycle     = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+    var osma      = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
+   
+    
+    var contours = new OpenLayers.Layer.TMS(
+    "Contours (RGBA)",
+    "tiles_contours/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, opacity: 0.8, "visibility": false 
+    }
     );
-  var gmap = new OpenLayers.Layer.Google(
-      "Google Streets", // the default
-      {numZoomLevels: 20}
-  );
-  var ghyb = new OpenLayers.Layer.Google(
-      "Google Hybrid",
-      {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
-  );
-  var gsat = new OpenLayers.Layer.Google(
-      "Google Satellite",
-      {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
-  );
-  //base layers
-  var openstreetmap = new OpenLayers.Layer.OSM();
-  var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
-
-
-  var wfs_layer = new OpenLayers.Layer.Vector("Blocks", {
-     strategies: [new OpenLayers.Strategy.BBOX()],
-     projection: WGS84,
-     protocol: new OpenLayers.Protocol.WFS({
-       version: "1.1.0",
-       url: "http://demo.opengeo.org/geoserver/wfs",
-       featureNS :  "http://opengeo.org",
-       featureType: "restricted",
-       geometryName: "the_geom",
-       schema: "http://demo.opengeo.org/geoserver/wfs/DescribeFeatureType?version=1.1.0&typename=og:restricted"
-     })
-   });
-  map.addLayers([opencyclemap,gphy,gmap, ghyb, gsat, wfs_layer]);
-  
+    var contours_8 = new OpenLayers.Layer.TMS(
+    "Contours (limited area only)",
+    "http://toolserver.org/~cmarqu/opentiles.com/cmarqu/tiles_contours_8/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, opacity: 0.8, "visibility": false
+    }
+    );
+    
+    var hill = new OpenLayers.Layer.TMS(
+    "Hillshading (NASA SRTM3 v2)",
+    "http://toolserver.org/~cmarqu/hill/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, "visibility": true
+    }
+    );
+    
+    var hill2 = new OpenLayers.Layer.TMS(
+    "Hillshading (exaggerate)",
+    "http://toolserver.org/~cmarqu/hill/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, "visibility": false
+    }
+    );
+    
+    var lighting_8 = new OpenLayers.Layer.TMS(
+    "By Night (lit=yes/no)",
+    "http://toolserver.org/tiles/lighting/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, opacity: 0.72, "visibility": false 
+    }
+    );
+    
+    var lighting_residential = new OpenLayers.Layer.TMS(
+    "By Night (lit+residential, Thuringia+Saxony)",
+    "http://toolserver.org/~cmarqu/opentiles.com/cmarqu/tiles_lighting_residential/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, opacity: 0.72, "visibility": false 
+    }
+    );
+    
+    var lonvia = new OpenLayers.Layer.TMS(
+    "Lonvia's Hiking Symbols",
+    "http://tile.lonvia.de/hiking/",
+    {
+    type: 'png', getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true, isBaseLayer: false,
+    transparent: true, "visibility": false 
+    }
+    );
+    
+    
+  //var wfs_layer = new OpenLayers.Layer.Vector("Blocks", {
+  //   strategies: [new OpenLayers.Strategy.BBOX()],
+  //   projection: WGS84,
+  //   protocol: new OpenLayers.Protocol.WFS({
+  //     version: "1.1.0",
+  //     url: "http://demo.opengeo.org/geoserver/wfs",
+  //     featureNS :  "http://opengeo.org",
+  //     featureType: "restricted",
+  //     geometryName: "the_geom",
+  //     schema: "http://demo.opengeo.org/geoserver/wfs/DescribeFeatureType?version=1.1.0&typename=og:restricted"
+  //   })
+  // });
+ 
+    map.addLayers([ hikebike, osm, cycle, osma ]);
+      
+    map.addLayer(hill);
+    map.addLayer(hill2);
+    map.addLayer(lighting_8);
+    map.addLayer(lonvia);
+// hide contour lines from IE since they look very ugly in it
+    if (navigator.appName.indexOf("Explorer") != -1)
+    {}
+    else {
+        map.addLayer(contours_8);
+    }
   $.each( coordinates, function( intIndex, objValue ){
      
     $.each( objValue, function( index, value ){      
@@ -182,11 +303,12 @@ function createChart (data, cssId, unit, min) {
      });
   });
   var max = chartdata[k-1][0];
+
   var min = min;
   $(function() {
       new Highcharts.Chart({
         chart: {
-          height: 250,
+          height: 350,
           renderTo: cssId,
 
           margin: [10, 20, 30, 60]	

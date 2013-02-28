@@ -48,11 +48,7 @@ OpenLayers.Layer.OSM.Mapnik = OpenLayers.Class(OpenLayers.Layer.OSM, {
             "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
             "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
         ];
-        options = OpenLayers.Util.extend({
-            numZoomLevels: 19,
-            buffer: 0,
-            transitionEffect: "resize"
-        }, options);
+        options = OpenLayers.Util.extend({ numZoomLevels: 19, buffer: 0 }, options);
         var newArguments = [name, url, options];
         OpenLayers.Layer.OSM.prototype.initialize.apply(this, newArguments);
     },
@@ -80,11 +76,7 @@ OpenLayers.Layer.OSM.Osmarender = OpenLayers.Class(OpenLayers.Layer.OSM, {
             "http://b.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png",
             "http://c.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png"
         ];
-        options = OpenLayers.Util.extend({
-            numZoomLevels: 18,
-            buffer: 0,
-            transitionEffect: "resize"
-        }, options);
+        options = OpenLayers.Util.extend({ numZoomLevels: 18, buffer: 0 }, options);
         var newArguments = [name, url, options];
         OpenLayers.Layer.OSM.prototype.initialize.apply(this, newArguments);
     },
@@ -112,11 +104,7 @@ OpenLayers.Layer.OSM.CycleMap = OpenLayers.Class(OpenLayers.Layer.OSM, {
             "http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
             "http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
         ];
-        options = OpenLayers.Util.extend({
-            numZoomLevels: 19,
-            buffer: 0,
-            transitionEffect: "resize"
-        }, options);
+        options = OpenLayers.Util.extend({ numZoomLevels: 19, buffer: 0 }, options);
         var newArguments = [name, url, options];
         OpenLayers.Layer.OSM.prototype.initialize.apply(this, newArguments);
     },

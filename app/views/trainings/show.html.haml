@@ -1,5 +1,6 @@
 = javascript_include_tag 'OpenLayers', 'OpenStreetMap', 'highcharts'
 - for training in @training
+  - cals = 0
   - heartrate = [training.heartrate]
   .block
     .secondary-navigation
@@ -11,7 +12,7 @@
     .content
       .inner
         %h2 
-          = training.sportname
+          = training.sportname + " / " + training.sportlevel
         %h3
           = t("at", :default => "at")
           = localize(training.start_time, :format => :default)
@@ -40,8 +41,7 @@
                 = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))  
               %th
                 = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
-              %th
-                = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.sportlevel", :default => "Level"))  
+  
             %tr
               %td 
                 = number_to_human(training.distance_total, :units => :distance, :precision => 4)  
@@ -58,8 +58,7 @@
                 = training.heartrate_max  
               %td
                 = training.coursename
-              %td
-                = training.sportlevel
+      
           
           
           #laps
@@ -80,7 +79,9 @@
                   %th
                     max. 
                     = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))  
-                
+           
+                  %th
+                    = t("activerecord.attributes.lap.calories", :default => t("activerecord.labels.calories", :default => "Kalorien"))
                 - @laps.each_with_index do |lap, index|   
                   %tr{:class => cycle("odd", "even")}
                     %td
@@ -99,6 +100,12 @@
                       = lap.heartrate_avg
                     %td
                       = lap.heartrate_max.to_i
+                    %td
+                      = lap.calories.to_i
+                      - cals = cals + lap.calories.to_i
+          %hr
+            verbrauchte Kalorien: 
+            = cals
         .trainings_data
           - if(!training.heartrate.nil?)
             %h3
@@ -120,8 +127,8 @@
 
 :javascript
   createMapWithRoute( #{training.map_data}, "map");
-  createChart( #{training.heartrate}, "heartrate_chart", "bpm", 50);
-  
+  createChart( #{training.heartrate}, "heartrate_chart", "bpm");
+  createChart( #{training.height}, "height_chart", "m");
 
   
   

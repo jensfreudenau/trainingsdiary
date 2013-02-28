@@ -19,7 +19,7 @@ class TrainingsController < ApplicationController
      # self.batch(file)
    # end
     #
-    items_per_page = 5
+    items_per_page = 7
     sort = case params['sort']
               when "name"  then "name"
               when "sportlevel"   then "sport_levels.name"
@@ -275,7 +275,7 @@ class TrainingsController < ApplicationController
                 :heartrate      => value[:heartrate].to_json,
                 :height         => value[:height].to_json,
                 :map            => value[:map].to_json,
-                :start_time     => value[:time]
+                :start_time     => value[:start_time]
               )
         end  
         
@@ -285,18 +285,32 @@ class TrainingsController < ApplicationController
         @training.map_data        = td.map_data
         @training.heartrate       = td.heartrate
         @training.height          = td.height
-        @training.heartrate_avg   = self.calculate_avg_heartrate (td.distance_total)
+        @training.heartrate_avg   = self.calculate_avg_heartrate(td.distance_total)
         @training.heartrate_max   = td.heartrate_max
 
       end     
     end
 
     def calculate_avg_heartrate (distance_total)
-      calc_heartrate_sum = 0
-      @distances.each_with_index do |value, index| 
-        calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
+      calc_heartrate_sum = 1
+      res = 1
+      begin
+        @distances.each_with_index do |value, index| 
+          
+          if(@heartrate_avg[index.to_i].nil?) 
+            @heartrate_avg[index.to_i] = 1 
+          end
+          if(@distances[index.to_i] == 0.0) 
+            @distances[index.to_i] = 1.0 
+          end
+          if @heartrate_avg[index.to_i] && !@heartrate_avg[index.to_i].nil?
+            
+            calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
+          end
+        end
+        res = calc_heartrate_sum/distance_total
       end
-      return calc_heartrate_sum/distance_total
+      return res
     end
 
     def batch (file)
@@ -344,4 +358,5 @@ class TrainingsController < ApplicationController
         end
       end
     end
+
 end

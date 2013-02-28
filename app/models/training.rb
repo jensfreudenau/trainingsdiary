@@ -9,7 +9,7 @@ class Training < ActiveRecord::Base
       mount_uploader :filename, FileUploader
     end
     
-    default_scope order('trainings.start_time DESC')
+    #default_scope order('trainings.start_time DESC')
     validates :start_time, :presence => true
     validates :sport_id, :presence => true
     

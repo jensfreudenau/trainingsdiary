@@ -18,7 +18,7 @@ module Trainingsdata
       @laps[index][:heartrate_avg]     = @runner[index.to_i][:heartrate_avg]
       @laps[index][:heartrate_max]     = @runner[index.to_i][:heartrate_max]
       @laps[index][:calories]          = @runner[index.to_i][:calories]
-      
+      @laps[index][:start_time]        = @runner[index.to_i][:lap_start_time]
       @diagramm << @runner[index.to_i][:laps].sort
       
     end
