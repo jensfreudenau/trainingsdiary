@@ -105,13 +105,13 @@ ActiveRecord::Schema.define(:version => 20111010131120) do
     t.integer  "course_name_id"
     t.float    "time_total"
     t.float    "distance_total"
-    t.text     "map_data",       :limit => 2147483647
+    t.text     "map_data"
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_time"
-    t.text     "heartrate",      :limit => 2147483647
-    t.text     "height",         :limit => 2147483647
+    t.text     "heartrate"
+    t.text     "height"
     t.text     "comment"
     t.integer  "heartrate_avg"
     t.integer  "heartrate_max"
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(:version => 20111010131120) do
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+    t.string   "encrypted_password",                  :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

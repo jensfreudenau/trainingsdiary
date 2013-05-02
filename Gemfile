@@ -23,4 +23,5 @@ gem 'chronic_duration'
 gem 'geokit'
 gem 'watu_table_builder', :require => 'table_builder'
 gem 'mysql2'
+gem 'yaml_db'
 

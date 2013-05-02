@@ -418,9 +418,7 @@ ul.trainings {
 }
 #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; font-size: 12px;}
 #sortable li { 
-  margin: 0 3px 15px 30px; 
-  padding: 0.4em; 
-  padding-left: 1.5em;  
+  margin: 0 3px 15px 30px;
   height: 27px;
   border: 1px solid darkred;
   box-shadow: 0 0 5px #CCCCCC;
