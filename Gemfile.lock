@@ -166,4 +166,4 @@ DEPENDENCIES
   ruby_parser
   watu_table_builder
   web-app-theme
-  will_paginate (~> 3.0)
+  will_paginate

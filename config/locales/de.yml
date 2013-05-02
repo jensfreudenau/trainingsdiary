@@ -24,6 +24,8 @@ de:
   statistics: "Statistik"
   trainings: "Training"
   map: "Karte"
+  fullscreen: "Grosse Ansicht"
+  details: "Details"
   create trainings route: "Trainingsroute anlegen"
   web-app-theme:
     courses: "Strecken"
@@ -60,7 +62,7 @@ de:
 
   time:
     formats:      
-      default: "%d. %B %Y, %H:%M Uhr"
+      default: "%d.%m.%Y, %H:%M Uhr"
       short: "%d. %B, %H:%M Uhr"
       long: "%A, %d. %B %Y, %H:%M Uhr"
       time: "%H:%M Uhr"

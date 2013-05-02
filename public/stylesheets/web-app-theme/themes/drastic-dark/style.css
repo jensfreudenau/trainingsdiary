@@ -18,7 +18,6 @@
   font-size: 11px;
   font-style: normal;
   font-weight: normal;
-  text-transform: normal;
   letter-spacing: normal;
   line-height: 1.4em;
 }
@@ -29,7 +28,6 @@
   font-size: 13px;
   font-style: italic;
   font-weight: normal;
-  text-transform: normal;
   letter-spacing: normal;
   line-height: 1.6em;
 }
@@ -66,7 +64,6 @@ hr {
   font-size: 28px;
   font-style: normal;
   font-weight: bold;
-  text-transform: normal;
   letter-spacing: -1px;
   line-height: 1.2em;
 }
@@ -89,7 +86,7 @@ hr {
 }
 
 #main .block .content {
-  background: #FFF;
+  background: #FAFAFA;
   padding-top: 1px;
   padding-bottom: 20px;
   border-bottom-left-radius: 4px;
@@ -102,7 +99,6 @@ hr {
   font-size: 22px;
   font-style: normal;
   font-weight: bold;
-  text-transform: normal;
   letter-spacing: 1px;
   line-height: 1.2em;
   
@@ -112,7 +108,6 @@ hr {
   font-size: 13px;
   font-style: normal;
   font-weight: normal;
-  text-transform: normal;
   letter-spacing: normal;
   line-height: 1.45em;
 }
@@ -134,7 +129,7 @@ hr {
 }
 
 #sidebar h3, ul.listing h3{
-  background: #36393d;
+  background: #335685;
   color: #FFF;
   border-bottom: 5px solid #1a1a1a;
 }
@@ -202,7 +197,7 @@ hr {
 }
 
 .secondary-navigation {
-  background: #36393d;
+  background: #335685;
   border-bottom-color: #1a1a1a;
 }
 
@@ -244,22 +239,7 @@ hr {
   border: 1px solid #666;
 }
 
-/* tables */
 
-.table th {
-  background: #36393d;  
-  color: #FFF;
-  font-size: 12px;
-}
-
-.table td {
-  border-bottom:1px solid #F0F0EE;
-  font-size: 12px;
-}
-
-.table tr.even, table.laps tr.even {
-  background: #ebebeb;
-}
 
 /* forms */
 
@@ -429,22 +409,19 @@ ul.trainings {
   margin-right:auto;
 }
 #map {
-  margin-left:auto; 
-  margin-right:auto;
-  width:670px;
   height:400px;
-  margin-top:20px;
-  margin-bottom:20px;
+  margin:0 20px;
   padding: 5px;
   border: 1px solid gray;
   box-shadow: 0 0 5px #CCCCCC;
+  box-shadow: 1px 7px 20px #999999;
 }
 #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; font-size: 12px;}
 #sortable li { 
   margin: 0 3px 15px 30px; 
   padding: 0.4em; 
   padding-left: 1.5em;  
-  height: 18px; 
+  height: 27px;
   border: 1px solid darkred;
   box-shadow: 0 0 5px #CCCCCC;
   padding-bottom: 15px;
@@ -463,55 +440,16 @@ ul.trainings {
   font-size: 12px;
 }
 #heartrate_chart, #height_chart, #Laufen, #Radfahren {
-  border: 1px solid gray;
-  margin-top:20px;
+  border:;
   margin-bottom:20px;
-  height: 350px; 
-  width:680px;
+  height: 350px;
   margin-left:auto; 
   margin-right:auto;
   box-shadow: 0 0 5px #CCCCCC;
   overflow:hidden;
 }
-table.training {
-  /*border-collapse: collapse;*/
-  padding-bottom: 20px;
-  width: 100%;
-  text-align: left;
-  font-size: 12px;
-}
-
-table.laps{
-/*  border-collapse: collapse; */
-  font-size: 12px; 
-  width: 100%;
-}
-table.laps td { 
-  text-align: center;
-}
-table.training td { 
-  text-align: left;
-}
-table.laps td, table.training td { 
-  padding: 5px 0 5px 3px;
-}
-
-table.laps td, table.laps th {
-  text-align:left;
-}
-
-table.training th, table.laps th, table.trainings th {
-  margin: 0;
-  padding:0px;
-  height:25px;
-  font-style:italic;
-  border-bottom:1px solid #CCCCCC;
-  text-align: left;
-  padding-left: 3px;
-  
-}
 .trainings_data {
-  padding: 20px 20px 20px 0px;
+  padding: 20px 0 0 0;
   margin-bottom:30px;
   margin-left:auto; 
   margin-right:auto;
@@ -602,23 +540,7 @@ li.training_data {
 .clear {
    clear: both;
 }
-td .map {
-  border:1px solid gray;
-  height:200px;
-  width: 200px;
-}
 
-table.table tr.training_data {
-  margin:10px;
-  padding:10px;  
-  border-radius: 2px;
-}
-
-table.table tr.training_data td{
-  border:none;
-  padding:10px;
-  margin:10px;
-}
 tr.empty{
   height:20px;
 }
@@ -646,3 +568,107 @@ ul.listing .link_big_map {
 .inner h2 {
   margin-bottom: 0px;
 }
+
+/* Tables */
+
+table.training {
+  /*border-collapse: collapse;*/
+  /*padding-bottom: 20px;*/
+  /*width: 100%;*/
+  /*text-align: left;*/
+  font-size: 12px;
+}
+
+table.laps{
+/*  border-collapse: collapse; */
+  font-size: 12px;
+  /*width: 100%;*/
+}
+
+td .map {
+  border:1px solid gray;
+  height:200px;
+  width: 200px;
+}
+
+
+table {
+    font-family: Aller, 'Lucida Grande', sans-serif;
+    color: #666;
+    /*box-shadow: 0 0 5px #999999;*/
+    width: 100%;
+    margin: 0 30px 0 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    border-spacing:0;
+      border-collapse:collapse;
+    vertical-align: baseline;
+}
+
+table tr {
+  border-bottom: 1px solid #ebebeb;
+  border-top: 1px solid #fff;
+}
+
+thead tr {
+  border-top: none;
+}
+table thead tr {
+    background: #f3f3f3;
+}
+
+
+tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 3px;
+    border-bottom:0;
+}
+
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 3px;
+}
+
+tbody tr td, thead tr th {
+  border-left: 1px solid #fff;
+  border-right: 1px solid #f4f4f4;
+  padding: 12px 14px;
+  position: relative;
+  text-align: left;
+}
+thead tr th {
+    padding: 1px 14px;
+}
+.outer_laps table, table.training  {
+    background:  #fafafa;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    margin-bottom: 16px;
+}
+.sortlist table {
+    margin: 1px;
+}
+.trainings_data .block {
+    font-family: Aller, 'Lucida Grande', sans-serif;
+    color: #666;
+    background:  #fff;
+    margin-top: 20px;
+    box-shadow: 0 0 2px #999999;
+    padding:10px;
+}
+.red  {
+  color: #cc0000;
+}
+.orange {
+    color:coral;
+}
+.green {
+  color:green;
+}
+.blue {
+  color:#0B43A8;
+}
+

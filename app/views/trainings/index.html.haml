@@ -37,12 +37,18 @@
                         %dt
                           = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
                         %dd
-                          = number_to_human(training.distance_total, :units => :distance, :precision => 3)
+                          = number_to_human(training.distance_total, :units => :distance, :precision => 1)
                         %dt
                           = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
                         %dd
-                          = time2hms(to_dot_time(training.time_total.to_i))
-                      
+                          = ChronicDuration.output(training.time_total.to_i, :format => :chrono)
+                        %dt
+                          &oslash; Pace
+                        %dd
+                          - if training.sportname == 'Radfahren'
+                            = km_per_hours(training.distance_total, training.time_total.to_i)
+                          - else
+                            = minutes_per_km(training.distance_total, training.time_total.to_i)
                         %dt
                           = t("activerecord.attributes.training.sportname", :default => t("activerecord.labels.sportname", :default => "Sport"))
                         %dd
@@ -51,20 +57,18 @@
                           = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
                         %dd
                           = training.coursename
-                        
-                        %dt
-                          = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "Comment"))
-                        %dd
-                          = training.comment
+                        - if training.comment?
+                          %dt
+                            = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "Comment"))
+                          %dd
+                            = training.comment
                         %br/
-                    #imges    
-                      %p
-                        \#{link_to image_tag("web-app-theme/icons/show.gif", :alt=>"show") , training_path(training)}
-                        - if can? :update, training
-                          \#{link_to image_tag("web-app-theme/icons/img_icon_edit.png", :alt=>"edit") , edit_training_path(training)}
-                          \#{link_to image_tag("web-app-theme/icons/cross.png", :alt=>"delete") , training_path(training), :method => :delete, :remote => true, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+                        .wat-cf
+                          = link_to image_tag("web-app-theme/icons/show.png", :alt => "#{t("web-app-theme.show", :default=> "show")}") + " " + t("web-app-theme.show", :default=> "show"), training_path(training), :class => "button"
+
+                          
                   .link_big_map
-                    = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"home", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
+                    = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
                   .map{:class => 'minimap', :id => "map_#{training.id.to_s}"}
                     :javascript
                       createMapWithRoute( #{training.map_data}, "map_#{training.id.to_s}", false);

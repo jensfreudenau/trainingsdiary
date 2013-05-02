@@ -7,10 +7,10 @@ class StatisticsController < ApplicationController
      
     @week = DateTime.now.months_ago(8).beginning_of_week.beginning_of_day
 
-    @sports = Sport.unscoped.find(
-      :all,
+    @sports = Sport.unscoped.all(
+
       :select => 'id, name',
-      :order => 'sort_order DESC'
+      :order => 'id ASC'
     )
      
     

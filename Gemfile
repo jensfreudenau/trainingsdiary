@@ -1,10 +1,10 @@
 # A sample Gemfile
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 gem 'rails'
 gem 'haml-rails'
-gem "haml"
-gem 'will_paginate', '~> 3.0'
+gem 'haml'
+gem 'will_paginate'#, '~> 3.0'
 gem 'pg'
 gem 'devise'
 gem 'cancan'
@@ -18,9 +18,9 @@ gem 'rack-raw-upload'
 gem 'nokogiri'
 gem 'itslog'
 gem 'json'
-gem "numerizer", "~> 0.1.1"
+gem 'numerizer', '~> 0.1.1'
 gem 'chronic_duration'
-gem "geokit"
-gem "watu_table_builder", :require => "table_builder"
+gem 'geokit'
+gem 'watu_table_builder', :require => 'table_builder'
 gem 'mysql2'
 

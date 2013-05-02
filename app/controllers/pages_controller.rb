@@ -1,29 +1,9 @@
-class HomesController < ApplicationController
+class PagesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show, :bigmap, :listen]
 
   def index
     #@log = Logger.new('log/home.log')   
     items_per_page = 7
-    sort = case params['sort']
-             when "name" then
-               "name"
-             when "sportlevel" then
-               "sport_levels.name"
-             when "sports.name" then
-               "sports.name"
-             when "start_time" then
-               "start_time ASC"
-             when "time_total" then
-               "time_total ASC"
-             when "distance" then
-               "distance_total"
-             else
-               "trainings.start_time DESC"
-           end
-    #@trainings = Training.paginate :page => params[:page],
-    #                                :per_page => 20,
-    #                                :order => 'start_time',
-    #                                :includes => [:sport_level, :sport, :course_name]
     @trainings = Training.paginate(:select => 'trainings.id,
                                             trainings.map_data,
                                             trainings.sport_level_id,
@@ -37,7 +17,7 @@ class HomesController < ApplicationController
                                             time_total,
                                             trainings.start_time as start_time,
                                             distance_total',
-                                   :order => 'start_time',
+                                   :order => 'id DESC',
                                    :joins => [:sport_level, :sport, :course_name],
                                    :page => params[:page], :per_page => items_per_page)
   end
@@ -51,24 +31,24 @@ class HomesController < ApplicationController
 
   def listen
     sort = case params['sort']
-             when "name" then
-               "coursename, start_time DESC"
-             when "sportlevel" then
-               "sport_levels.name, start_time DESC"
-             when "sports.name" then
-               "sports.name, start_time DESC"
-             when "start_time" then
-               "start_time DESC"
-             when "time_total" then
-               "time_total ASC, start_time DESC"
-             when "distance" then
-               "trainings.distance_total, start_time DESC"
-             when "heartrate_avg" then
-               "heartrate_avg, start_time DESC"
-             when "comment" then
-               "comment DESC, start_time DESC"
+             when 'name' then
+               'coursename, start_time DESC'
+             when 'sportlevel' then
+               'sport_levels.name, start_time DESC'
+             when 'sports.name' then
+               'sports.name, start_time DESC'
+             when 'start_time' then
+               'start_time DESC'
+             when 'time_total' then
+               'time_total ASC, start_time DESC'
+             when 'distance' then
+               'trainings.distance_total, start_time DESC'
+             when 'heartrate_avg' then
+               'heartrate_avg, start_time DESC'
+             when 'comment' then
+               'comment DESC, start_time DESC'
              else
-               "trainings.start_time DESC"
+               'trainings.start_time DESC'
            end
     @trainings = Training.paginate(:select => 'trainings.id,
                                                 trainings.sport_level_id,
@@ -91,7 +71,7 @@ class HomesController < ApplicationController
   def show
 
     @home = Training.all(
-        :select => '
+                          :select => '
                                   trainings.id,
                                   trainings.comment,
                                   trainings.map_data,
@@ -115,7 +95,7 @@ class HomesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @training }
+      format.xml { render :xml => @home }
     end
   end
 

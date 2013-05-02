@@ -38,30 +38,25 @@ class TrainingsController < ApplicationController
             "ASC"
           end
             
-    trainings = Training.find(
-      :all,
-      :conditions => ['trainings.user_id = ?', current_user ],
-      :select => 'trainings.id,
-                          trainings.comment,
-                          trainings.start_time as start_time,
-                          trainings.map_data,
-                          trainings.heartrate_avg,
-                          trainings.heartrate_max,
-                          trainings.distance_total,
-                          trainings.time_total,
-                          course_names.name as coursename,
-                          sport_levels.name as sportlevel,
-                          sport_levels.css as css,
-                          start_time,
-                          sports.name as sportname',
-      :order => sort,      
-      :joins => [:sport_level, :sport, :course_name]
-    )
+    @trainings = Training.paginate(
+                                      :conditions => ['trainings.user_id = ?', current_user ],
+                                      :select => 'trainings.id,
+                                                trainings.map_data,
+                                                trainings.sport_level_id,
+                                                trainings.comment,
+                                                trainings.heartrate_avg,
+                                                trainings.heartrate_max,
+                                                course_names.name as coursename,
+                                                sport_levels.name as sportlevel,
+                                                sport_levels.css as css,
+                                                sports.name as sportname,
+                                                time_total,
+                                                trainings.start_time as start_time,
+                                                distance_total',
+                                       :order => 'id DESC',
+                                       :joins => [:sport_level, :sport, :course_name],
+                                       :page => params[:page], :per_page => items_per_page)
 
-    #trainings = Training.search(current_user.id, params[:start_date], params[:end_date], sort)
-    
-    @trainings = trainings.paginate:page => params[:page], :per_page => items_per_page
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trainings }

@@ -145,7 +145,7 @@
                   %td= time2hms(to_dot_time(home.time_total.to_i))
                   %td= home.coursename
                   %td{:width=>"200px"}= home.comment
-                  %td= link_to t("web-app-theme.details", :default => "Show"), home_path(home) 
+                  %td= link_to t("web-app-theme.details", :default => "Show"), page_path(home)
                   
           .clear
       .actions-bar.wat-cf

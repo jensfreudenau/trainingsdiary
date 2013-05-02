@@ -1,17 +1,17 @@
-Trainings1::Application.routes.draw do
+Trainingsdiary::Application.routes.draw do
   
-  match "/courses/download", :controller => "courses", :action => "download"
-  match "/courses/bigmap", :controller => "courses", :action => "bigmap"
-  match "/courses/route_from_training"  , :to => 'courses#route_from_training'
-  match "/courses/save_route_from_training"  , :to => 'courses#save_route_from_training'
-  match '/home' => "home#index", :as => :user_root 
-  match 'listen' => 'home#listen'
+  match '/courses/download', :controller => 'courses', :action => 'download'
+  match '/courses/bigmap', :controller => 'courses', :action => 'bigmap'
+  match '/courses/route_from_training'  , :to => 'courses#route_from_training'
+  match '/courses/save_route_from_training'  , :to => 'courses#save_route_from_training'
+  match '/pages' => 'pages#index', :as => :user_root
+  match 'listen' => 'pages#listen'
   resources :courses
 
   devise_for :users
   
   resources :roles
-  resources :home
+  resources :pages
   resources :course_names
   resources :sports
   resources :sport_levels
@@ -26,7 +26,7 @@ Trainings1::Application.routes.draw do
   
   
   resources :token_authentications, :only => [:create, :destroy]
-  resources :user, :controller => "user"
+  resources :user, :controller => 'user'
    
   resources :sport_levels do
     post :sort, :on => :collection
@@ -40,17 +40,17 @@ Trainings1::Application.routes.draw do
   resources :trainings do
     post :sort, :on => :collection
   end
-  match 'bigmap', :to => 'home#bigmap'
+  match 'bigmap', :to => 'pages#bigmap'
   
 =begin
-	devise_for :users, :controllers => {:users => "users"}  
+	devise_for :users, :controllers => {:users => 'users'}  
 		resources :user
 	devise_scope :users do
 		get '/login' => 'devise/sessions#new'
 		get '/logout' => 'devise/sessions#destroy'
 	end
 =end	
-  root :to => "home#index"
+  root :to => 'pages#index'
 
 # The priority is based upon order of creation:
 # first created -> highest priority.
@@ -99,11 +99,11 @@ Trainings1::Application.routes.draw do
 #     resources :products
 #   end
 
-# You can have the root of your site routed with "root"
+# You can have the root of your site routed with 'root'
 # just remember to delete public/index.html.
-# root :to => "welcome#index"
+# root :to => 'welcome#index'
 
-# See how all your routes lay out with "rake routes"
+# See how all your routes lay out with 'rake routes'
 
 # This is a legacy wild controller route that's not recommended for RESTful applications.
 # Note: This route will make all actions in every controller accessible via GET requests.

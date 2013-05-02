@@ -4,4 +4,4 @@ require 'rake/dsl_definition'
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-Trainings1::Application.load_tasks
+Trainingsdiary::Application.load_tasks

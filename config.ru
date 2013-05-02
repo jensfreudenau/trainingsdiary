@@ -4,4 +4,4 @@ ENV['GEM_PATH'] = '/home/www/trainings/vendor/ruby/1.8/gems:/usr/lib/ruby/gems/1
 require 'rubygems'  
 Gem.clear_paths
 require ::File.expand_path('../config/environment',  __FILE__)
-run Trainings1::Application
+run Trainingsdiary::Application

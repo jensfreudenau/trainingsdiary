@@ -22,28 +22,43 @@ class ApplicationController < ActionController::Base
     end
     
     def list_last_trainings
-        @last_trainings = Training.find(:all,
-                                                :conditions => ['trainings.user_id = ?', current_user ],
-                                                :select => '
-                                                    trainings.id,                                                    
-                                                    trainings.sport_level_id,
-                                                    course_names.name as coursename,
-                                                    sport_levels.name as sportlevel,
-                                                    sport_levels.css as css,
-                                                    sports.name as sportname,
-                                                    trainings.time_total,
-                                                    trainings.start_time,
-                                                    distance_total as distance',
-                                                :order => 'trainings.start_time DESC',
-                                                :joins => [:sport_level, :sport, :course_name],
-                                                :limit => 3)
+      @last_trainings = Training.all(
+                                        #:conditions => ['trainings.user_id = ?', current_user ],
+                                        :select => '
+                                            trainings.id,
+                                            trainings.sport_level_id,
+                                            course_names.name as coursename,
+                                            sport_levels.name as sportlevel,
+                                            sport_levels.css as css,
+                                            sports.name as sportname,
+                                            trainings.time_total,
+                                            trainings.start_time,
+                                            distance_total as distance',
+                                        :order => 'trainings.start_time DESC',
+                                        :joins => [:sport_level, :sport, :course_name],
+                                        :limit => 3)
+        #@last_trainings = Training.find(:all,
+        #                                        :conditions => ['trainings.user_id = ?', current_user ],
+        #                                        :select => '
+        #                                            trainings.id,
+        #                                            trainings.sport_level_id,
+        #                                            course_names.name as coursename,
+        #                                            sport_levels.name as sportlevel,
+        #                                            sport_levels.css as css,
+        #                                            sports.name as sportname,
+        #                                            trainings.time_total,
+        #                                            trainings.start_time,
+        #                                            distance_total as distance',
+        #                                        :order => 'trainings.start_time DESC',
+        #                                        :joins => [:sport_level, :sport, :course_name],
+        #                                        :limit => 3)
     end
     
     def statistic      
         #@log = Logger.new('log/applic.log')
-        @sports = Sport.find(
-            :all,
-            :select => 'id, name'
+        @sports = Sport.all(
+            :select => 'id, name',
+            :order => 'id DESC'
         )
         if params[:week] 
           @from_date = DateTime.parse(params[:week])
@@ -52,7 +67,8 @@ class ApplicationController < ActionController::Base
         end
         @report = Hash.new
         @sports.each do |sport|
-          @report[sport.name.to_s] = Training.sum('distance_total', :conditions => { 
+
+        @report[sport.name.to_s] = Training.sum('distance_total', :conditions => {
                                                               :sport_id => sport.id,  
                                                               :start_time => @from_date.beginning_of_week..@from_date.end_of_week })
         
@@ -61,9 +77,7 @@ class ApplicationController < ActionController::Base
       
     
     def calendar
-        @calendartrainings = Training.find(
-            :all,
-            
+        @calendartrainings = Training.all(
             :select => 'trainings.id,
                             course_names.name as coursename,
                             sport_levels.name as sportlevel,

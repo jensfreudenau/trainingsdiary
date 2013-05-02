@@ -7,7 +7,7 @@ require 'thread'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-module Trainings1
+module Trainingsdiary
     class Application < Rails::Application
         require 'rack/raw_upload'
         config.middleware.use 'Rack::RawUpload', :paths => ['/tracks/uploader']
@@ -38,12 +38,12 @@ module Trainings1
         # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
         # Configure the default encoding used in templates for Ruby 1.9.
-        config.encoding = "utf-8"
+        config.encoding = 'utf-8'
         config.log_level = :debug
         # Configure sensitive parameters which will be filtered from the log file.
         config.filter_parameters += [:password]
         config.to_prepare do
-            Devise::SessionsController.layout "sign"
-	end
+            Devise::SessionsController.layout 'sign'
+	      end
     end
 end

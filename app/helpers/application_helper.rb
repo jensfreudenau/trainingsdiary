@@ -12,7 +12,7 @@ module ApplicationHelper
     #    DateTime.parse(time)
     t = Time.parse(time)
     
-    return t.strftime( "%H:%M:%S")
+    return t.strftime( "%H:%M:%S,%L")
     
     #    return time.strptime(time, "%I:%M:%S")
     
