@@ -9,7 +9,8 @@ gem 'pg'
 gem 'devise'
 gem 'cancan'
 gem 'jquery-rails'
-gem 'carrierwave'
+#gem 'carrierwave'
+gem 'carrierwave_direct'
 gem 'web-app-theme'
 gem 'hpricot'
 gem 'capybara'
@@ -24,4 +25,8 @@ gem 'geokit'
 gem 'watu_table_builder', :require => 'table_builder'
 gem 'mysql2'
 gem 'yaml_db'
+group :development do
+  gem 'sqlite3'
+  gem 'taps', :require => false # has an sqlite dependency, which heroku hates
+end
 
