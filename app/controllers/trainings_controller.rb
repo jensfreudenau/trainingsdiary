@@ -247,7 +247,7 @@ class TrainingsController < ApplicationController
     end
 
     def save_file_data(file_data)
-      path = "/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
+      path = "uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
 
       begin
         td = Trainingsdata::Forerunner.new(path)
