@@ -110,7 +110,7 @@
                         - else
                           = minutes_per_km(lap.distance_total,lap.duration.to_i) 
                     %td
-                      - if 186*0.85 < lap.heartrate_avg
+                      - if 186*0.85 < lap.heartrate_avg.to_f
                         .red
                           = lap.heartrate_avg
                       - else
