@@ -1,4 +1,5 @@
 class Training < ActiveRecord::Base
+    attr_accessible :remote_filename_url, :filename
     belongs_to :user
     belongs_to :sport_level
     belongs_to :sport
