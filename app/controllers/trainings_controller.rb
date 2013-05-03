@@ -53,7 +53,7 @@ class TrainingsController < ApplicationController
                                                 time_total,
                                                 trainings.start_time as start_time,
                                                 distance_total',
-                                       :order => 'id DESC',
+                                       :order => 'start_time DESC',
                                        :joins => [:sport_level, :sport, :course_name],
                                        :page => params[:page], :per_page => items_per_page)
 
@@ -247,9 +247,8 @@ class TrainingsController < ApplicationController
     end
 
     def save_file_data(file_data)
+      path = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
 
-      path = "uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
-      path = remote_filename_url
       begin
         td = Trainingsdata::Forerunner.new(path)
         td.start_import
