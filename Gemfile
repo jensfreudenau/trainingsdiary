@@ -11,7 +11,7 @@ gem 'cancan'
 gem 'jquery-rails'
 gem 'carrierwave'
 gem 'fog'
-#gem 'carrierwave_direct'
+gem 'carrierwave_direct'
 
 gem 'web-app-theme'
 gem 'hpricot'
