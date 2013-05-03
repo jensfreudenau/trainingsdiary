@@ -180,9 +180,11 @@ PLATFORMS
 DEPENDENCIES
   cancan
   capybara
+  carrierwave
   carrierwave_direct
   chronic_duration
   devise
+  fog
   geokit
   haml
   haml-rails
