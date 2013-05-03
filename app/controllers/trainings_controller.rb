@@ -4,6 +4,7 @@ require 'json'
 require 'chronic_duration'
 load "fileutils.rb"
 
+
 class TrainingsController < ApplicationController
   #	include Devise::Controllers::Helpers
   before_filter :authenticate_user!, :except => [:index, :show]

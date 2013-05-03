@@ -33,7 +33,7 @@ module Trainingsdata
     def start_import
       self.generate_laps
       self.save_file_data
-      self.cleanup
+      #self.cleanup
       @log.debug(@running_total.to_i)
     end
     

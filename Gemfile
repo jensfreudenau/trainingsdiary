@@ -27,6 +27,7 @@ gem 'geokit'
 gem 'watu_table_builder', :require => 'table_builder'
 gem 'mysql2'
 gem 'yaml_db'
+gem 'aws-s3'
 group :development do
   gem 'sqlite3'
   gem 'taps', :require => false # has an sqlite dependency, which heroku hates

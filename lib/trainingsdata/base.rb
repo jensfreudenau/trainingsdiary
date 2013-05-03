@@ -1,5 +1,6 @@
 require 'json'
 require 'zip/zip'
+require 'net/http'
 module Trainingsdata 
   class Base       
     attr_accessor :map_data, :heartrate, :height, :laps, :file
@@ -106,8 +107,10 @@ module Trainingsdata
     ##
     # open an existing file
     ##    
-    def open_file     
-      @file = File.open(@path, "r")
+    def open_file
+      uri = URI(@path)
+      @file = Net::HTTP.get(uri)
+      #@file = File.(@path, "r")
     end
     
     ##
