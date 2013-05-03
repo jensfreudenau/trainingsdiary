@@ -37,7 +37,7 @@
                         %dt
                           = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
                         %dd
-                          = number_to_human(training.distance_total, :units => :distance, :precision => 1)
+                          = number_to_human(training.distance_total, :units => :distance, :precision => 3)
                         %dt
                           = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
                         %dd
