@@ -558,6 +558,16 @@ function createChart(data, cssId, unit, min) {
 
 
 $(document).ready(function () {
+    var width  = $(window).width();
+    var height  = $(window).height();
+    $("#background").width(width);
+    $("#background").height(height);
+    $(window).resize(function(){
+        width  = $(window).width();
+        height  = $(window).height();
+        $("#background").width(width);
+        $("#background").height(height);
+    });
 
     $("a#bigmap").fancybox({
         'hideOnContentClick': true,

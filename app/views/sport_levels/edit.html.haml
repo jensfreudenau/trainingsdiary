@@ -1,13 +1,11 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", sport_level_path
-      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_level_path
-      %li.active= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_sport_level_path
+      %li &nbsp;
   .content
     %h2.title
+      = t("sportlevels", :default => "All Sportlevels")
       = t("web-app-theme.edit", :default => "Edit")
-      Sportlevel
     .inner
       = form_for :sport_level, :url => sport_level_path, :html => { :class => :form } do |f|
         = render :partial => "form", :locals => {:f => f}

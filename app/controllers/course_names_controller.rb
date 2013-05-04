@@ -4,11 +4,10 @@ class CourseNamesController < ApplicationController
     before_filter :authenticate_user!, :except => [:sort]
     #load_and_authorize_resource
     def index
-        course_names = CourseName.find(
-            :all,
+        @course_names = CourseName.all(
             :conditions => ["course_names.user_id = ?", current_user ]
             )
-        @course_names = course_names.paginate:page => params[:page], :per_page => 25
+        #@course_names = course_names.paginate:page => params[:page], :per_page => 25
         respond_to do |format|
             format.html # index.html.erb
             format.xml  { render :xml => @course_names }

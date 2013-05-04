@@ -23,12 +23,11 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", sports_path
-      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_path
+      %li &nbsp;
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All Sports")
-      
+      = t("sports")
     .inner
       %ul#sortable
         - @sports.each do |sport|

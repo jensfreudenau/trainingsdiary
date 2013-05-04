@@ -1,12 +1,11 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", course_names_path
-      %li.active= link_to "#{t("web-app-theme.new", :default => "New")}", new_course_name_path
+      %li &nbsp;
   .content
     %h2.title
       = t("web-app-theme.new", :default => "New")
-      Course Name
+      = t("course names")
     .inner
       = form_for :course_name, :url => course_names_path, :html => { :class => :form } do |f|
         = render :partial => "form", :locals => {:f => f}

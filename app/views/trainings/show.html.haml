@@ -5,10 +5,7 @@
   .block
     .secondary-navigation
       %ul.wat-cf
-        %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", trainings_path
-        %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_training_path
-        %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", training_path
-        %li= link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" } 
+        %li &nbsp;
     .content
       .inner
         %h2 
@@ -17,6 +14,7 @@
           = t("at", :default => "at")
           = localize(training.start_time, :format => :default)
         .trainings_data
+          = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
           %table.training.datatable
             %thead
               %tr
