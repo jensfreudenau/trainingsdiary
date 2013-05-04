@@ -92,7 +92,7 @@ body {
   padding-bottom: 10px;
 }
 
-#sidebar .block .content {
+#sidebar .partitial .content {
   padding: 0 0px;
 }
 
@@ -101,20 +101,19 @@ body {
   padding: 10px 15px;
 }
 
-#sidebar .block .sidebar-block, #sidebar .notice {
-
-}
-
 #wrapper {
-  padding-top: 45px;
+  /*padding-top: 45px;*/
 }
 
 #main .block {
   margin-bottom: 20px;
+    width:760px;
 }
 
 #main .block .content .inner {
-  padding: 15px;  
+  padding: 15px;
+
+
 }
 
 #main .main p.first {
@@ -456,7 +455,7 @@ table.list td{
     border-bottom: 1px solid gray;
 }
 #infos {
-    width:100%;
+    width: 250px;
 } 
 #imges {
     width:35%;
