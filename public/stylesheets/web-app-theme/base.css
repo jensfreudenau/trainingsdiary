@@ -78,7 +78,8 @@ body {
 
 #sidebar {
   width: 25%;
-  float: right;      
+  float: right;
+    margin-top: 30px;
 }
 
 #sidebar h3 , ul.listing h3{  
