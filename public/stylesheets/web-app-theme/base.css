@@ -461,7 +461,9 @@ table.list td{
 #imges {
     width:35%;
 }
-label.label {
+.form li label.radio {
+    width: 8em;
+    color:black;
     /*text-decoration: underline;*/
 }
 label {

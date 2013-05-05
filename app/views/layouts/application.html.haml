@@ -46,7 +46,7 @@
           #main-navigation
             #menu
               %ul.wat-cf
-                %li{ :class => (params[:controller] == 'home' ? 'first active topmenu' : 'first topmenu') }
+                %li{ :class => (params[:controller] == 'pages' ? 'first active topmenu' : 'first topmenu') }
                   = link_to t("home"), root_path
                   %ul
                     %li{:class =>'submenu'}

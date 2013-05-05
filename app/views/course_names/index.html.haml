@@ -22,9 +22,6 @@
   });
 .block
   .content
-    %h2.title
-      = t("web-app-theme.all_courses", :default => "All Courses")
-      
     .inner
       %ul#sortable
         - @course_names.each do |course_name|
