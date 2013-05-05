@@ -75,7 +75,6 @@ class ApplicationController < ActionController::Base
         end       
     end
       
-    
     def calendar
         @calendartrainings = Training.all(
             :select => 'trainings.id,
@@ -85,12 +84,11 @@ class ApplicationController < ActionController::Base
                             sports.name as sportname,
                             time_total,
                             comment,
-                            
                             trainings.start_time as start_time,
                             distance_total',
-            :order => 'start_time',
-            :joins => [:sport_level, :sport, :course_name]
-        )
+            :order => 'start_time desc',
+            :joins => [:sport_level, :sport, :course_name],
+            :limit => 600)
         @date = params[:month] ? Date.parse(params[:month]) : Date.today
     end
 end
