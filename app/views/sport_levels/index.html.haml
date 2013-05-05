@@ -21,14 +21,10 @@
     });
   });
 .block
-  .secondary-navigation
-    %ul.wat-cf
-      %li &nbsp;
   .content
     %h2.title
       = t("sportlevels", :default => "All Sportlevels")
     .inner
-      = link_to "#{t("web-app-theme.new", :default => "New")}", new_sport_level_path
       %ul#sortable
         - @sport_levels.each do |sport_level|
           :css

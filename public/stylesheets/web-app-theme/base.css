@@ -264,7 +264,7 @@ input.checkbox {
 }
 
 .form label.label, .form input.text_field, .form textarea.text_area {
-  font-size: 1.2em;
+  /*font-size: 1.2em;*/
   padding: 1px 0;
   margin: 0;
 }
@@ -284,7 +284,7 @@ input.checkbox {
 .form label.label {
   display: block;
   padding-bottom: 2px;  
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 .form div.fieldWithErrors label.label {
@@ -296,7 +296,7 @@ input.checkbox {
 }
 
 .form input.text_field, .form textarea.text_area {
-  width: 100%;
+  /*width: 100%;*/
   border-width: 1px;
   border-style: solid;
 }
@@ -460,4 +460,14 @@ table.list td{
 } 
 #imges {
     width:35%;
+}
+label.label {
+    /*text-decoration: underline;*/
+}
+label {
+    float: left;
+    width: 13em;
+    margin-right: 1em;
+    color:white;
+
 }

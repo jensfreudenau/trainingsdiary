@@ -4,14 +4,10 @@
 - for home in @home
   - heartrate = [home.heartrate]
   .block
-    .secondary-navigation
-      %ul.wat-cf
-        %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", "/"
-        %li= link_to "#{t("web-app-theme.listen", :default => "List")}", "/listen"
     .content
       .inner
         %h2
-          = home.sportname
+          = home.sportname + ' / ' + home.sportlevel
         %h3
           = t("at", :default => "at")
           = localize(home.start_time, :format => :default)

@@ -3,9 +3,6 @@
   - cals = 0
   - heartrate = [training.heartrate]
   .block
-    .secondary-navigation
-      %ul.wat-cf
-        %li &nbsp;
     .content
       .inner
         %h2 
@@ -14,7 +11,8 @@
           = t("at", :default => "at")
           = localize(training.start_time, :format => :default)
         .trainings_data
-          = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
+          %p
+            = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
           %table.training.datatable
             %thead
               %tr
@@ -92,7 +90,7 @@
                         %td
                           = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
                         %td
-                          = time2hms(to_dot_time(lap.duration.to_i))                     
+                          = ChronicDuration.output(lap.duration.to_f, :format => :chrono)
                         %td
                           - if lap.distance_total != 0
                             - if training.sportname == 'Radfahren'

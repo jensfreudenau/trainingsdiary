@@ -1,10 +1,5 @@
-.block
-  .secondary-navigation
-    %ul.wat-cf
-      %li &nbsp;
+.detail
   .content
-    %h2.title
-      = t("web-app-theme.new_training", :default => "New Training")
     .inner
       = form_for :training, :url => trainings_path, :html => { :id => 'training', :class => :form, :multipart => true } do |f|
         = render :partial => "form", :locals => {:f => f}

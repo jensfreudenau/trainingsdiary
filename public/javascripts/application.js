@@ -608,7 +608,6 @@ $(document).ready(function () {
         $(".comment").hide();
     });
 
-    $("input, textarea, select, button").uniform();
     $("#datepicker").datepicker();
 
 
