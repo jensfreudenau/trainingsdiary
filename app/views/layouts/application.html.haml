@@ -1,5 +1,8 @@
+!!! 5
 %html
   %head
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html'}
+    %meta{ :charset => 'UTF-8' }
     %title My Trainings
     = stylesheet_link_tag 'web-app-theme/base',
                           'web-app-theme/themes/drastic-dark/style', 
@@ -100,4 +103,4 @@
               = t('last_trainings')
             %ul{:class => 'navigation trainings'}
               = render :partial => 'partials/last_training', :collection => @last_trainings
-  = image_tag('image-1.jpg', :alt => 'background', :id=>'background')
+    = image_tag('image-1.jpg', :alt => 'background', :id=>'background')
