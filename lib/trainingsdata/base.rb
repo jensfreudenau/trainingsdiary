@@ -29,7 +29,7 @@ module Trainingsdata
     # 
     #  
     def save_file_data
-      @log.debug('save_file_data')
+      #@log.debug('save_file_data')
       @laps             = Hash.new
       @diagramm         = []
       @file             = '' 

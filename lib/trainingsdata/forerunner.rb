@@ -46,11 +46,11 @@ module Trainingsdata
       @source_doc = Nokogiri::XML(@xml)
 
       self.generate_laps
-      @log.debug('@rounds')
-      @log.debug(@rounds)
+      #@log.debug('@rounds')
+      #@log.debug(@rounds)
       self.save_file_data
       #self.cleanup
-      @log.debug(@running_total.to_i)
+      #@log.debug(@running_total.to_i)
     end
     
     def create_trainings_file(deg, training, name)
@@ -170,7 +170,7 @@ module Trainingsdata
     protected
     
     def generate_laps
-      @log.debug('generate_laps')
+      #@log.debug('generate_laps')
       counter = 0
       round = 0
       trackpoint = 0
@@ -247,26 +247,26 @@ module Trainingsdata
                   working_node.children.each do |sub_sub_node|
                     @rounds[round][:laps][trackpoint.to_i] ||= {}
                     if sub_sub_node.name == 'LatitudeDegrees'
-                        @log.debug('sub_sub_node.LatitudeDegrees')
-                        @log.debug(sub_sub_node.text.to_f)
+                        #@log.debug('sub_sub_node.LatitudeDegrees')
+                        #@log.debug(sub_sub_node.text.to_f)
                         @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
                      end 
                       if sub_sub_node.name == 'LongitudeDegrees'
-                        @log.debug('sub_sub_node.LongitudeDegrees')
-                        @log.debug(sub_sub_node.text.to_f)
+                        #@log.debug('sub_sub_node.LongitudeDegrees')
+                        #@log.debug(sub_sub_node.text.to_f)
                         @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_f
                       end
                       
                       
                      if sub_sub_node.name == 'LatitudeDegrees'
-                        @log.debug('sub_sub_node.LatitudeDegrees')
-                        @log.debug(sub_sub_node.text.to_f)
-                        #@rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
+                        #@log.debug('sub_sub_node.LatitudeDegrees')
+                        #@log.debug(sub_sub_node.text.to_f)
+                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
                      end 
                       if sub_sub_node.name == 'LongitudeDegrees'
                         @log.debug('sub_sub_node.LongitudeDegrees')
                         @log.debug(sub_sub_node.text.to_f)
-                        #@rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_ff
+                        @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_ff
                       end 
                   end
                   

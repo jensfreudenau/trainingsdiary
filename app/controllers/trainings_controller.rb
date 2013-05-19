@@ -188,8 +188,8 @@ class TrainingsController < ApplicationController
   # PUT /trainings/1.xml#
   def update
 
-    #Training.mounting
-    #file_data = params[:training][:filename]
+    Training.mounting
+    file_data = params[:training][:filename]
     #
     #
     #
@@ -206,9 +206,9 @@ class TrainingsController < ApplicationController
     respond_to do |format|
 
       if @training.update_attributes(params[:training])
-        #if file_data
-          #self.save_file_data(file_data)
-        #end
+        if file_data
+          self.save_file_data(file_data)
+        end
         if @training.save
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
           format.xml  { head :ok }
@@ -240,7 +240,7 @@ class TrainingsController < ApplicationController
 
 
     @training = Training.new(:user_id => 1, :sport_id => 5)
-    pp @training.user_id
+    #pp @training.user_id
     @training.start_time = Time.now
 
     @training.user_id = @training.user_id
@@ -291,7 +291,7 @@ class TrainingsController < ApplicationController
   end
 
   def save_file_data(file_data, ajax)
-    @log.debug("save_file_data")
+    #@log.debug("save_file_data")
 
     begin
 
@@ -305,14 +305,14 @@ class TrainingsController < ApplicationController
       end
 
       td.start_import
-      @log.debug('import finished')
+      #@log.debug('import finished')
       @distances = Array.new
       @heartrate_avg = Array.new
       @calc_heartrate_avg = 0
 
       td.laps.each do |index, value|
-        @log.debug("lapps #{index}")
-        @log.debug(value.to_yaml)
+        #@log.debug("lapps #{index}")
+        #@log.debug(value.to_yaml)
         @distances[index.to_i] = value[:distance]
         @heartrate_avg[index.to_i] = value[:heartrate_avg]
 
@@ -337,10 +337,10 @@ class TrainingsController < ApplicationController
       @training.height = td.height
       @training.heartrate_avg = self.calculate_avg_heartrate(td.distance_total)
       @training.heartrate_max = td.heartrate_max
-
-      @log.debug('td#######')
-      @log.debug(td)
-      @log.debug('td********')
+      #
+      #@log.debug('td#######')
+      #@log.debug(td)
+      #@log.debug('td********')
       #@training.save
     end
   end
