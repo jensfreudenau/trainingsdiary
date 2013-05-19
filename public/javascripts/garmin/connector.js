@@ -11,7 +11,7 @@ var auth;
 function load(authm) {
     auth = authm;
     var display = new Garmin.DeviceDisplay("garminDisplay", {
-        pathKeyPairsArray: ["http://0.0.0.0:3000", "9efb0ab754c9aebac8db458d98f5a717"],
+        pathKeyPairsArray: ["http://trainingsdiary.herokuapp.com", "cb9532810e0c2e2346b6c557c1fb3e1"],
         showReadDataElement: true,
 
 //        showReadGoogleMap: true,
