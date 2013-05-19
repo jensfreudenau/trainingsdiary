@@ -9,19 +9,19 @@ var control;
 var display;
 var auth;
 var host;
-var key;
+var key_garminCon;
 function load(authm) {
     if (window.location.hostname == '0.0.0.0') {
         host = "http://0.0.0.0:3000";
-        key  = "9efb0ab754c9aebac8db458d98f5a717";
+        key_garminCon  = "9efb0ab754c9aebac8db458d98f5a717";
     }
     else {
         host = "http://trainingsdiary.herokuapp.com";
-        key  = "cb9532810e0c2e2346b6c557c1fb3e1";
+        key_garminCon  = "cb9532810e0c2e2346b6c557c1fb3e1";
     }
     auth = authm;
     var display = new Garmin.DeviceDisplay("garminDisplay", {
-        pathKeyPairsArray: [host, key],
+        pathKeyPairsArray: [host, key_garminCon],
         showReadDataElement: true,
 
 //        showReadGoogleMap: true,
