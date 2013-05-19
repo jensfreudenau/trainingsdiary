@@ -8,10 +8,20 @@
 var control;
 var display;
 var auth;
+var host;
+var key;
 function load(authm) {
+    if (window.location.hostname == '0.0.0.0') {
+        host = "http://0.0.0.0:3000";
+        key  = "9efb0ab754c9aebac8db458d98f5a717";
+    }
+    else {
+        host = "http://trainingsdiary.herokuapp.com";
+        key  = "cb9532810e0c2e2346b6c557c1fb3e1";
+    }
     auth = authm;
     var display = new Garmin.DeviceDisplay("garminDisplay", {
-        pathKeyPairsArray: ["http://trainingsdiary.herokuapp.com", "cb9532810e0c2e2346b6c557c1fb3e1"],
+        pathKeyPairsArray: [host, key],
         showReadDataElement: true,
 
 //        showReadGoogleMap: true,
