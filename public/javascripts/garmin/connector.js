@@ -17,7 +17,7 @@ function load(authm) {
     }
     else {
         host = "http://trainingsdiary.herokuapp.com";
-        key_garminCon  = "cb9532810e0c2e2346b6c557c1fb3e1";
+        key_garminCon  = "7cb9532810e0c2e2346b6c557c1fb3e1";
     }
     auth = authm;
     var display = new Garmin.DeviceDisplay("garminDisplay", {
