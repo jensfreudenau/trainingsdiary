@@ -4,5 +4,4 @@
       = t("web-app-theme.new", :default => "New")
       = t("course names")
     .inner
-      = form_for :course_name, :url => course_names_path, :html => { :class => :form } do |f|
-        = render :partial => "form", :locals => {:f => f}
+      = render :partial => 'form'

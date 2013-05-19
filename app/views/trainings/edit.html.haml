@@ -1,5 +1,47 @@
 .block
   .content
     .inner
-      = form_for :training, :url => training_path, :html => { :id => 'training', :class => :form, :multipart => true} do |f|
-        = render :partial => "form", :locals => {:f => f}
+      %ul#trainingsform
+        = form_for @training, :url => training_path, :html => { :id => 'training', :class => :form, :multipart => true} do |f|
+          -if @training.errors.any?
+            #error_explanation
+              %h3
+                = t('activerecord.errors.template.header', :model => Training.model_name.human, :count => @training.errors.count)
+              %ul
+                - @training.errors.full_messages.each do |msg|
+                  %li= msg
+          %li
+            = f.label :sport_level_id, t("activerecord.attributes.training.sportlevel", :default => "Sport Level"), :class => :label
+            = f.collection_select :sport_level_id, @sportlevel, :id, :name
+          %li
+            = f.label :sport_id, t("activerecord.attributes.training.sport_id", :default => "Sport"), :class => :label
+            - @sport.each do |option|
+              %label.radio
+                = f.radio_button :sport_id, option.id
+                = t("activerecord.attributes.training.sport", :default => option.name)
+
+          %li
+            = f.label :course_name_id, t("activerecord.attributes.training.coursename", :default => "Course Name"), :class => :label
+            = f.collection_select :course_name_id, @coursename, :id, :name
+          %li
+            = f.label :time_total, t("activerecord.attributes.training.time_total", :default => "Time"), :class => :label
+            = f.text_field :time_total, :class => 'text_field', :value => time2hms(to_dot_time(@training.time_total.to_i))
+          %li
+            = f.label :distance_total, t("activerecord.attributes.training.distance_total", :default => "Distance "), :class => :label
+            = f.text_field :distance_total, :class => 'text_field' ,:value => number_with_precision(@training.distance_total)
+          %li
+            = f.label :comment, t("activerecord.attributes.training.comment", :default => "Comment"), :class => :label
+            = f.text_area :comment, :class => 'text_area', :cols => 20
+          %li
+            = f.label :start_time, t("activerecord.attributes.training.start_time", :default => "Start Time"), :class => :label
+            = f.text_field :start_time, :class => 'text_field', :id => 'datepicker'
+
+          %li
+            = f.label :filename, t("activerecord.attributes.training.filename", :default => "File"), :class => :label
+            = f.file_field :filename, :class => 'file_field'
+            = f.hidden_field :user_id, :value => current_user.id
+
+          .group.navform.wat-cf
+            %button.button{:type => "submit"}
+              = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+              = t("web-app-theme.save", :default => "Save")

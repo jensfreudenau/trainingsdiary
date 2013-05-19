@@ -2,42 +2,20 @@ class BlogEntriesController < ApplicationController
 	#layout "standard", :except => [:ajax_method, :more_ajax, :another_ajax]
   # GET /blog_entries
   # GET /blog_entries.xml
-  before_filter :authenticate_user!, :except => [:index, :show]
-  load_and_authorize_resource
+
   def index
-		@blog_entries = 12345
+		@blog_entries = BlogEntry.all
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @blog_entries }
     end
   end
 
-	def test
-		respond_to do |format|
-=begin     if @blog_entries.save
-        format.html { redirect_to(@blog_entries, :notice => 'Post created.') }
-        format.js
-=end      else
-        format.html { render :action => "new" }
-        format.js { render :nothing => true } 
-    #  end
-    end
-=begin
-		respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @blog_entry }
-    end
-		rescue ActiveRecord::RecordNotFound
-		  flash[:notice] = "Wrong post it"
-		  redirect_to :action => 'index'
-		if (request.xhr?)
-	    render :text => @name.to_s
-	  else
-	    # No?  Then render an action.
-	    render :action => 'view_attribute', :attr => @name
-	  end
-=end
-	end
+  def sort
+
+      render :nothing => true
+  end
+
   # GET /blog_entries/1
   # GET /blog_entries/1.xml
   def show

@@ -44,11 +44,12 @@ a:link, a:visited, a:hover, a:active, h1, h2, h3 {
 
 a {
     -moz-outline: none;
-    font-size: 12px;
+    /*font-size: 12px;*/
 }
 
 body {
     color: #222;
+    font-size: 14px;
     font-family: helvetica, arial, sans-serif;
 }
 
@@ -303,15 +304,11 @@ hr {
 /* lists */
 
 ul.list li {
-    border-bottom-color: #F0F0EE;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border-bottom:1px solid #F0F0EE;
 }
 
 ul.list li .item .avatar {
-    border-color: #F0F0EE;
-    border-width: 1px;
-    border-style: solid;
+    border:1px solid  #F0F0EE;
     padding: 2px;
 }
 
@@ -412,7 +409,6 @@ ul.trainings {
     margin: 0 20px;
     padding: 5px;
     border: 1px solid gray;
-    box-shadow: 1px 7px 20px #999999;
     box-shadow: 5px 6px 9px -3px #353535;
 }
 
@@ -428,10 +424,7 @@ ul.trainings {
     height: 29px;
     border: 1px solid darkred;
     /*box-shadow: 0 0 5px #CCCCCC;*/
-    padding-bottom: 15px;
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-top: 2px;
+    padding: 15px 2px 2px 2px;
 }
 
 #sortable td.name {
@@ -469,7 +462,11 @@ ul.trainings {
     height: 10px;
     width: 10px;
 }
-
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 ul#trainingsform {
     list-style: none;
     padding: 0;
@@ -642,7 +639,7 @@ table {
     border: 0;
     font-size: 100%;
     border-spacing: 0;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
     vertical-align: baseline;
 }
 
@@ -660,7 +657,7 @@ table thead tr {
 }
 
 tbody tr:nth-child(odd) {
-    background: #fff;
+    /*background: #fff;*/
 }
 
 tbody tr:last-child td:first-child {
@@ -813,6 +810,7 @@ body {
     padding: 0 0 0 2px;
     margin-left: 15px;
     width: 100px;
+    overflow: hidden;
 }
 
 #menu ul li.topmenu ul li.submenu {
@@ -915,7 +913,12 @@ ul.navigation li span a {
 }
 
 #main-navigation ul li.active {
-    /*background: black;*/
     text-decoration: underline;
+}
+
+.form select {
+    line-height: 30px;
+    margin-top: 10px;
+    padding: 5px;
 }
 

@@ -1,5 +1,27 @@
+= stylesheet_link_tag 'communicator2.css'
+
+= javascript_include_tag 'prototype' ,
+                         'garmin/connector',
+                         'garmin/GarminDevicePluginDemo',
+                         'garmin/GarminDeviceControlDemo',
+                         'garmin/GarminDevicePlugin',
+                         'garmin/Util-XmlConverter',
+                         'garmin/Util-Broadcaster',
+                         'garmin/Util-BrowserDetect',
+                         'garmin/Util-DateTimeFormat',
+                         'garmin/Util-PluginDetect',
+                         'garmin/Util-XmlConverter',
+                         'garmin/GarminObjectGenerator',
+                         'garmin/GarminPluginUtils',
+                         'garmin/GarminDevice',
+                         'garmin/GarminDevicePlugin',
+                         'garmin/GarminDeviceControl',
+                         'garmin/GarminDeviceDisplay'
+
 .detail
   .content
     .inner
-      = form_for :training, :url => trainings_path, :html => { :id => 'training', :class => :form, :multipart => true } do |f|
-        = render :partial => "form", :locals => {:f => f}
+      = render :partial => 'form'
+
+
+

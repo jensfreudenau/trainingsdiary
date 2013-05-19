@@ -40,6 +40,9 @@ Trainingsdiary::Application.routes.draw do
   resources :trainings do
     post :sort, :on => :collection
   end
+  resources :blog_entries do
+    post :sort, :on => :collection
+  end
   match 'bigmap', :to => 'pages#bigmap'
   
 =begin

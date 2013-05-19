@@ -10,7 +10,7 @@
  */
 
 /*jslint unparam: true */
-/*global $ */
+/*global jQuery */
 
 /**
  * Convert number of seconds into time object
@@ -43,7 +43,7 @@ function roundNumber(num, dec) {
 function object2Array(objValue) {
     ar = [];
     i = 0;
-    $.each(objValue, function (index, value) {
+    jQuery.each(objValue, function (index, value) {
         if (value != null) {
             ar[i] = [parseInt(index) , roundNumber(value, 2)];
             i++;
@@ -235,9 +235,9 @@ function createMapWithRoute(coordinates, cssId, withControl, zoomControl) {
     else {
         map.addLayer(contours_8);
     }
-    $.each(coordinates, function (intIndex, objValue) {
+    jQuery.each(coordinates, function (intIndex, objValue) {
 
-        $.each(objValue, function (index, value) {
+        jQuery.each(objValue, function (index, value) {
             var txt = new String(value);
             var t = txt.split(',');
             var lat = t[0];
@@ -293,8 +293,8 @@ function heartchart(data, avg, maxMeasure, cssId) {
     var maxY = 190;
     var k = 0;
 
-    $.each(datas, function (intIndex, objValue) {
-        $.each(objValue, function (index, value) {
+    jQuery.each(datas, function (intIndex, objValue) {
+        jQuery.each(objValue, function (index, value) {
             if (value != null) {
                 chartdata[k] = value;
                 k++;
@@ -307,12 +307,12 @@ function heartchart(data, avg, maxMeasure, cssId) {
         maxY = maxMeasure;
     }
 
-    $(function () {
+    jQuery(function () {
 
         new Highcharts.Chart({
             chart: {
                 renderTo: cssId,
-                width:'690',
+                width: '690',
                 defaultSeriesType: 'spline',
                 margin: [0]
             },
@@ -414,7 +414,7 @@ function heartchart(data, avg, maxMeasure, cssId) {
 
             tooltip: {
                 formatter: function () {
-                    return '<b>' + this.y + '</b>' ;
+                    return '<b>' + this.y + '</b>';
                 }
             },
             plotOptions: {
@@ -451,8 +451,8 @@ function createChart(data, cssId, unit, min) {
     var chartdata = [];
     var value;
     k = 0;
-    $.each(datas, function (intIndex, objValue) {
-        $.each(objValue, function (index, value) {
+    jQuery.each(datas, function (intIndex, objValue) {
+        jQuery.each(objValue, function (index, value) {
             if (value != null) {
                 chartdata[k] = value;
                 k++;
@@ -462,7 +462,7 @@ function createChart(data, cssId, unit, min) {
     var max = chartdata[k - 1][0];
 
     var min = min;
-    $(function () {
+    jQuery(function () {
         new Highcharts.Chart({
             chart: {
                 height: 350,
@@ -472,7 +472,7 @@ function createChart(data, cssId, unit, min) {
             },
             title: {
                 text: '',
-                x: -50, //center$maxHeight
+                x: -50, //centerjQuerymaxHeight
                 y: 200
             },
             subtitle: {
@@ -557,29 +557,29 @@ function createChart(data, cssId, unit, min) {
 }
 
 
-$(document).ready(function () {
-    var width  = $(window).width();
-    var height  = $(window).height();
-    $("#background").width(width);
-    $("#background").height(height);
-    $(window).resize(function(){
-        width  = $(window).width();
-        height  = $(window).height();
-        $("#background").width(width);
-        $("#background").height(height);
+jQuery(document).ready(function () {
+    var width = jQuery(window).width();
+    var height = jQuery(window).height();
+    jQuery("#background").width(width);
+    jQuery("#background").height(height);
+    jQuery(window).resize(function () {
+        width = jQuery(window).width();
+        height = jQuery(window).height();
+        jQuery("#background").width(width);
+        jQuery("#background").height(height);
     });
 
-    $("a#bigmap").fancybox({
+    jQuery("a#bigmap").fancybox({
         'hideOnContentClick': true,
         'width': '100%',
-        'height': '100' ,
+        'height': '100',
         'margin': 0,
         'padding': 0,
-        'padding-right':10
+        'padding-right': 10
     });
 
 
-    $("#training").validate({
+    jQuery("#training").validate({
         rules: {
             'training[sport_id]': { required: true }
         },
@@ -588,7 +588,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#course").validate({
+    jQuery("#course").validate({
         rules: {
             'course[sport_id]': { required: true },
             'course[name]': { required: true }
@@ -599,16 +599,16 @@ $(document).ready(function () {
         }
     });
 
-    $('#datepicker').datetimepicker();
+    jQuery('#datepicker').datetimepicker();
 
-    $("li.distance").mouseover(function () {
-        $(".comment").dialog();
+    jQuery("li.distance").mouseover(function () {
+        jQuery(".comment").dialog();
     });
-    $("li.distance").mouseout(function () {
-        $(".comment").hide();
+    jQuery("li.distance").mouseout(function () {
+        jQuery(".comment").hide();
     });
 
-    $("#datepicker").datepicker();
+    jQuery("#datepicker").datepicker();
 
 
 });

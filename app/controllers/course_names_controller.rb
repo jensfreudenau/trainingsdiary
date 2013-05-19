@@ -17,10 +17,11 @@ class CourseNamesController < ApplicationController
     # GET /course_names/1
     # GET /course_names/1.xml
     def show
-        @course_name = CourseName.find(
-            :first,
-            :conditions => {:user_id => current_user.id , :id => params[:id]}
-        )
+        @course_name = CourseName.where(
+            :conditions => {:user_id => current_user.id ,
+                            :id => params[:id]}
+
+        ).limit(1)
         respond_to do |format|
             format.html # show.html.erb
             format.xml  { render :xml => @course_name }
@@ -39,8 +40,7 @@ class CourseNamesController < ApplicationController
 
     # GET /course_names/1/edit
     def edit
-        @course_name = CourseName.find(
-            :first,
+        @course_name = CourseName.where(
             :conditions => {:user_id => current_user.id , :id => params[:id]}
         )
     end

@@ -32,10 +32,6 @@ hr {height: 1px; border: 0; }
 p { margin: 15px 0;}
 a img { border: none; }
 h1 a{ margin: 15px 0; font-size: 22px; font-weight: normal; letter-spacing:1em;}
-body {
-  font-size: 12px;
-  font-family: sans-serif;  
-}
 
 #container {
   min-width: 1100px;

@@ -1,15 +1,15 @@
 require 'json'
-require 'zip/zip'
+#require 'zip/zip'
 require 'net/http'
 module Trainingsdata 
   class Base       
-    attr_accessor :map_data, :heartrate, :height, :laps, :file
+    attr_accessor :map_data, :heartrate, :height, :laps, :file, :avg_heartrate
     include GeoKit
-    #      @log = Logger.new('log/base.log')
+          @log = Logger.new('log/base.log')
         
          
     #
-    # loads the main data into a new has
+    # loads the main data into a new hash
     #
     def load_lap_data (index)
       
@@ -29,7 +29,7 @@ module Trainingsdata
     # 
     #  
     def save_file_data
-
+      @log.debug('save_file_data')
       @laps             = Hash.new
       @diagramm         = []
       @file             = '' 
@@ -40,17 +40,21 @@ module Trainingsdata
       local_height      = [] 
       
       @runner.each_with_index do |value, index|
+        @log.debug(index.to_i)
         self.load_lap_data(index)
       end
 
       f = @diagramm.sort
       f.each do |data|
         self.load_track_data(data)
-        map << @lap_map
+
+        map             << @lap_map
         local_heartrate << @lap_heartrate
-        local_height << @lap_height
+        local_height    << @lap_height
       end
-      @laps = @laps.sort 
+
+      @laps           = @laps.sort
+      @lap_calories   = self.calories
       @distance_total = self.distance_total
       @time_total     = self.time_total
       @start_time     = self.start_time
@@ -72,7 +76,7 @@ module Trainingsdata
       @lap_heartrate  = []
       @lap_height     = []
       @lap_time       = []
-      
+
       data.each do |v|
         v.each do |value|
           if (value.kind_of? Hash)
@@ -140,7 +144,28 @@ module Trainingsdata
         File.delete(@path) 
       end    
     end
-    
+
+    def calculate_avg_heartrate (distance_total)
+      calc_heartrate_sum = 1
+      res = 1
+      begin
+        @distances.each_with_index do |value, index|
+
+          if (@heartrate_avg[index.to_i].nil?)
+            @heartrate_avg[index.to_i] = 1
+          end
+          if (@distances[index.to_i] == 0.0)
+            @distances[index.to_i] = 1.0
+          end
+          if @heartrate_avg[index.to_i] && !@heartrate_avg[index.to_i].nil?
+
+            calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
+          end
+        end
+        res = calc_heartrate_sum/distance_total
+      end
+      return res
+    end
   end #class
    
 end #module

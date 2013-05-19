@@ -1,135 +1,135 @@
 = javascript_include_tag 'OpenLayers', 'OpenStreetMap', 'highcharts/js/highcharts'
-- for training in @training
-  - cals = 0
-  - heartrate = [training.heartrate]
-  .block
-    .content
-      .inner
-        %h2 
-          = training.sportname + " / " + training.sportlevel
-        %h3
-          = t("at", :default => "at")
-          = localize(training.start_time, :format => :default)
-        .trainings_data
-          %p
-            = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
+- training = @training
+- cals = 0
+- heartrate = [training.heartrate]
+.block
+  .content
+    .inner
+      %h2
+        = training.sportname + " / " + training.sportlevel
+      %h3
+        = t("at", :default => "at")
+        = localize(training.start_time, :format => :default)
+      .trainings_data
+        %p
+          = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
+        %table.training.datatable
+          %thead
+            %tr
+              %th
+                = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
+              %th
+                = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+              %th
+                &oslash; Pace
+              %th
+                &oslash;
+                = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+              %th
+                max
+                = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+              %th
+                = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+
+          %tr
+            %tbody
+              %td
+                = number_to_human(training.distance_total, :units => :distance, :precision => 4)
+              %td
+                = ChronicDuration.output(training.time_total.to_i, :format => :chrono)
+              %td
+                - if training.sportname == 'Radfahren'
+                  = km_per_hours(training.distance_total, training.time_total.to_i)
+                - else
+                  = minutes_per_km(training.distance_total, training.time_total.to_i)
+              %td
+                = training.heartrate_avg
+              %td
+                = training.heartrate_max
+              %td
+                = training.coursename
+
+        - if training.comment?
           %table.training.datatable
             %thead
               %tr
-                %th 
-                  = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
                 %th
-                  = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
-                %th
-                  &oslash; Pace
-                %th
-                  &oslash; 
-                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate")) 
-                %th
-                  max 
-                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))  
-                %th
-                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
-  
-            %tr
-              %tbody
-                %td 
-                  = number_to_human(training.distance_total, :units => :distance, :precision => 4)  
+                  = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
+            %tbody
+              %tr
                 %td
-                  = ChronicDuration.output(training.time_total.to_i, :format => :chrono)
-                %td
-                  - if training.sportname == 'Radfahren'
-                    = km_per_hours(training.distance_total, training.time_total.to_i) 
-                  - else
-                    = minutes_per_km(training.distance_total, training.time_total.to_i)
-                %td
-                  = training.heartrate_avg
-                %td
-                  = training.heartrate_max  
-                %td
-                  = training.coursename
-                
-          - if training.comment?
-            %table.training.datatable
+                  = training.comment
+
+        #laps
+          .outer_laps
+            %table.laps.datatable
               %thead
                 %tr
                   %th
-                    = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
-              %tbody
-                %tr
-                  %td
-                    = training.comment
+                    = t("#", :default => "#")
+                  %th
+                    = t("activerecord.attributes.lap.distance", :default => t("activerecord.labels.distance", :default => "Lap Distance"))
+                  %th
+                    = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
+                  %th
+                    &oslash; Pace
+                  %th
+                    &oslash;
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                  %th
+                    max.
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))
 
-          #laps
-            .outer_laps
-              %table.laps.datatable
-                %thead
-                  %tr
-                    %th
-                      = t("#", :default => "#")
-                    %th
-                      = t("activerecord.attributes.lap.distance", :default => t("activerecord.labels.distance", :default => "Lap Distance"))
-                    %th
-                      = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
-                    %th
-                      &oslash; Pace 
-                    %th
-                      &oslash; 
-                      = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
-                    %th
-                      max. 
-                      = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))  
-                  
-                    %th
-                      = t("activerecord.attributes.lap.calories", :default => t("activerecord.labels.calories", :default => "Kalorien"))
-                  %tbody
-                    - @laps.each_with_index do |lap, index|   
-                      %tr{:class => cycle("odd", "even")}
-                        %td
-                          = index.to_i + 1
-                        %td
-                          = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
-                        %td
-                          = ChronicDuration.output(lap.duration.to_f, :format => :chrono)
-                        %td
-                          - if lap.distance_total != 0
-                            - if training.sportname == 'Radfahren'
-                              = km_per_hours(lap.distance_total,lap.duration.to_i) 
-                            - else
-                              = minutes_per_km(lap.distance_total,lap.duration.to_i)                         
-                        %td
-                          - if 186*0.85 < lap.heartrate_avg.to_f
-                            .red
-                              = lap.heartrate_avg
+                  %th
+                    = t("activerecord.attributes.lap.calories", :default => t("activerecord.labels.calories", :default => "Kalorien"))
+                %tbody
+                  - @laps.each_with_index do |lap, index|
+                    %tr{:class => cycle("odd", "even")}
+                      %td
+                        = index.to_i + 1
+                      %td
+                        = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
+                      %td
+                        = ChronicDuration.output(lap.duration.to_f, :format => :chrono)
+                      %td
+                        - if lap.distance_total != 0
+                          - if training.sportname == 'Radfahren'
+                            = km_per_hours(lap.distance_total,lap.duration.to_i)
                           - else
-                            .blue
-                              = lap.heartrate_avg
+                            = minutes_per_km(lap.distance_total,lap.duration.to_i)
+                      %td
+                        - if 186*0.85 < lap.heartrate_avg.to_f
+                          .red
+                            = lap.heartrate_avg
+                        - else
+                          .blue
+                            = lap.heartrate_avg
 
-                        %td
-                          = lap.heartrate_max.to_i
-                        %td
-                          = lap.calories.to_i
-                          - cals = cals + lap.calories.to_i
-                %tr  
-                  %td{:colspan => 2}
-                    = t("activerecord.attributes.lap.all_calories", :default => t("activerecord.labels.all_calories", :default => "ges. Kalorien"))  
-                  %td{:colspan => 5}
-                    = cals      
-             
-            
-        .trainings_data
-          - if(!training.heartrate.nil?)
-            #heartrate_chart
+                      %td
+                        = lap.heartrate_max.to_i
+                      %td
+                        = lap.calories.to_i
+                        - cals = cals + lap.calories.to_i
+              %tr
+                %td{:colspan => 2}
+                  = t("activerecord.attributes.lap.all_calories", :default => t("activerecord.labels.all_calories", :default => "ges. Kalorien"))
+                %td{:colspan => 5}
+                  = cals
 
-        .trainings_data
-          - if(!training.map_data.nil?)
-            #map
-            %br/
-            .link_big_map
-              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
-          .wat-cf
-            = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
-            = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+
+      .trainings_data
+        - if(!training.heartrate.nil?)
+          #heartrate_chart
+
+      .trainings_data
+        - if(!training.map_data.nil?)
+          #map
+          %br/
+          .link_big_map
+            = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
+        .wat-cf
+          = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
+          = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
 
 
 :javascript
