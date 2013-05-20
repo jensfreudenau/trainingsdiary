@@ -1,15 +1,8 @@
-.group
-  = f.label :subject, t("activerecord.attributes.blog_entry.subject", :default => "Subject"), :class => :label
-  = f.text_field :subject, :class => 'text_field'
-  %span.description Ex: a simple text
-#file_upload_container.file_upload  
-  = f.file_field :filename, :name=> :file, :class => :file_upload
-  %button Upload
-  %div Upload files
-    
-.group.navform.wat-cf
-  %button.button{:type => "submit"}
-    = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
-    = t("web-app-theme.save", :default => "Save")
-  %span.text_button_padding= t("web-app-theme.or", :default => "or")
-  = link_to t("web-app-theme.cancel", :default => "Cancel"), blog_entries_path, :class => "text_button_padding link_button"
+= form_for(BlogEntry.new) do |f|
+      -#= f.hidden_field :id
+      = f.label :comment
+      %br/
+      = f.text_area :subject, :rows => 2
+      %br/
+      %button.button{:type => 'button', :onclick=> 'postFile("<?xml version= ?>", "test");', :id=>'test'}
+      = f.submit "Post Comment"

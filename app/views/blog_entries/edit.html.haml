@@ -9,6 +9,4 @@
       = t("web-app-theme.edit", :default => "Edit")
       BlogEntry
     .inner
-      = form_for @blog_entry, :url => blog_entry_path(@blog_entry), :html => { :class => :form } do |f|
-        = render :partial => "form", :locals => {:f => f}
-- content_for :sidebar, render(:partial => 'sidebar')
+      = render :partial => "form"

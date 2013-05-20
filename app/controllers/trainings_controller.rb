@@ -13,6 +13,7 @@ class TrainingsController < ApplicationController
 
   def index
     @log = Logger.new('log/trainings.log')
+
     #@files = Dir.glob("public/tracks/uploader/temp/*.TCX", File::FNM_CASEFOLD)
     #
     #for file in @files
@@ -114,38 +115,37 @@ class TrainingsController < ApplicationController
   # GET /trainings/1/edit
   def edit
     @training = Training.where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-    .select('trainings.*,
-                            sport_levels.name as sportlevel,
-                            trainings.start_time as start_time,
-                            course_name_id as coursename,
-                            sports.name as sportname,
-                            trainings.distance_total as distancetotal')
-    .joins(:course_name, :sport, :sport_level)
-    .first
+                        .select('trainings.*,
+                                sport_levels.name as sportlevel,
+                                trainings.start_time as start_time,
+                                course_name_id as coursename,
+                                sports.name as sportname,
+                                trainings.distance_total as distancetotal')
+                        .joins(:course_name, :sport, :sport_level)
+                        .first
 
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
   end
 
-  def create_murks
-    @training = Training.new(params[:training])
-
-    pp @training
-    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport = Sport.get_sports_by_user(current_user.id)
-    @coursename = CourseName.get_coursename_by_user(current_user.id)
-    respond_to do |format|
-      if @training.save
-        format.html { redirect_to(@training, :notice => 'Post created.') }
-        format.xml { render :xml => @training, :status => :created, :location => @training }
-      else
-        puts "OOps"
-        format.html { render :action => 'new' }
-        format.xml { render :xml => @training.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
+  #def create_murks
+  #  @training = Training.new(params[:training])
+  #
+  #  #pp @training
+  #  @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+  #  @sport = Sport.get_sports_by_user(current_user.id)
+  #  @coursename = CourseName.get_coursename_by_user(current_user.id)
+  #  respond_to do |format|
+  #    if @training.save
+  #      format.html { redirect_to(@training, :notice => 'Post created.') }
+  #      format.xml { render :xml => @training, :status => :created, :location => @training }
+  #    else
+  #      format.html { render :action => 'new' }
+  #      format.xml { render :xml => @training.errors, :status => :unprocessable_entity }
+  #    end
+  #  end
+  #end
 
 
   # POST /trainings
@@ -171,7 +171,7 @@ class TrainingsController < ApplicationController
     respond_to do |format|
       if @training.update_attributes(params[:training])
         if file_data
-          self.save_file_data(file_data)
+          self.save_file_data(file_data, html)
         end
         if @training.save
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
@@ -187,9 +187,10 @@ class TrainingsController < ApplicationController
   # PUT /trainings/1
   # PUT /trainings/1.xml#
   def update
-
+    @log = Logger.new('log/trainings.log')
     Training.mounting
     file_data = params[:training][:filename]
+
     #
     #
     #
@@ -207,9 +208,11 @@ class TrainingsController < ApplicationController
 
       if @training.update_attributes(params[:training])
         if file_data
-          self.save_file_data(file_data)
+          self.save_file_data(file_data, 'html')
         end
         if @training.save
+
+
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
           format.xml  { head :ok }
         else
@@ -238,23 +241,26 @@ class TrainingsController < ApplicationController
     #skip_before_filter :verify_authenticity_token
     xml = params[:training_xml]
 
+    @coursename           = CourseName.get_last_coursename_by_user(current_user.id)
 
-    @training = Training.new(:user_id => 1, :sport_id => 5)
-    #pp @training.user_id
-    @training.start_time = Time.now
+    @training             = Training.new(:user_id => 1)
+    @training.start_time  = Time.now
 
-    @training.user_id = @training.user_id
-
+    @training.sport_id       = 1
     @training.sport_level_id = 1
-    @training.course_name_id = 4
+    @training.course_name_id = @coursename.id
     @training.save
+    puts '###################'
+    puts @training.id
+    puts '###################'
     unless @training.id.nil?
       self.save_file_data(xml, true)
     end
 
     @training.save
-
+    puts '###################'
     puts @training.id
+    puts '###################'
     #render :js => "window.location = '/e/index'"
     render js: "window.location.pathname = #{edit_training_path(@training).to_json}"
     #render :nothing => true
@@ -291,57 +297,57 @@ class TrainingsController < ApplicationController
   end
 
   def save_file_data(file_data, ajax)
-    #@log.debug("save_file_data")
-
     begin
 
-      if (ajax == true)
-        #path = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/ajax.xml"
+      if ajax == true
+        file_or_xml = 'xml'
         td = Trainingsdata::Forerunner.new()
         td.xml = file_data
-      else
-        #path = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/#{file_data.original_filename.to_s}"
+      elsif ajax == 'html'
+        file_or_xml = 'file'
+        path = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
         td = Trainingsdata::Forerunner.new()
+        td.xml = path
       end
 
-      td.start_import
-      #@log.debug('import finished')
-      @distances = Array.new
-      @heartrate_avg = Array.new
+      td.start_import(file_or_xml)
+      @log.debug('import finished')
+      @distances          = Array.new
+      @heartrate_avg      = Array.new
       @calc_heartrate_avg = 0
 
       td.laps.each do |index, value|
-        #@log.debug("lapps #{index}")
-        #@log.debug(value.to_yaml)
-        @distances[index.to_i] = value[:distance]
-        @heartrate_avg[index.to_i] = value[:heartrate_avg]
+
+        @distances[index.to_i]      = value[:distance]
+        @heartrate_avg[index.to_i]  = value[:heartrate_avg]
 
         @training.laps.create(
-            :distance_total => value[:distance],
-            :heartrate_avg => value[:heartrate_avg],
-            :calories => value[:calories],
-            :heartrate_max => value[:heartrate_max],
-            :duration => value[:duration],
-            :heartrate => value[:heartrate].to_json,
-            :height => value[:height].to_json,
-            :map => value[:map].to_json,
-            :start_time => value[:start_time]
+            :distance_total     => value[:distance],
+            :heartrate_avg      => value[:heartrate_avg],
+            :calories           => value[:calories],
+            :heartrate_max      => value[:heartrate_max],
+            :duration           => value[:duration],
+            :heartrate          => td.lap_single_heartrate[index].to_json,
+            :height             => td.lap_single_height[index].to_json,
+            :start_time         => value[:start_time],
+            :map                => td.lap_single_map[index].to_json,
+            :maximum_speed      => value[:maximum_speed]
         )
       end
-      #@training.calories = td.calories
-      @training.start_time = td.start_time
-      @training.distance_total = td.distance_total
-      @training.time_total = td.time_total
-      @training.map_data = td.map_data
-      @training.heartrate = td.heartrate
-      @training.height = td.height
-      @training.heartrate_avg = self.calculate_avg_heartrate(td.distance_total)
-      @training.heartrate_max = td.heartrate_max
-      #
-      #@log.debug('td#######')
-      #@log.debug(td)
-      #@log.debug('td********')
-      #@training.save
+      sports = Sport.get_sports_by_mnemonic(td.sport)
+
+      @training.sport_id        = sports.id
+      @training.calories        = td.calories
+      @training.start_time      = td.start_time
+      @training.distance_total  = td.distance_total
+      @training.time_total      = td.time_total
+      @training.map_data        = td.map_data
+      @training.heartrate       = td.heartrate
+      @training.height          = td.height
+      @training.heartrate_avg   = self.calculate_avg_heartrate(td.distance_total)
+      @training.heartrate_max   = td.heartrate_max
+
+      @training.save
     end
   end
 
@@ -385,25 +391,26 @@ class TrainingsController < ApplicationController
       FileUtils.mv file, "public/tracks/uploader/ok/"+File.basename(file).to_s
       begin
 
-        td = Trainingsdata::Forerunner.new(f)
+        td = Trainingsdata::Forerunner.new()
 
-        td.laps.each_with_index do |value|
+        td.laps.each_with_index do |value, index|
 
           @training.laps.create(
               :distance_total => value[:distance],
-              :heartrate_avg => value[:heartrate_avg],
-              :calories => value[:calories],
-              :heartrate_max => value[:heartrate_max],
-              :duration => value[:duration],
-              :heartrate => value[:heartrate].to_json,
-              :height => value[:height].to_json,
-              :map => value[:map].to_json,
-              :start_time => value[:time]
+              :heartrate_avg  => value[:heartrate_avg],
+              :calories       => value[:calories],
+              :heartrate_max  => value[:heartrate_max],
+              :duration       => value[:duration],
+              :heartrate      => value[:heartrate].to_json,
+              :height         => value[:height].to_json,
+              :map            => value[:map].to_json,
+              :start_time     => value[:time]
           )
         end
+
         @training.distance_total = td.distance_total
         @training.time_total = td.time_total
-        @training.calories = td.calories
+        @training.calories    = td.calories
         @training.map_data = td.map_data
         @training.heartrate = td.heartrate
         @training.heartrate_avg = td.heartrate_avg

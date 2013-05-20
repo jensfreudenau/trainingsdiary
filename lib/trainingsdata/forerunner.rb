@@ -1,15 +1,22 @@
 require 'yaml'
 module Trainingsdata
   class Forerunner  < Trainingsdata::Base
-    attr_accessor :xml, :rounds, :time_total, :distance_total, :speed_max, :calories, :heartrate_avg, :heartrate_max, :start_time, :course
+    attr_accessor :xml, :rounds, :time_total,
+                  :distance_total, :speed_max,
+                  :calories, :heartrate_avg, :heartrate_max,
+                  :start_time, :course, :sport,
+                  :lap_single_map, :lap_single_heartrate, :lap_single_height
     
     def initialize ()
       @log = Logger.new('log/fore_runner123.log')
-
+      @lap_single_map       = Array.new
+      @lap_single_heartrate = Array.new
+      @lap_single_height    = Array.new
 
       #if (new == false)
-      #  self.open_file
-      #  @source_doc = Nokogiri::XML.parse(@file) { |cfg| cfg.noblanks }
+        self.open_file
+        @source_doc = Nokogiri::XML.parse(@file) { |cfg| cfg.noblanks }
+
       #elsif (ajax == true)
       #
       #
@@ -19,7 +26,9 @@ module Trainingsdata
       #  self.create_file
       #end
 
-      @rounds         = Hash.new
+      @rounds               = Hash.new
+
+
       @heartrate_max  = 0
       @xml            = ''
       @heartrate_avg  = 0
@@ -36,21 +45,22 @@ module Trainingsdata
       @prev_lat       = ''
       @prev_lon       = ''
       @running_total  = 0
+      @sport          = ''
     end
     
-    def start_import
+    def start_import(file_or_xml = 'xml')
+      if file_or_xml == 'file'
+        @file       = File.new(@xml, "r")
+        @source_doc = Nokogiri::XML.parse(@file) { |cfg| cfg.noblanks }
 
-      @log.debug('@@xml')
-      @log.debug(@xml)
-
-      @source_doc = Nokogiri::XML(@xml)
+      elsif file_or_xml=='xml'
+        #garmin
+        @source_doc = Nokogiri::XML(@xml)
+      end
 
       self.generate_laps
-      #@log.debug('@rounds')
-      #@log.debug(@rounds)
       self.save_file_data
       #self.cleanup
-      #@log.debug(@running_total.to_i)
     end
     
     def create_trainings_file(deg, training, name)
@@ -139,10 +149,12 @@ module Trainingsdata
       
       
     end
+
+
     def calculate_distance 
       begin
-        first_loc=LatLng.new(@prev_lat, @prev_lon)
-        second_loc=LatLng.new(@lat,@lon)
+        first_loc = LatLng.new(@prev_lat, @prev_lon)
+        second_loc= LatLng.new(@lat,@lon)
         @distance = first_loc.distance_to(second_loc, :units=>:kms)
       rescue
         @distance = 0
@@ -170,24 +182,33 @@ module Trainingsdata
     protected
     
     def generate_laps
-      #@log.debug('generate_laps')
+      @log.debug('generate_laps')
       counter = 0
       round = 0
       trackpoint = 0
-      
+
+      @source_doc.root.children.children.each do |activity|
+
+        #activity["Sport"].to_s
+        if activity.name == 'Activity'
+          @sport = activity['Sport'].to_s
+
+        end
+      end
+
       @source_doc.root.children.children.children.each do |node|
 
         if node.name == 'Lap'
           counter +=1
           round +=1
           if counter == 1
-            @start_time = node["StartTime"].to_s
+            @start_time = node['StartTime'].to_s
           end
           round = counter.to_i
           round -=1
 
           @rounds[round]||= {}
-          @rounds[round][:lap_start_time] = node["StartTime"].to_s				  
+          @rounds[round][:lap_start_time] = node['StartTime'].to_s
           
           node.children.each do |main_sub_node|
 
@@ -216,14 +237,11 @@ module Trainingsdata
               @distance_total += main_sub_node.text.to_f
             end
 
+
             if main_sub_node.name == 'MaximumSpeed'
               @rounds[round] ||= {}
-              @rounds[round][:speed_max_lap] = main_sub_node.text.to_f
-              if @speed_max < main_sub_node.text.to_f
-                @speed_max += main_sub_node.text.to_f
-              end
+              @rounds[round][:maximum_speed] = main_sub_node.text.to_f
             end
-
             if main_sub_node.name == 'Calories'
               @rounds[round] ||= {}
               @rounds[round][:calories] = main_sub_node.text.to_i
@@ -246,28 +264,22 @@ module Trainingsdata
                 if working_node.name == 'Position' && !working_node.children[0].text.to_s.nil? &&  !working_node.children[1].text.nil? 
                   working_node.children.each do |sub_sub_node|
                     @rounds[round][:laps][trackpoint.to_i] ||= {}
+
                     if sub_sub_node.name == 'LatitudeDegrees'
-                        #@log.debug('sub_sub_node.LatitudeDegrees')
-                        #@log.debug(sub_sub_node.text.to_f)
-                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
-                     end 
-                      if sub_sub_node.name == 'LongitudeDegrees'
-                        #@log.debug('sub_sub_node.LongitudeDegrees')
-                        #@log.debug(sub_sub_node.text.to_f)
-                        @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_f
-                      end
+                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]   = sub_sub_node.text.to_f
+                    end
+
+                    if sub_sub_node.name == 'LongitudeDegrees'
+                      @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]  = sub_sub_node.text.to_f
+                    end
                       
                       
-                     if sub_sub_node.name == 'LatitudeDegrees'
-                        #@log.debug('sub_sub_node.LatitudeDegrees')
-                        #@log.debug(sub_sub_node.text.to_f)
-                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
-                     end 
-                      if sub_sub_node.name == 'LongitudeDegrees'
-                        @log.debug('sub_sub_node.LongitudeDegrees')
-                        @log.debug(sub_sub_node.text.to_f)
-                        @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_ff
-                      end 
+                     #if sub_sub_node.name == 'LatitudeDegrees'
+                     #   @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]=sub_sub_node.text.to_f
+                     #end
+                     # if sub_sub_node.name == 'LongitudeDegrees'
+                     #   @rounds[round][:laps][trackpoint.to_i][:longitude_degrees]=sub_sub_node.text.to_f
+                     # end
                   end
                   
                   #@rounds[round][:laps][trackpoint.to_i][:latitude_degrees]	= working_node.children[1].text.to_f
@@ -286,11 +298,8 @@ module Trainingsdata
                   @rounds[round][:laps][trackpoint.to_i] ||= {}
                   @rounds[round][:laps][trackpoint.to_i][:heart_rate_bpm] = working_node.children.text.to_i
                 end
-                if working_node.name == 'AltitudeMeters'
-                  @rounds[round][:laps][trackpoint.to_i] ||= {}
-                  @rounds[round][:laps][trackpoint.to_i][:height] = working_node.children.text.to_f
-                end                
-              end                
+
+              end
             end              
           end            
         end            
