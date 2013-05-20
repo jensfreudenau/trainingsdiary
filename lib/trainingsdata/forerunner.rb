@@ -14,8 +14,8 @@ module Trainingsdata
       @lap_single_height    = Array.new
 
       #if (new == false)
-        self.open_file
-        @source_doc = Nokogiri::XML.parse(@file) { |cfg| cfg.noblanks }
+      #  self.open_file
+      #  @source_doc = Nokogiri::XML.parse(@file) { |cfg| cfg.noblanks }
 
       #elsif (ajax == true)
       #

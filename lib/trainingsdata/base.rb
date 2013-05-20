@@ -123,7 +123,7 @@ module Trainingsdata
     def open_file
       #uri = URI(@path)
       #@file = Net::HTTP.get(uri)
-      @path ="/Users/jensfreudenau/Development/trainingsdiary/public/uploads/tmp/klein.TCX"
+      #@path ="/Users/jensfreudenau/Development/trainingsdiary/public/uploads/tmp/klein.TCX"
       @file = File.new(@path, "r")
       @log.debug('@file')
       @log.debug(@file)
