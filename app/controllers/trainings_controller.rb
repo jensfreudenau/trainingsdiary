@@ -250,17 +250,13 @@ class TrainingsController < ApplicationController
     @training.sport_level_id = 1
     @training.course_name_id = @coursename.id
     @training.save
-    puts '###################'
-    puts @training.id
-    puts '###################'
+
     unless @training.id.nil?
       self.save_file_data(xml, true)
     end
 
     @training.save
-    puts '###################'
-    puts @training.id
-    puts '###################'
+
     #render :js => "window.location = '/e/index'"
     render js: "window.location.pathname = #{edit_training_path(@training).to_json}"
     #render :nothing => true
