@@ -573,7 +573,7 @@ tr.empty {
 .block dt {
     float: left;
     clear: left;
-    width: 100px;
+    width: 105px;
     text-align: right;
     font-weight: bold;
     color: green;
