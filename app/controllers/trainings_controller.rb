@@ -83,6 +83,7 @@ class TrainingsController < ApplicationController
                         trainings.start_time as start_time,
                         course_name_id as coursename,
                         sports.name as sportname,
+                        course_names.name as coursename,
                         trainings.distance_total as distancetotal')
                         .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
                         .joins(:course_name, :sport, :sport_level)
