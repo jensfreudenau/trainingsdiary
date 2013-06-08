@@ -101,9 +101,10 @@
         #sidebar
           = render :partial => 'partials/calendar'
           = render :partial => 'partials/statistic', :locals => { :report => @report }
-          .block
-            %h3
-              = t('last_trainings')
-            %ul{:class => 'navigation trainings'}
-              = render :partial => 'partials/last_training', :collection => @last_trainings
+          .partial.last_trainings
+            #last_trainings
+              %h3
+                = t('last_trainings')
+              %ul{:class => 'navigation trainings'}
+                = render :partial => 'partials/last_training', :collection => @last_trainings
     = image_tag('image-1.jpg', :alt => 'background', :id=>'background')

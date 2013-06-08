@@ -410,6 +410,10 @@ ul.trainings {
     padding: 5px;
     border: 1px solid gray;
     box-shadow: 5px 6px 9px -3px #353535;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
 }
 
 #sortable {
@@ -514,6 +518,7 @@ ul#coursesform label {
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
+	font-size: 0.8em;
 }
 
 #statistic #week a, #statistic #week a:hover {
@@ -653,9 +658,21 @@ thead tr {
 }
 
 table thead tr {
-    background: #f3f3f3;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;	
+    
 }
-
+ 
+/*
+ 	table.training tr:first-child th:first-child,
+	table.training tr:first-child td:first-child {
+	*/	
+table thead tr:first-child th:first-child {
+		border-top-left-radius: 3px;	
+}
+table thead tr:first-child th:last-child {
+		border-top-right-radius: 3px;	
+}
 tbody tr:nth-child(odd) {
     /*background: #fff;*/
 }
@@ -678,6 +695,7 @@ tbody tr td, thead tr th {
 }
 
 thead tr th {
+	background: #f3f3f3;
     padding: 1px 14px;
 }
 
@@ -899,13 +917,15 @@ body {
     border-radius: 4px;
 }
 
-.trainings {
+.trainings, .statistics {
     background: white;
 }
 
 .partial {
-    background: white;
+    background: none repeat scroll 0 0 rgba(127, 127, 127, 0.6);
     margin-bottom: 30px;
+	padding:15px;
+	border: 1px solid #000000;
 }
 
 ul.navigation li span a {
@@ -922,3 +942,6 @@ ul.navigation li span a {
     padding: 5px;
 }
 
+#calendar, #statistic, #last_trainings{
+	box-shadow: 5px 6px 9px -3px #353535;
+}
