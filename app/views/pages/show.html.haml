@@ -119,13 +119,16 @@
             #heartrate_chart
 
         .trainings_data
-          - if(!home.map_data.nil?)
+          -if home.map_data =~ /\d/
             #map
             .link_big_map
               %br/
               = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
-        
-:javascript
-  createMapWithRoute( #{home.map_data}, "map", true, true);
-  heartchart(#{home.heartrate}, #{home.heartrate_avg}, #{home.heartrate_max}, "heartrate_chart");
+
+-if home.map_data =~ /\d/
+  :javascript
+    createMapWithRoute( #{home.map_data}, "map", true, true);
+-if home.heartrate =~ /\d/
+  :javascript
+    heartchart(#{home.heartrate}, #{home.heartrate_avg}, #{home.heartrate_max}, "heartrate_chart");
   

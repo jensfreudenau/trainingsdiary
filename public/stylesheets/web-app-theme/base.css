@@ -117,14 +117,6 @@ h1 a{ margin: 15px 0; font-size: 22px; font-weight: normal; letter-spacing:1em;}
   margin-top: 0;
 }
 
-#user-navigation {
-  position: absolute;
-  top: 0px;
-  right: 20px;
-}
-
-
-
 #user-navigation ul, #main-navigation ul, .secondary-navigation ul, #sidebar ul.navigation {
   margin: 0;
   padding: 0;
@@ -136,12 +128,7 @@ h1 a{ margin: 15px 0; font-size: 22px; font-weight: normal; letter-spacing:1em;}
 }
 
 
-#user-navigation ul li a{
-    font-size: 11px;
-}
-#user-navigation ul li {
-  padding: 5px 10px 0 10px;
-}
+
 
 #main-navigation ul li a:link, #main-navigation ul li a:visited, #main-navigation ul li a:hover, #main-navigation ul li a:active,
 .secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, .secondary-navigation ul li a:hover, .secondary-navigation ul li a:active,

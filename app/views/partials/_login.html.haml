@@ -1,0 +1,16 @@
+
+
+= form_for('user', :url => user_session_path, :html => { :id => 'loginForm' }) do |f|
+  %fieldset#body
+    %fieldset
+      = label_tag 'user[email]', 'Your email'
+      = text_field_tag 'user[email]'
+
+
+    %fieldset
+      = label_tag 'user[password]', 'Your password'
+      = password_field_tag 'user[password]'
+    %input#login{:type => "submit", :value => "Sign in"}/
+
+
+

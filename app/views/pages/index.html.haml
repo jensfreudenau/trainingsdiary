@@ -59,12 +59,12 @@
                           .wat-cf
                             = link_to image_tag('web-app-theme/icons/show.png', :alt => "#{t('web-app-theme.show', :default=> 'show')}") + '' + t('web-app-theme.show', :default=> 'show'), page_path(training), :class => 'button'
 
-
-                    .link_big_map
-                      = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
-                    .map{:class => 'minimap', :id => "map_#{training.id.to_s}"}
-                      :javascript
-                        createMapWithRoute( #{training.map_data}, "map_#{training.id.to_s}", false);
+                    -if training.map_data =~ /\d/
+                      .link_big_map
+                        = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
+                      .map{:class => 'minimap', :id => "map_#{training.id.to_s}"}
+                        :javascript
+                          createMapWithRoute( #{training.map_data}, "map_#{training.id.to_s}", false);
                     
                 .clear
       .actions-bar.wat-cf

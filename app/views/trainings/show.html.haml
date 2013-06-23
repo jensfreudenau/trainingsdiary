@@ -122,19 +122,25 @@
           #heartrate_chart
 
       .trainings_data
-        - if(!training.map_data.nil?)
-          #map
-          %br/
-          .link_big_map
-            = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
+        -if training.map_data =~ /\d/
+
+          - if(!training.map_data.to_i.nil?)
+            #map
+            %br/
+            .link_big_map
+              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
         .wat-cf
           = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
           = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
 
 
-:javascript
-  createMapWithRoute( #{training.map_data}, "map");
-  heartchart(#{training.heartrate}, #{training.heartrate_avg}, #{training.heartrate_max}, "heartrate_chart");
+
+  -if training.map_data =~ /\d/
+    :javascript
+      createMapWithRoute( #{training.map_data}, "map");
+  -if training.heartrate =~ /\d/
+    :javascript
+      heartchart(#{training.heartrate}, #{training.heartrate_avg}, #{training.heartrate_max}, "heartrate_chart");
 
   
   

@@ -39,7 +39,7 @@
 }
 
 a:link, a:visited, a:hover, a:active, h1, h2, h3 {
-    color: #36393d;
+    /*color: #36393d;*/
 }
 
 a {
@@ -65,7 +65,7 @@ hr {
 }
 
 .header-cont {
-    border-bottom: 2px solid #ff1493;
+    border-bottom: 1px solid #ff1493;
     background: #36393d;
     width: 100%;
     position: fixed;
@@ -88,18 +88,7 @@ hr {
     color: #FFF;
 }
 
-#user-navigation {
-    top: auto;
-    bottom: 5px;
-    float: right;
-}
 
-#user-navigation a.logout {
-    background: #cc0000;
-    padding: 1px 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 3px;
-}
 
 #main .block .content {
     background: none;
@@ -134,19 +123,8 @@ hr {
     color: #FFF;
 }
 
-#main-navigation ul li {
-    padding-left: 15px;
-}
 
-#main-navigation ul li a {
-    padding: 0;
-    font-size: 14px;
-    padding-left: 15px;
-}
 
-#main-navigation ul li.active a {
-    border-bottom: 1px dotted #FF1493;
-}
 
 #sidebar ul li a:link, #sidebar ul li a:visited {
     background: #FFF;
@@ -158,33 +136,81 @@ hr {
     background: #666666;
     color: #ffffff;
 }
+#navigation {
+    background:#1A1A1A;
+    height: 40px;
+}
+#user-navigation {
+    float: right;
+	padding-left: 55px;
+    width: 15%;
+}
+#user-navigation ul li a{
+    font-size: 14px;
+}
 
+
+
+#user-navigation ul li ul {
+    float: right;
+}
+#user-navigation a.logout {
+    background: #cc0000;
+    padding: 1px 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 3px;
+}
 #main-navigation {
-    background: #1a1a1a;
     float: left;
     padding-left: 55px;
     height: 35px;
+	width: 80%;
+}
+#main-navigation ul li a, #user-navigation ul li a {
+    padding: 0;
+    padding-left: 15px;
 }
 
-#main-navigation ul li {
+#main-navigation ul li.active a, #user-navigation ul li.active a {
+    border-bottom: 1px dotted #FF1493;
+}
+#main-navigation ul li, #user-navigation ul li {
     margin-right: 0;
+	padding-left: 15px;
+	margin-right: 5px;
 }
 
 #main-navigation ul li a:link, #main-navigation ul li a:visited, #main-navigation ul li a:hover, #main-navigation ul li a:active,
-.secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, .secondary-navigation ul li a:hover, .secondary-navigation ul li a:active,
-#user-navigation ul li a:link, #user-navigation ul li a:visited, #user-navigation ul li a:hover, #user-navigation ul li a:active {
+#user-navigation ul li a:link, #user-navigation ul li a:visited, #user-navigation ul li a:hover, #user-navigation ul li a:active,
+.secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, .secondary-navigation ul li a:hover, .secondary-navigation ul li a:active
+ {
     /*text-decoration: none;*/
     color: #FFF;
-    letter-spacing: 1px;
+    /*letter-spacing: 1px;*/
 
 }
+#main-navigation ul.wat-cf li , #user-navigation ul.wat-cf li{
+    padding-top: 15px;
+}
 
+#main-navigation ul.wat-cf, #user-navigation ul.wat-cf {
+    height: 45px;
+}
+
+#main-navigation ul li ul li, #user-navigation ul li ul li  {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+}
+
+#main-navigation ul li.active, #user-navigation ul li.active {
+    text-decoration: underline;
+}
 .secondary-navigation li a:hover {
     background: #666666;
 }
 
 .secondary-navigation {
-    background: grey;
+    background: gray;
     border-bottom-color: #1a1a1a;
 }
 
@@ -328,14 +354,6 @@ ul.list li .item .avatar {
 }
 
 /* rounded borders */
-
-#main, #main-navigation, #main-navigation li, .secondary-navigation, #main .block, #sidebar .block, #sidebar h3,
-#footer .block, .form input.button, #box .block, #box .block h2, ul.listing h3 {
-    -moz-border-radius-topleft: 4px;
-    -webkit-border-top-left-radius: 4px;
-    -moz-border-radius-topright: 4px;
-    -webkit-border-top-right-radius: 4px;
-}
 
 .secondary-navigation li.first a, .secondary-navigation ul li.first, .table th.first, .table th.first {
     -moz-border-radius-topleft: 4px;
@@ -769,37 +787,16 @@ body {
 
 }
 
-#main-navigation ul.wat-cf li {
-    padding-top: 15px;
-}
-
-#main-navigation ul.wat-cf {
-    height: 45px;
-}
-
-#main-navigation ul li ul li {
-    background-color: #1A1A1A;
-    color: #FFFFFF;
-}
-
-#main-navigation ul li {
-    margin-right: 5px;
-}
-
-#main-navigation {
-    width: 100%;
-}
-
-#menu {
+.menu {
     position: absolute;
 }
 
-#menu ul {
+.menu ul {
     margin: 0;
     padding: 0;
 }
 
-#menu li.topmenu {
+.menu li.topmenu {
     float: left;
     width: 80px;
 }
@@ -814,24 +811,25 @@ body {
 
 }
 
-#menu ul li.topmenu ul li.submenu a {
+.menu ul li.topmenu ul li.submenu a {
     color: #444444;
     font-size: 12px;
     font-family: Verdana, arial, helvetica;
 }
 
-#menu ul li.topmenu ul {
+.menu ul li.topmenu ul {
     margin-top: 32px;
 }
 
-#menu ul li.topmenu ul li.submenu a, #menu ul li.topmenu ul li.submenu {
+.menu ul li.topmenu ul li.submenu a, .menu ul li.topmenu ul li.submenu {
     padding: 0 0 0 2px;
     margin-left: 15px;
     width: 100px;
     overflow: hidden;
+    font-size: 10px;
 }
 
-#menu ul li.topmenu ul li.submenu {
+.menu ul li.topmenu ul li.submenu {
     padding: 10px 5px;
     margin-left: 0;
     background: #fff;
@@ -839,7 +837,7 @@ body {
 
 }
 
-#menu ul li.topmenu ul li.last {
+.menu ul li.topmenu ul li.last {
 }
 
 .topmenu a, .submenu a {
@@ -852,6 +850,10 @@ body {
     position: relative;
     clear: both; /* special IE6 */
 }
+#user-navigation .menu ul li.topmenu ul li.submenu a, .menu ul li.topmenu ul li.submenu {
+    width: 150px;
+    font-size: 10px;
+}
 
 .topmenu:hover ul {
     display: block;
@@ -860,9 +862,10 @@ body {
 
 .inner {
     margin-top: 30px;
-    border: 1px solid #000;
-    background: gray;
-    background: rgba(127, 127, 127, 0.6);
+    border: 1px solid #494949;
+    background: url("/images/background.png") repeat scroll 0 0 transparent;
+    /*background: gray;*/
+    /*background: rgba(127, 127, 127, 0.6);*/
 
     z-index: 50;
     width: 730px;
@@ -922,19 +925,18 @@ body {
 }
 
 .partial {
-    background: none repeat scroll 0 0 rgba(127, 127, 127, 0.6);
+    /*background: none repeat scroll 0 0 rgba(127, 127, 127, 0.6);*/
     margin-bottom: 30px;
 	padding:15px;
-	border: 1px solid #000000;
+	border: 1px solid #494949;
+    background: url("/images/background.png") repeat scroll 0 0 transparent;
 }
 
 ul.navigation li span a {
     float: left;
 }
 
-#main-navigation ul li.active {
-    text-decoration: underline;
-}
+
 
 .form select {
     line-height: 30px;
@@ -944,4 +946,113 @@ ul.navigation li span a {
 
 #calendar, #statistic, #last_trainings{
 	box-shadow: 5px 6px 9px -3px #353535;
+}
+
+
+
+
+/*#####################LOGIN######################*/
+/*-------LOGIN STARTS HERE -------*/
+
+/* Login Button Text */
+#loginButton span {
+    color:#FFF;
+    cursor:pointer;
+}
+
+
+
+/* Login Box */
+#loginBox {
+    position:absolute;
+    top:34px;
+    right:0;
+    display:none;
+    z-index:29;
+}
+
+
+
+
+
+/* Login Form */
+#loginForm {
+    width:248px;
+}
+
+#loginForm fieldset {
+    margin:0 0 12px 0;
+    display:block;
+    border:0;
+    padding:0;
+}
+
+fieldset#body {
+    background:#fff;
+    -moz-border-radius:3px;
+    padding:10px 13px;
+
+}
+
+#loginForm #checkbox {
+    width:auto;
+    margin:1px 9px 0 0;
+    float:left;
+    padding:0;
+    border:0;
+    *margin:-3px 9px 0 0; /* IE7 Fix */
+}
+
+#body label {
+    color:#3a454d;
+    margin:9px 0 0 0;
+    display:block;
+    float:left;
+}
+
+#loginForm #body fieldset label {
+    display:block;
+    float:none;
+    margin:0 0 6px 0;
+}
+
+/* Default Input */
+#loginForm input {
+    width:92%;
+
+}
+
+/* Sign In Button */
+#loginForm #login {
+    width:auto;
+    float:left;
+    background:#339cdf url(../images/loginbuttonbg.png) repeat-x;
+    color:#fff;
+    padding:7px 10px 8px 10px;
+    text-shadow:0px -1px #278db8;
+    border:1px solid #339cdf;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0 12px 0 0;
+    cursor:pointer;
+    *padding:7px 2px 8px 2px; /* IE7 Fix */
+}
+
+/* Forgot your password */
+#loginForm span {
+    text-align:center;
+    display:block;
+    padding:7px 0 4px 0;
+
+}
+
+#loginForm span a {
+    color:#3a454d;
+    text-shadow:1px 1px #fff;
+    font-size:12px;
+}
+
+input:focus {
+    outline:none;
 }

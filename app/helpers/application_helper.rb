@@ -1,5 +1,17 @@
 module ApplicationHelper
     
+  def resource_name
+    :users
+  end
+  
+  def resource
+    @resource ||= Users.new
+  end
+  
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+  
   def to_dot_time(s)
     h = s / 3600
     s -= h * 3600
