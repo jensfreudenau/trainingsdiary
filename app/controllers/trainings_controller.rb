@@ -104,7 +104,7 @@ class TrainingsController < ApplicationController
     @training = current_user.trainings.new
 
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport = Sport.get_sports_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
 
     respond_to do |format|
@@ -126,7 +126,7 @@ class TrainingsController < ApplicationController
                         .first
 
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport = Sport.get_sports_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
   end
 
@@ -164,9 +164,9 @@ class TrainingsController < ApplicationController
     end
 
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport = Sport.get_sports_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
-    @training = current_user.trainings.new(params[:training])
+    @training   = current_user.trainings.new(params[:training])
 
     file_data = params[:training][:filename]
     respond_to do |format|
@@ -191,10 +191,6 @@ class TrainingsController < ApplicationController
     @log = Logger.new('log/trainings.log')
     Training.mounting
     file_data = params[:training][:filename]
-
-    #
-    #
-    #
     if params[:training][:start_time].nil?
       params[:training][:start_time] = Time.now.to_s(:db)
     end
@@ -237,7 +233,7 @@ class TrainingsController < ApplicationController
     end
   end
 
-  def sort
+  def presave
     @log = Logger.new('log/trainings.log')
     #skip_before_filter :verify_authenticity_token
     xml = params[:training_xml]
@@ -253,6 +249,7 @@ class TrainingsController < ApplicationController
     @training.save
 
     unless @training.id.nil?
+      @log.debug('jetzt das xml auswerten')
       self.save_file_data(xml, true)
     end
 
@@ -310,12 +307,14 @@ class TrainingsController < ApplicationController
       td.start_import(file_or_xml)
       @log.debug('import finished')
       @distances          = Array.new
+      @duration           = Array.new
       @heartrate_avg      = Array.new
       @calc_heartrate_avg = 0
 
       td.laps.each do |index, value|
 
         @distances[index.to_i]      = value[:distance]
+        @duration[index.to_i]       = value[:duration]
         @heartrate_avg[index.to_i]  = value[:heartrate_avg]
 
         @training.laps.create(
@@ -341,33 +340,58 @@ class TrainingsController < ApplicationController
       @training.map_data        = td.map_data
       @training.heartrate       = td.heartrate
       @training.height          = td.height
-      @training.heartrate_avg   = self.calculate_avg_heartrate(td.distance_total)
+      @training.heartrate_avg   = self.calculate_avg_heartrate
       @training.heartrate_max   = td.heartrate_max
 
       @training.save
     end
   end
 
-  def calculate_avg_heartrate (distance_total)
-    calc_heartrate_sum = 1
-    res = 1
-    begin
-      @distances.each_with_index do |value, index|
-
-        if (@heartrate_avg[index.to_i].nil?)
-          @heartrate_avg[index.to_i] = 1
+  def calculate_avg_heartrate
+    @log.debug(@training)
+    calc_heartrate_sum  = 1
+    res                 = 1
+    if @training.distance_total.to_f > 0
+      begin
+        @distances.each_with_index do |value, index|
+          if (@heartrate_avg[index.to_i].nil?)
+            @heartrate_avg[index.to_i] = 1
+          end
+          if (@distances[index.to_i] == 0.0)
+            @distances[index.to_i] = 1.0
+          end
+          if @heartrate_avg[index.to_i] && !@heartrate_avg[index.to_i].nil?
+            calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
+          end
         end
-        if (@distances[index.to_i] == 0.0)
-          @distances[index.to_i] = 1.0
-        end
-        if @heartrate_avg[index.to_i] && !@heartrate_avg[index.to_i].nil?
-
-          calc_heartrate_sum += @distances[index.to_i] * @heartrate_avg[index.to_i]
-        end
+        res = calc_heartrate_sum/@training.distance_total
+      rescue
+        @log.debug('keine Streckenlänge')
       end
-      res = calc_heartrate_sum/distance_total
+      return res
     end
-    return res
+
+    if @training.time_total > 0
+      begin
+        @duration.each_with_index do |value, index|
+          if (@heartrate_avg[index.to_i].nil?)
+            @heartrate_avg[index.to_i] = 1
+          end
+          if (@duration[index.to_i] == 0.0)
+            @duration[index.to_i] = 1.0
+          end
+          if @heartrate_avg[index.to_i] && !@heartrate_avg[index.to_i].nil?
+            calc_heartrate_sum += @duration[index.to_i] * @heartrate_avg[index.to_i]
+          end
+        end
+        res = calc_heartrate_sum/@training.time_total
+      rescue
+        @log.debug('keine Streckenzeit')
+      end
+      return res
+    end
+    @log.debug('calculate_avg_heartrate finished')
+    return 1
   end
 
   def batch (file)

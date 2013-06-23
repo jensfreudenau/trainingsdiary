@@ -60,13 +60,13 @@ function load(authm) {
 
 function postFile (aFile, aDisplay, auth) {
     var theContent = aFile;
-    new Ajax.Request('/trainings/sort', {
+    new Ajax.Request('/trainings/presave', {
           method:'POST',
 //            parameters: form.serialize(),
           parameters: {training_xml: theContent, authenticity_token: auth },
           onSuccess: function(transport) {
             var response = transport.responseText || "no response text";
-            alert("Success! \n\n");
+
               var theStatusCell = aDisplay.currentActivityStatusElement();
               if( theStatusCell ) {
                   theStatusCell.innerHTML = 'Done';

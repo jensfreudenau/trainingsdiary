@@ -38,6 +38,7 @@ Trainingsdiary::Application.routes.draw do
     post :sort, :on => :collection
   end
   resources :trainings do
+    post :presave, :on => :collection
     post :sort, :on => :collection
   end
   resources :blog_entries do
