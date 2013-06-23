@@ -366,7 +366,7 @@ class TrainingsController < ApplicationController
         end
         res = calc_heartrate_sum/@training.distance_total
       rescue
-        @log.debug('keine Streckenlänge')
+        @log.debug('keine Streckenlaenge')
       end
       return res
     end
