@@ -72,12 +72,17 @@
                       - if user_signed_in?
                         %li{:class =>'submenu last'}
                           = link_to "#{t('web-app-theme.new', :default => '"New')}", new_training_path
+
                   - if user_signed_in?
                     %li{ :class => (params[:controller] == 'trainings' ? 'active topmenu' : 'topmenu') }
                       = link_to t('trainings'), trainings_path
                       %ul
                         %li{:class =>'submenu'}
                           = link_to "#{t('web-app-theme.new', :default => 'New')}", new_training_path
+                        %li{:class =>'submenu'}
+                          = link_to "#{t('web-app-theme.calendar', :default => 'Calendar')}", :controller => :trainings, :action => :bigcalendar
+
+
                   %li{ :class => (params[:controller] == 'statistics' ? 'active topmenu' : 'topmenu') }
                     = link_to t('statistics'), statistics_path
 

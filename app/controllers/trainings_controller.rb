@@ -97,6 +97,38 @@ class TrainingsController < ApplicationController
     end
   end
 
+  # GET /trainings/bigcalendar
+  # GET /trainings/bigcalendar.xml
+  def bigcalendar
+    @calendar = Training.select(
+                                'trainings.id,
+                                course_names.name as coursename,
+                                sport_levels.name as sportlevel,
+                                sport_levels.css as css,
+                                sports.name as sportname,
+                                time_total,
+                                comment,
+                                trainings.start_time as start_time,
+                                distance_total')
+                        .order('start_time desc')
+                        .joins(:sport_level, :sport, :course_name)
+                        .limit(600)
+    @calendardate = params[:month] ? Date.parse(params[:month]) : Date.today
+
+    respond_to do |format|
+      format.html # bigcalendar.html.haml
+      format.xml { render :xml => @training }
+    end
+  end
+  # GET /trainings/bigcalendar
+  # GET /trainings/bigcalendar.xml
+  def import_workouts
+    respond_to do |format|
+      format.html # import_workouts.html.haml
+      format.xml { render :xml => @training }
+    end
+  end
+
   # GET /trainings/new
   # GET /trainings/new.xml
   def new

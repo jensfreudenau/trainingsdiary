@@ -61,6 +61,7 @@ GEM
       nokogiri (~> 1.5.0)
       ruby-hmac
     formatador (0.2.4)
+    fullcalendar-rails (1.6.1.0)
     geokit (1.6.5)
       multi_json
     haml (4.0.2)
@@ -159,6 +160,7 @@ DEPENDENCIES
   chronic_duration
   devise
   fog
+  fullcalendar-rails
   geokit
   haml
   haml-rails

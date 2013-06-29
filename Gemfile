@@ -25,4 +25,5 @@ gem 'yaml_db'
 gem 'aws-s3'
 gem 'thin'
 gem 'fog'
+gem 'fullcalendar-rails'
 
