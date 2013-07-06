@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130629111403) do
+ActiveRecord::Schema.define(:version => 20130706133322) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(:version => 20130629111403) do
     t.float    "time_total"
     t.float    "distance_total"
     t.text     "map_data"
-    t.string   "filename"
+    t.text     "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_time"
@@ -148,10 +148,10 @@ ActiveRecord::Schema.define(:version => 20130629111403) do
     t.string   "duration"
     t.string   "intensity"
     t.string   "target"
-    t.date     "scheduled_on"
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "workout_id"
   end
 
   create_table "workouts", :force => true do |t|
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20130629111403) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.date     "scheduled_on"
   end
 
 end
