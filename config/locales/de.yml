@@ -27,6 +27,8 @@ de:
   fullscreen: "Grosse Ansicht"
   details: "Details"
   create trainings route: "Trainingsroute anlegen"
+  will_paginate:
+    page_gap: ">"
   web-app-theme:
     courses: "Strecken"
     delete: "löschen"
