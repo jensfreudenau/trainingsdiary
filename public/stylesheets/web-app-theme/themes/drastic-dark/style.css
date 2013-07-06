@@ -496,7 +496,7 @@ ul#trainingsform label {
     display: block;
     margin-bottom: 20px;
     letter-spacing: 2px;
-
+    text-shadow: black 0.1em 0.1em 0.2em;
     /*clear: both;*/
 }
 
@@ -1076,7 +1076,11 @@ body {
     text-shadow: black 0.1em 0.1em 0.2em;
     padding-left: 10px;
 }
-
+.create_route a{
+     float: right;
+     color: white;
+     text-shadow:  black 0.1em 0.1em 0.2em;
+}
 a{
     color:black;
 }

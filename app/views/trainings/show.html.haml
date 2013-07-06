@@ -11,8 +11,6 @@
         = t("at", :default => "at")
         = localize(training.start_time, :format => :default)
       .trainings_data
-        %p
-          = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
         %table.training.datatable
           %thead
             %tr
@@ -112,7 +110,7 @@
                         - cals = cals + lap.calories.to_i
               %tr
                 %td{:colspan => 2}
-                  = t("activerecord.attributes.lap.all_calories", :default => t("activerecord.labels.all_calories", :default => "ges. Kalorien"))
+                  = t('activerecord.attributes.lap.all_calories', :default => t('activerecord.labels.all_calories', :default => 'ges. Kalorien'))
                 %td{:colspan => 5}
                   = cals
 
@@ -126,6 +124,10 @@
 
           - if(!training.map_data.to_i.nil?)
             #map
+
+            %br/
+            .create_route
+              = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
             %br/
             .link_big_map
               = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
