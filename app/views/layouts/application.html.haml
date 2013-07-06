@@ -3,6 +3,8 @@
   %head
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html'}
     %meta{ :charset => 'UTF-8' }
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic,300italic,300", :rel => "stylesheet", :type => "text/css"}/
+
     %title My Trainings
     = stylesheet_link_tag 'web-app-theme/base',
                           'web-app-theme/themes/drastic-dark/style', 
@@ -123,8 +125,8 @@
           = render :partial => 'partials/statistic', :locals => { :report => @report }
           .partial.last_trainings
             #last_trainings
-              %h3
+              %h3#trainings
                 = t('last_trainings')
               %ul{:class => 'navigation trainings'}
                 = render :partial => 'partials/last_training', :collection => @last_trainings
-    = image_tag('wand.jpg', :alt => 'background', :id=>'background')
+    = image_tag('background.jpg', :alt => 'background', :id=>'background')

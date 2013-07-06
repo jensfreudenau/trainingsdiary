@@ -75,7 +75,8 @@ h1 a{ margin: 15px 0; font-size: 22px; font-weight: normal; letter-spacing:1em;}
 #sidebar {
   width: 25%;
   float: right;
-    margin-top: 30px;
+    padding-top: 20px;
+    /*margin-top: 51px;*/
 }
 
 #sidebar h3 , ul.listing h3{  
@@ -160,13 +161,10 @@ h1 a{ margin: 15px 0; font-size: 22px; font-weight: normal; letter-spacing:1em;}
   margin-right: 5px; 
   display: block;
   float: left;
-  border-style: solid;
-  border-width: 1px;
+
 }
 
-.pagination em {
-  font-weight: bold;  
-}
+
 
 .pagination a {
   text-decoration: none;  

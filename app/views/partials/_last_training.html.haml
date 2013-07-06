@@ -5,6 +5,6 @@
   
 %li{:class => last_training.sportlevel.to_s}
   - if (last_training.distance != nil)
-    = link_to localize(last_training.start_time) + ', ' + number_to_human(last_training.distance, :units => :distance, :precision => 3) + ', ' + last_training.coursename, training_path(last_training)
+    = link_to localize(last_training.start_time) + ', ' + number_to_human(last_training.distance, :units => :distance, :precision => 3) + ', ' + last_training.coursename, page_path(last_training)
   
   

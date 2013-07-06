@@ -126,15 +126,16 @@ hr {
 
 
 
-#sidebar ul li a:link, #sidebar ul li a:visited {
+#sidebar ul li a:link, #sidebar ul li a:visited, .list_overview .link_big_map a {
     background: #FFF;
     border-bottom: 1px solid #F0F0EE;
     text-decoration: none;
 }
 
 #sidebar ul li a:hover, #sidebar ul li a:active {
-    background: #666666;
-    color: #ffffff;
+    /*background: #666666;*/
+    /*color: #ffffff;*/
+    text-shadow: gray 0.1em 0.1em 0.2em;
 }
 #navigation {
     background:#1A1A1A;
@@ -231,28 +232,16 @@ hr {
 /* pagination */
 
 .pagination a, .pagination span {
-    background: #cfcfcf;
     -moz-border-radius: 3px;
-    border: 1px solid #c1c1c1;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
 }
-
-.pagination .current {
-    background: #fff;
-}
-
-.pagination em {
-    background: #36393d;
-    color: #FFF;
-    border: 1px solid #36393d;
-}
-
-.pagination a {
-    color: #1a1a1a;
-}
-
 .pagination a:hover {
-    border: 1px solid #666;
+    color:white;
 }
+
+
+
 
 /* forms */
 
@@ -537,6 +526,9 @@ ul#coursesform label {
     padding-bottom: 10px;
     text-align: center;
 	font-size: 0.8em;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 #statistic #week a, #statistic #week a:hover {
@@ -547,9 +539,13 @@ ul#coursesform label {
 
 #statistic li {
     padding: 10px;
-    border-bottom: 1px solid #F0F0EE;
+    /*border-bottom: 1px solid #F0F0EE;*/
 }
-
+.last_trainings #trainings  {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
 .minimap {
     border: 1px solid gray;
     height: 200px;
@@ -596,7 +592,7 @@ tr.empty {
 .block dt {
     float: left;
     clear: left;
-    width: 105px;
+    width: 110px;
     text-align: right;
     font-weight: bold;
     color: green;
@@ -616,11 +612,19 @@ tr.empty {
 .courves h3 {
     padding: 30px 0 10px 100px;
 }
-
+.list_overview .link_big_map a{
+    color:black;
+    text-shadow: none;
+}
 .link_big_map {
     text-align: right;
 }
+.link_big_map a{
+    text-align: right;
+    color:white;
+    text-shadow: black 0.1em 0.1em 0.2em;
 
+}
 ul.listing .link_big_map {
     padding-right: 10px;
     padding-bottom: 5px;
@@ -861,19 +865,19 @@ body {
 }
 
 .inner {
-    margin-top: 30px;
-    border: 1px solid #494949;
-    background: url("/images/background.png") repeat scroll 0 0 transparent;
+    /*margin-top: 30px;*/
+    /*border: 1px solid #494949;*/
+    /*background: url("/images/background.png") repeat scroll 0 0 transparent;*/
     /*background: gray;*/
     /*background: rgba(127, 127, 127, 0.6);*/
 
     z-index: 50;
     width: 730px;
-    filter: blur(4px);
-    -o-filter: blur(4px);
-    -ms-filter: blur(4px);
-    -moz-filter: blur(4px);
-    -webkit-filter: blur(4px);
+    /*filter: blur(4px);*/
+    /*-o-filter: blur(4px);*/
+    /*-ms-filter: blur(4px);*/
+    /*-moz-filter: blur(4px);*/
+    /*-webkit-filter: blur(4px);*/
 }
 
 .detail {
@@ -928,8 +932,9 @@ body {
     /*background: none repeat scroll 0 0 rgba(127, 127, 127, 0.6);*/
     margin-bottom: 30px;
 	padding:15px;
-	border: 1px solid #494949;
-    background: url("/images/background.png") repeat scroll 0 0 transparent;
+
+	/*border: 1px solid #494949;*/
+    /*background: url("/images/background.png") repeat scroll 0 0 transparent;*/
 }
 
 ul.navigation li span a {
@@ -946,6 +951,10 @@ ul.navigation li span a {
 
 #calendar, #statistic, #last_trainings{
 	box-shadow: 5px 6px 9px -3px #353535;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
 }
 
 
@@ -1056,3 +1065,19 @@ fieldset#body {
 input:focus {
     outline:none;
 }
+
+
+body {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.inner h2, .inner h3 {
+    color:white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    padding-left: 10px;
+}
+
+a{
+    color:black;
+}
+
