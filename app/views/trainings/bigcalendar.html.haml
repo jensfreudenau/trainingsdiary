@@ -1,29 +1,30 @@
-#calendar
-  %h3#month
-    = link_to "<", :month => (@calendardate.beginning_of_month-1).strftime("%d-%m-%Y")
-    = localize(@calendardate, :format =>:calendar)
-    = link_to ">", :month => (@calendardate.end_of_month+1).strftime("%d-%m-%Y"), :url => {:action => 'calendar'}
-  = calendar_for @calendar, :year => @calendardate.year, :month => @calendardate.month, :first_day_of_week=>1 do |calendar|
-    = calendar.day(:day_method => :start_time) do |date, trainings|
-      = date.day
-      %ul
-        - for training in trainings
-          :css
-            li.#{training.sportlevel} a.tip{
-              border-bottom-color: ##{training.css} !important ;
-            }
-          %li{:class => training.sportlevel.to_s}
-            - if user_signed_in?
-              = link_to training_path(training, :month => (@calendardate.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
+.Wrapper
+  #bigcalendar
+    %h3#month
+      = link_to "<", :month => (@calendardate.beginning_of_month-1).strftime("%d-%m-%Y")
+      = localize(@calendardate, :format =>:calendar)
+      = link_to ">", :month => (@calendardate.end_of_month+1).strftime("%d-%m-%Y"), :url => {:action => 'calendar'}
+    = calendar_for @calendar, :year => @calendardate.year, :month => @calendardate.month, :first_day_of_week=>1 do |calendar|
+      = calendar.day(:day_method => :start_time) do |date, trainings|
+        = date.day
+        %ul
+          - for training in trainings
+            :css
+              li.#{training.sportlevel} a.tip{
+                border-bottom-color: ##{training.css} !important ;
+              }
+            %li{:class => training.sportlevel.to_s}
+              - if user_signed_in?
+                = link_to training_path(training, :month => (@calendardate.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
 
-                = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))
+                  = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))
 
-                - if(training.comment != '')
-                  %span
-                    = training.comment
-            - else
-              = link_to page_path(training, :month => (@calendardate.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
-                = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))
-                - if(training.comment != '')
-                  %span
-                    = training.comment
+                  - if(training.comment != '')
+                    %span
+                      = training.comment
+              - else
+                = link_to page_path(training, :month => (@calendardate.end_of_month).strftime("%d-%m-%Y")),{:class => 'tip'} do
+                  = h(number_to_human(training.distance_total, :units => :distance, :precision => 3))
+                  - if(training.comment != '')
+                    %span
+                      = training.comment
