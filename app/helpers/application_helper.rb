@@ -19,12 +19,17 @@ module ApplicationHelper
     s -= m * 60
     [h, m, s].join(":")
   end
-  
+
+  def time2hmsms
+    t = Time.parse(time)
+
+    return t.strftime( "%H:%M:%S,%L")
+  end
   def time2hms (time)
     #    DateTime.parse(time)
     t = Time.parse(time)
     
-    return t.strftime( "%H:%M:%S,%L")
+    return t.strftime( "%H:%M:%S")
     
     #    return time.strptime(time, "%I:%M:%S")
     
