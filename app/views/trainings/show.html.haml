@@ -34,7 +34,7 @@
               %td
                 = number_to_human(training.distance_total, :units => :distance, :precision => 4)
               %td
-                = ChronicDuration.output(training.time_total.to_i, :format => :chrono)
+                = ChronicDuration.output(training.time_total.to_f, :format => :chrono)
               %td
                 - if training.sportname == 'Radfahren'
                   = km_per_hours(training.distance_total, training.time_total.to_i)
@@ -92,9 +92,9 @@
                       %td
                         - if lap.distance_total != 0
                           - if training.sportname == 'Radfahren'
-                            = km_per_hours(lap.distance_total,lap.duration.to_i)
+                            = km_per_hours(lap.distance_total, lap.duration.to_i)
                           - else
-                            = minutes_per_km(lap.distance_total,lap.duration.to_i)
+                            = minutes_per_km(lap.distance_total, lap.duration.to_i)
                       %td
                         - if 186*0.85 < lap.heartrate_avg.to_f
                           .red
