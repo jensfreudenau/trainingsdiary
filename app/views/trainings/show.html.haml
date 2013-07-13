@@ -39,7 +39,7 @@
                 - if training.sportname == 'Radfahren'
                   = km_per_hours(training.distance_total, training.time_total.to_i)
                 - else
-                  = minutes_per_km(training.distance_total, training.time_total.to_i)
+                  = minutes_per_km(training.distance_total, training.time_total.to_f)
               %td
                 = training.heartrate_avg
               %td
