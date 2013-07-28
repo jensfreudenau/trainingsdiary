@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130706133322) do
+ActiveRecord::Schema.define(:version => 20130727081700) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -141,6 +141,27 @@ ActiveRecord::Schema.define(:version => 20130706133322) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "weather_translations", :force => true do |t|
+    t.string   "de"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "translation_id"
+  end
+
+  create_table "weathers", :force => true do |t|
+    t.integer  "training_id"
+    t.integer  "weather_id"
+    t.float    "temp"
+    t.string   "icon"
+    t.float    "wind_speed"
+    t.integer  "wind_deg"
+    t.integer  "humidity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "weathers", ["training_id"], :name => "index_weathers_on_training_id"
 
   create_table "workout_steps", :force => true do |t|
     t.integer  "user_id"

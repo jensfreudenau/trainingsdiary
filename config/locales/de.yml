@@ -248,6 +248,7 @@ de:
         start_time: "Datum"
         comment: "Kommentar"
         filename: "Datei"
+        temperature: "Temp."
       lap:
         distance: "Rundenlänge"
         duration: "Dauer"
@@ -266,3 +267,6 @@ de:
 
       full_messages:
         format: "%{attribute} %{message}"
+  
+
+

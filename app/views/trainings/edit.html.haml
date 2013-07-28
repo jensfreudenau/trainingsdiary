@@ -3,6 +3,8 @@
     .inner
       %ul#trainingsform
         = form_for @training, :url => training_path, :html => { :id => 'training', :class => :form, :multipart => true} do |f|
+          = f.hidden_field :user_id, :value => current_user.id
+
           -if @training.errors.any?
             #error_explanation
               %h3
@@ -10,6 +12,14 @@
               %ul
                 - @training.errors.full_messages.each do |msg|
                   %li= msg
+
+          = f.fields_for :weather do |weather|
+            = weather.hidden_field :weather_id, :value => @weather_id
+            = weather.hidden_field :humidity, :value => @humidity
+            = weather.hidden_field :wind_speed, :value => @speed
+            = weather.hidden_field :wind_deg, :value => @deg
+            = weather.hidden_field :temp, :value => @temp
+            = weather.hidden_field :icon, :value => @icon
           %li
             = f.label :sport_level_id, t("activerecord.attributes.training.sportlevel", :default => "Sport Level"), :class => :label
             = f.collection_select :sport_level_id, @sportlevel, :id, :name

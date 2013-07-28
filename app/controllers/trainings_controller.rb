@@ -1,8 +1,11 @@
 require 'rexml/document'
 require 'json'
+require 'active_support/inflector'
 require 'chronic_duration'
 require 'pp'
-load "fileutils.rb"
+require 'open-uri'
+
+load 'fileutils.rb'
 
 
 class TrainingsController < ApplicationController
@@ -78,7 +81,9 @@ class TrainingsController < ApplicationController
   # GET /trainings/1.xml
   def show
 
-    @training = Training.select('trainings.*,
+    @training = Training.select('
+                        trainings.*,
+                        weathers.*,
                         sport_levels.name as sportlevel,
                         trainings.start_time as start_time,
                         course_name_id as coursename,
@@ -86,7 +91,7 @@ class TrainingsController < ApplicationController
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
                         .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-                        .joins(:course_name, :sport, :sport_level)
+                        .joins(:course_name, :sport, :sport_level, :weather)
                         .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all
@@ -154,31 +159,33 @@ class TrainingsController < ApplicationController
                                 course_name_id as coursename,
                                 sports.name as sportname,
                                 trainings.distance_total as distancetotal')
-                        .joins(:course_name, :sport, :sport_level)
+                        .joins(:course_name, :sport, :sport_level, :weather)
                         .first
 
-    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport      = Sport.get_sports_by_user(current_user.id)
-    @coursename = CourseName.get_coursename_by_user(current_user.id)
-  end
+    res       =  @training.map_data.split('],[')
+    lat_lon   = res[2].split(',')
+    time      = DateTime.parse(@training['start_time'].to_s)
+    startTime = Time.iso8601(time.to_s.sub(/ /,'T')).to_i
+    endTime   = startTime + 7200
+    @geos     = Geocoder.search(lat_lon[0].to_s + ',' +lat_lon[1].to_s)
 
-  #def create_murks
-  #  @training = Training.new(params[:training])
-  #
-  #  #pp @training
-  #  @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
-  #  @sport = Sport.get_sports_by_user(current_user.id)
-  #  @coursename = CourseName.get_coursename_by_user(current_user.id)
-  #  respond_to do |format|
-  #    if @training.save
-  #      format.html { redirect_to(@training, :notice => 'Post created.') }
-  #      format.xml { render :xml => @training, :status => :created, :location => @training }
-  #    else
-  #      format.html { render :action => 'new' }
-  #      format.xml { render :xml => @training.errors, :status => :unprocessable_entity }
-  #    end
-  #  end
-  #end
+    city    = @geos[0].data['address_components'][2]['long_name']
+    url     = "http://api.openweathermap.org/data/2.5/history/city?q=#{ActiveSupport::Inflector.transliterate(city)}&units=metric&type=hour&cnt=1&end=#{endTime}&start=#{startTime}&APPID=#{API}"
+    buffer  = open(url).read
+    @result = JSON.parse(buffer)
+
+    @weather_id   = @result['list'][0]['weather'][0]['id']
+    @icon         = @result['list'][0]['weather'][0]['icon']
+    @temp         = @result['list'][0]['main']['temp']
+    @humidity     = @result['list'][0]['main']['humidity']
+    @speed        = @result['list'][0]['wind']['speed']
+    @deg          = @result['list'][0]['wind']['deg']
+    res           = WeatherTranslations.where('translation_id =? ', @weather_id).first
+    @weather_desc = res['de']
+    @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport        = Sport.get_sports_by_user(current_user.id)
+    @coursename   = CourseName.get_coursename_by_user(current_user.id)
+  end
 
 
   # POST /trainings
@@ -200,6 +207,7 @@ class TrainingsController < ApplicationController
     @coursename = CourseName.get_coursename_by_user(current_user.id)
     @training   = current_user.trainings.new(params[:training])
 
+
     file_data = params[:training][:filename]
     respond_to do |format|
       if @training.update_attributes(params[:training])
@@ -207,6 +215,7 @@ class TrainingsController < ApplicationController
           self.save_file_data(file_data, html)
         end
         if @training.save
+
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
           format.xml { head :ok }
         else
@@ -232,7 +241,7 @@ class TrainingsController < ApplicationController
       params[:training][:time_total] = params[:training][:time_total].to_f
     end
     @training       = Training.find(params[:id])
-    @training.user  = current_user
+    @training.save
     respond_to do |format|
 
       if @training.update_attributes(params[:training])
@@ -376,6 +385,9 @@ class TrainingsController < ApplicationController
       @training.heartrate_max   = td.heartrate_max
 
       @training.save
+      weather = Weather.new
+      weather.training_id=@training.id
+      weather.save
     end
   end
 
