@@ -249,6 +249,7 @@ de:
         comment: "Kommentar"
         filename: "Datei"
         temperature: "Temp."
+        weather: "Wetter"
       lap:
         distance: "Rundenlänge"
         duration: "Dauer"

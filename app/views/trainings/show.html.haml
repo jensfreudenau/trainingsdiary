@@ -11,44 +11,74 @@
         = t("at", :default => "at")
         = localize(training.start_time, :format => :default)
       .trainings_data
-        %table.training.datatable
-          %thead
-            %tr
-              %th
-                = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
-              %th
-                = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
-              %th
-                &oslash; Pace
-              %th
-                &oslash;
-                = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
-              %th
-                max
-                = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
-              %th
-                = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+        .maindata
+          %table.training.datatable.rundata{:width => '50%'}
+            %thead
+              %tr
+                %th
+                  &nbsp;
+                %th
+                  &nbsp;
+              %tr
+                %tbody
+                %td
+                  =t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
+                %td
+                  = number_to_human(training.distance_total, :units => :distance, :precision => 4)
+              %tr
+                %td
+                  =t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                %td
+                  = convertTimeToDuration(training.time_total.to_i)
+              %tr
+                %td &oslash; Pace
+                %td
+                  - if training.sportname == 'Radfahren'
+                    = km_per_hours(training.distance_total, training.time_total.to_i)
+                  - else
+                    = minutes_per_km(training.distance_total, training.time_total.to_f)
+              %tr
+                %td
+                  &oslash;
+                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                %td
+                  = training.heartrate_avg
+              %tr
+                %td
+                  max
+                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                %td
+                  = training.heartrate_max
+              %tr
+                %td
+                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                %td
+                  = training.coursename
 
-          %tr
+
+          %table.training.datatable.weatherdata{:width => '40%'}
+            %thead
+              %tr
+                %th
+                  &nbsp;
+                %th
+                  &nbsp;
             %tbody
-              %td
-                = number_to_human(training.distance_total, :units => :distance, :precision => 4)
-              %td
-                = ChronicDuration.output(training.time_total.to_f, :format => :chrono)
-              %td
-                - if training.sportname == 'Radfahren'
-                  = km_per_hours(training.distance_total, training.time_total.to_i)
-                - else
-                  = minutes_per_km(training.distance_total, training.time_total.to_f)
-              %td
-                = training.heartrate_avg
-              %td
-                = training.heartrate_max
-              %td
-                = training.coursename
+              %tr
+                %td
+                  = t('activerecord.attributes.training.temperature', :default => t('activerecord.labels.temperature', :default => 'temperature'))
+                %td
+                  -if training.temperature?
+                    = kelvin_to_celsius(training.temperature)
+                    &deg;C
+              %tr
+                %td
+                  = t('activerecord.attributes.training.weather', :default => t('activerecord.labels.weather', :default => 'weather'))
+                %td
+                  = training.de
 
         - if training.comment?
-          %table.training.datatable
+          %table.training.datatable{:width => '100%'}
             %thead
               %tr
                 %th
@@ -60,7 +90,7 @@
 
         #laps
           .outer_laps
-            %table.laps.datatable
+            %table.laps.datatable{:width => '100%'}
               %thead
                 %tr
                   %th

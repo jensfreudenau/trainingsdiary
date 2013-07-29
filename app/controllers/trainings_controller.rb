@@ -84,6 +84,10 @@ class TrainingsController < ApplicationController
     @training = Training.select('
                         trainings.*,
                         weathers.temp as temperature,
+                        weathers.weather_id,
+                        weather_translations.de,
+                        weathers.wind_speed,
+                        weathers.humidity,
                         sport_levels.name as sportlevel,
                         trainings.start_time as start_time,
                         course_name_id as coursename,
@@ -91,7 +95,7 @@ class TrainingsController < ApplicationController
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
                         .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-                        .joins(:course_name, :sport, :sport_level, :weather)
+                        .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id" LEFT JOIN weather_translations on weathers.weather_id = weather_translations.weather_id')
                         .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all

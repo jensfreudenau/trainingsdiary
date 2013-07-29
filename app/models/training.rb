@@ -7,6 +7,7 @@ class Training < ActiveRecord::Base
     has_many   :laps, :dependent => :destroy
     has_one    :weather
     accepts_nested_attributes_for :weather
+    has_many   :weather_translation, through: :weathers
     def self.mounting
       mount_uploader :filename, FileUploader
     end
