@@ -130,7 +130,7 @@
               = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
             %br/
             .link_big_map
-              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>"pages", :action=>"bigmap", :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
+              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
         .wat-cf
           = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
           = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"

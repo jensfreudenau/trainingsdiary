@@ -83,7 +83,7 @@ class TrainingsController < ApplicationController
 
     @training = Training.select('
                         trainings.*,
-                        weathers.*,
+                        weathers.temp as temperature,
                         sport_levels.name as sportlevel,
                         trainings.start_time as start_time,
                         course_name_id as coursename,

@@ -23,9 +23,11 @@ class PagesController < ApplicationController
   end
 
   def bigmap
-    @map = Training.all(
-        :select => 'trainings.map_data',
-        :conditions => ['trainings.id = ?', params[:id]])
+
+    @map = Training.select('trainings.map_data')
+                  .where( 'trainings.id = ?', params[:id])
+
+
     render :partial => 'bigmap.html.haml'
   end
 
