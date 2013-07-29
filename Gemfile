@@ -26,4 +26,7 @@ gem 'aws-s3'
 gem 'thin'
 gem 'fog'
 gem 'fullcalendar-rails'
+gem 'newrelic_rpm'
+gem 'geocoder'
+
 
