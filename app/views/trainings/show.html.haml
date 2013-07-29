@@ -19,8 +19,14 @@
                   &nbsp;
                 %th
                   &nbsp;
+            %tbody
               %tr
-                %tbody
+                %td
+                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                %td
+                  = training.coursename
+              %tr
+
                 %td
                   =t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
                 %td
@@ -49,11 +55,7 @@
                   = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
                 %td
                   = training.heartrate_max
-              %tr
-                %td
-                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
-                %td
-                  = training.coursename
+
 
 
           %table.training.datatable.weatherdata{:width => '40%'}
