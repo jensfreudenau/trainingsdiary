@@ -184,7 +184,7 @@ class TrainingsController < ApplicationController
     @humidity     = @result['list'][0]['main']['humidity']
     @speed        = @result['list'][0]['wind']['speed']
     @deg          = @result['list'][0]['wind']['deg']
-    res           = WeatherTranslation.where('translation_id =? ', @weather_id).first
+    res           = WeatherTranslation.where('weather_id =? ', @weather_id).first
     @weather_desc = res['de']
     @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport        = Sport.get_sports_by_user(current_user.id)
