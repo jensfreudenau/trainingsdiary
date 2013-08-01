@@ -77,7 +77,8 @@
                 %td
                   = t('activerecord.attributes.training.weather', :default => t('activerecord.labels.weather', :default => 'weather'))
                 %td
-                  = training.de.html_safe
+                  -if training.de?
+                    = training.de.html_safe
 
         - if training.comment?
           %table.training.datatable{:width => '100%'}
