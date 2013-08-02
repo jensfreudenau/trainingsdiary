@@ -191,6 +191,7 @@ class TrainingsController < ApplicationController
     @coursename   = CourseName.get_coursename_by_user(current_user.id)
   end
 
+  #
 
   # POST /trainings
   # POST /trainings.xml
