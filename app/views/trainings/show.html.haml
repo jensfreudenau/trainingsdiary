@@ -71,13 +71,14 @@
                   = t('activerecord.attributes.training.temperature', :default => t('activerecord.labels.temperature', :default => 'temperature'))
                 %td
                   -if training.temperature?
-                    = kelvin_to_celsius(training.temperature)
+                    = training.temperature.to_f
                     &deg;C
               %tr
                 %td
                   = t('activerecord.attributes.training.weather', :default => t('activerecord.labels.weather', :default => 'weather'))
                 %td
-                  = training.de.html_safe
+                  -if training.icon?
+                    = image_tag(@icon_url, :alt => "#{training.icon}")
 
         - if training.comment?
           %table.training.datatable{:width => '100%'}

@@ -84,8 +84,7 @@ class TrainingsController < ApplicationController
     @training = Training.select('
                         trainings.*,
                         weathers.temp as temperature,
-                        weathers.weather_id,
-                        weather_translations.de,
+                        weathers.icon,
                         weathers.wind_speed,
                         weathers.humidity,
                         sport_levels.name as sportlevel,
@@ -95,10 +94,15 @@ class TrainingsController < ApplicationController
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
                         .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-                        .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id" LEFT JOIN weather_translations on weathers.weather_id = weather_translations.weather_id')
+                        .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
                         .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all
+    if @training.icon?
+      @icon_url = "http://icons.wxug.com/i/c/g/#{@training.icon}.gif"
+      @icon_url = "#{@training.icon}.png"
+
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -156,6 +160,11 @@ class TrainingsController < ApplicationController
 
   # GET /trainings/1/edit
   def edit
+    @log = Logger.new('log/trainings.log')
+    w_api = Wunderground.new("4f8b96009743282f")
+    w_api.language = 'DE'
+
+
     @training = Training.where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
                         .select('trainings.*,
                                 sport_levels.name as sportlevel,
@@ -169,23 +178,29 @@ class TrainingsController < ApplicationController
     res       =  @training.map_data.split('],[')
     lat_lon   = res[2].split(',')
     time      = DateTime.parse(@training['start_time'].to_s)
-    startTime = Time.iso8601(time.to_s.sub(/ /,'T')).to_i
-    endTime   = startTime + 7200
-    @geos     = Geocoder.search(lat_lon[0].to_s + ',' +lat_lon[1].to_s)
+    h         = time.strftime("%H")
+    weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
+    weather_data.each do |data, index|
+      index.each do |v|
+        v.each do |i|
+          if i.class.to_s == 'Array'
+            i.each do |f|
+              @log.debug(f['date']['hour'].to_yaml)
+              if f['date']['hour'].to_s == h.to_s
 
-    city    = @geos[0].data['address_components'][2]['long_name']
-    url     = "http://api.openweathermap.org/data/2.5/history/city?q=#{ActiveSupport::Inflector.transliterate(city)}&units=metric&type=hour&cnt=1&end=#{endTime}&start=#{startTime}&APPID=#{API}"
-    buffer  = open(url).read
-    @result = JSON.parse(buffer)
-
-    @weather_id   = @result['list'][0]['weather'][0]['id']
-    @icon         = @result['list'][0]['weather'][0]['icon']
-    @temp         = @result['list'][0]['main']['temp']
-    @humidity     = @result['list'][0]['main']['humidity']
-    @speed        = @result['list'][0]['wind']['speed']
-    @deg          = @result['list'][0]['wind']['deg']
-    res           = WeatherTranslations.where('translation_id =? ', @weather_id).first
-    @weather_desc = res['de']
+                @temp       = f['tempm']
+                @icon       = f['icon']
+                @weather    = f['conds']
+                @humidity   = f['hum']
+                @speed      = f['wspdm']
+                @deg        = f['wdird']
+              end
+            end
+          end
+        end
+      end
+    end
+    @weather_desc = @weather
     @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport        = Sport.get_sports_by_user(current_user.id)
     @coursename   = CourseName.get_coursename_by_user(current_user.id)

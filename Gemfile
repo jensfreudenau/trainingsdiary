@@ -28,5 +28,6 @@ gem 'fog'
 gem 'fullcalendar-rails'
 gem 'newrelic_rpm'
 gem 'geocoder'
+gem 'wunderground'
 
 

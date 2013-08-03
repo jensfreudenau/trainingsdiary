@@ -14,7 +14,7 @@
                   %li= msg
 
           = f.fields_for :weather do |weather|
-            = weather.hidden_field :weather_id, :value => @weather_id
+            = weather.hidden_field :weather, :value => @weather
             = weather.hidden_field :humidity, :value => @humidity
             = weather.hidden_field :wind_speed, :value => @speed
             = weather.hidden_field :wind_deg, :value => @deg

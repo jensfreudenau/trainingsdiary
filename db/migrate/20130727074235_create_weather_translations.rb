@@ -1,4 +1,4 @@
-class CreateWeatherTranslations < ActiveRecord::Migration
+class CreateWeatherTranslation < ActiveRecord::Migration
   def change
     create_table :weather_translations do |t|
       t.integer :id

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727081700) do
+ActiveRecord::Schema.define(:version => 20130803125344) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -146,12 +146,12 @@ ActiveRecord::Schema.define(:version => 20130727081700) do
     t.string   "de"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "translation_id"
+    t.integer  "weather_id"
   end
 
   create_table "weathers", :force => true do |t|
     t.integer  "training_id"
-    t.integer  "weather_id"
+    t.string   "weather"
     t.float    "temp"
     t.string   "icon"
     t.float    "wind_speed"
