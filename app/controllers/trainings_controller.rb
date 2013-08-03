@@ -99,8 +99,10 @@ class TrainingsController < ApplicationController
 
     @laps = Lap.where('training_id = ?', params[:id]).all
     if @training.icon?
-      @icon_url = "http://icons.wxug.com/i/c/g/#{@training.icon}.gif"
       @icon_url = "#{@training.icon}.png"
+      if @icon_url == ".png"
+        @icon_url = "http://icons.wxug.com/i/c/g/#{@training.icon}.gif"
+      end
 
     end
 
