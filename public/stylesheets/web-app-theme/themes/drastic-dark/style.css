@@ -593,19 +593,19 @@ tr.empty {
     clear: left;
     width: 110px;
     text-align: right;
-    font-weight: bold;
-    color: green;
-    line-height: 15px;
+    /*font-weight: bold;*/
+    color: black;
+    line-height: 25px;
 }
 
 .block dt:after {
-    content: ":";
+    /*content: ":\a0\a0";*/
 }
 
 .block dd {
-    margin: 0 0 0 110px;
+    margin: 0 0 0 135px;
     padding: 0;
-    line-height: 15px;
+    line-height: 25px;
 }
 
 .courves h3 {
