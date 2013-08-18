@@ -1,129 +1,169 @@
 
 = javascript_include_tag 'highcharts/js/highcharts', 'OpenLayers', 'OpenStreetMap', 'util'
  
-- for home in @home
-  - heartrate = [home.heartrate]
-  .block
-    .content
-      .inner
-        %h2
-          = home.sportname + ' / ' + home.sportlevel
-        %h3
-          = t("at", :default => "at")
-          = localize(home.start_time, :format => :default)
-        .trainings_data
+- home = @home
+= pp @home
+- heartrate = [@home.heartrate]
+.block
+  .content
+    .inner
+      %h2
+        = home.sportname + ' / ' + home.sportlevel
+      %h3
+        = t("at", :default => "at")
+        = localize(home.start_time, :format => :default)
+      .trainings_data
+        .maindata
+          %table.training.datatable.rundata{:width => '50%'}
+            %thead
+              %tr
+                %th
+                  &nbsp;
+                %th
+                  &nbsp;
+            %tbody
+              %tr
+                %td
+                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
+                %td
+                  = home.coursename
+              %tr
+
+                %td
+                  =t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
+                %td
+                  = number_to_human(home.distance_total, :units => :distance, :precision => 4)
+              %tr
+                %td
+                  =t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                %td
+                  = convertTimeToDuration(home.time_total.to_i)
+              %tr
+                %td &oslash; Pace
+                %td
+                  - if home.sportname == 'Radfahren'
+                    = km_per_hours(home.distance_total, home.time_total.to_i)
+                  - else
+                    = minutes_per_km(home.distance_total, home.time_total.to_f)
+              %tr
+                %td
+                  &oslash;
+                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                %td
+                  = home.heartrate_avg
+              %tr
+                %td
+                  max
+                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                %td
+                  = home.heartrate_max
+
+
+          %table.training.datatable.weatherdata{:width => '40%'}
+            %thead
+              %tr
+                %th
+                  &nbsp;
+                %th
+                  &nbsp;
+            %tbody
+              %tr
+                %td
+                  = t('activerecord.attributes.training.temperature', :default => t('activerecord.labels.temperature', :default => 'temperature'))
+                %td
+                  -if home.temperature?
+                    = home.temperature.to_f
+                    &deg;C
+              %tr
+                %td
+                  = t('activerecord.attributes.training.weather', :default => t('activerecord.labels.weather', :default => 'weather'))
+                %td
+                  -if home.icon?
+                    = image_tag(@icon_url, :alt => "#{home.icon}", :class => 'wether_icon')
+              %tr
+                %td
+                  = t('activerecord.attributes.training.wind', :default => t('activerecord.labels.wind', :default => 'Wind'))
+                %td
+                  -if home.wind_speed?
+                    = home.wind_speed
+                    km/h
+              %tr
+                %td
+                  = t('activerecord.attributes.training.humidity', :default => t('activerecord.labels.humidity', :default => 'Luftfeuchtigkeit'))
+                %td
+                  -if home.humidity?
+                    = home.humidity
+                    #{"%"}
+
+
+        - if home.comment?
           %table.training.datatable
             %thead
               %tr
                 %th
-                  = t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
-                %th 
-                  = t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.distance_total", :default => "Distance"))
-                %th
-                  &oslash; 
-                  %br
-                  Pace
-                %th
-                  &oslash; 
-                  %br
-                  = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate")) 
-                %th
-                  max 
-                  %br
-                  = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))  
-               
-                %th
-                  = t("activerecord.attributes.training.coursename", :default => t("activerecord.labels.coursename", :default => "Course"))
-                %th
-                  = t("activerecord.attributes.training.sportlevel", :default => t("activerecord.labels.sportlevel", :default => "Level"))  
-            %tbody      
+                  = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
+            %tbody
               %tr
                 %td
-                  = ChronicDuration.output(home.time_total.to_i, :format => :chrono)
-                   
-                %td 
-                  = number_to_human(home.distance_total, :units => :distance, :precision => 4)  
-                %td
-                  - if home.sportname == 'Radfahren'
-                    = km_per_hours(home.distance_total, home.time_total.to_i) 
-                  - else
-                    = minutes_per_km(home.distance_total, home.time_total.to_i)
-                %td
-                  = home.heartrate_avg
-                %td
-                  = home.heartrate_max  
-                %td
-                  = home.coursename
-                %td
-                  = home.sportlevel
-          - if home.comment?
-            %table.training.datatable
+                  = home.comment
+        #laps
+          .outer_laps
+            %table.laps.datatable{:width => '100%'}
               %thead
                 %tr
                   %th
-                    = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
+                    = t("numb", :default => "No")
+                  %th
+                    = t("activerecord.attributes.lap.distance", :default => t("activerecord.labels.distance", :default => "Lap Distance"))
+                  %th
+                    = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
+                  %th
+                    &oslash;
+                    %br
+                    Pace
+                  %th
+                    &oslash;
+                    %br
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                  %th
+                    max.
+                    %br
+                    = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))
+              //- for lap in @laps
               %tbody
-                %tr
+              - @laps.each_with_index do |lap, index|
+                %tr{:class => cycle("odd", "even")}
                   %td
-                    = home.comment
-          #laps 
-            .outer_laps
-              %table.laps.datatable
-                %thead
-                  %tr
-                    %th
-                      = t("numb", :default => "No")
-                    %th
-                      = t("activerecord.attributes.lap.distance", :default => t("activerecord.labels.distance", :default => "Lap Distance"))
-                    %th
-                      = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
-                    %th
-                      &oslash; 
-                      %br
-                      Pace 
-                    %th
-                      &oslash;
-                      %br
-                      = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
-                    %th
-                      max. 
-                      %br
-                      = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))  
-                //- for lap in @laps 
-                %tbody
-                - @laps.each_with_index do |lap, index|   
-                  %tr{:class => cycle("odd", "even")}
-                    %td
-                      = index.to_i + 1
-                    %td
-                      = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
-                    %td
-                      = ChronicDuration.output(lap.duration, :format => :chrono) 
-                    %td
-                      - if lap.distance_total != 0
-                        - if home.sportname == 'Radfahren'
-                          = km_per_hours(lap.distance_total,lap.duration.to_i) 
-                        - else
-                          = minutes_per_km(lap.distance_total,lap.duration.to_i) 
-                    %td
-                      - if 186*0.85 < lap.heartrate_avg.to_f
-                        .red
-                          = lap.heartrate_avg
+                    = index.to_i + 1
+                  %td
+                    = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
+                  %td
+                    = ChronicDuration.output(lap.duration, :format => :chrono)
+                  %td
+                    - if lap.distance_total != 0
+                      - if home.sportname == 'Radfahren'
+                        = km_per_hours(lap.distance_total,lap.duration.to_i)
                       - else
-                        .blue
-                          = lap.heartrate_avg
-                    %td
-                      = lap.heartrate_max.to_i
-        .trainings_data
-          - if(home.heartrate.to_s != '[[]]')
-            #heartrate_chart
+                        = minutes_per_km(lap.distance_total,lap.duration.to_i)
+                  %td
+                    - if 186*0.85 < lap.heartrate_avg.to_f
+                      .red
+                        = lap.heartrate_avg
+                    - else
+                      .blue
+                        = lap.heartrate_avg
+                  %td
+                    = lap.heartrate_max.to_i
+      .trainings_data
+        - if(home.heartrate.to_s != '[[]]')
+          #heartrate_chart
 
-        .trainings_data
-          -if home.map_data =~ /\d/
-            #map
-            .link_big_map
-              %br/
-              = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
+      .trainings_data
+        -if home.map_data =~ /\d/
+          #map
+          .link_big_map
+            %br/
+            = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{home.id}" }, :id => 'bigmap', :class => 'iframe'
 
 -if home.map_data =~ /\d/
   :javascript

@@ -87,6 +87,13 @@
                     = training.wind_speed
                     km/h
 
+              %tr
+                %td
+                  = t('activerecord.attributes.training.humidity', :default => t('activerecord.labels.humidity', :default => 'Luftfeuchtigkeit'))
+                %td
+                  -if training.humidity?
+                    = training.humidity
+                    #{"%"}
         - if training.comment?
           %table.training.datatable{:width => '100%'}
             %thead

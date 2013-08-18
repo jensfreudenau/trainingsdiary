@@ -462,7 +462,6 @@ ul.trainings {
 
 .trainings_data {
     padding: 0;
-    margin-bottom: 30px;
     margin-left: auto;
     margin-right: auto;
     width: 690px;
@@ -1086,8 +1085,12 @@ a{
 
 .maindata .rundata {
     float:left;
+    margin-right: 65px;
 }
 
+.maindata .weatherdata {
+
+}
 .wether_icon {
     width: 40px;
 }

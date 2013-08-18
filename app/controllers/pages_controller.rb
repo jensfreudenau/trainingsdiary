@@ -71,29 +71,30 @@ class PagesController < ApplicationController
 
 
   def show
+    @home = Training.select('
+                        trainings.*,
+                        weathers.temp as temperature,
+                        weathers.icon,
+                        weathers.wind_speed,
+                        weathers.humidity,
+                        sport_levels.name as sportlevel,
+                        trainings.start_time as start_time,
+                        course_name_id as coursename,
+                        sports.name as sportname,
+                        course_names.name as coursename,
+                        trainings.distance_total as distancetotal')
+              .where('trainings.id = ?', params[:id])
+              .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
+              .first
 
-    @home = Training.all(
-                          :select => '
-                                  trainings.id,
-                                  trainings.comment,
-                                  trainings.map_data,
-                                  trainings.heartrate,
-                                  trainings.time_total,
-                                  trainings.height,
-                                  trainings.heartrate_avg,
-                                  trainings.heartrate_max,                        
-                                  trainings.start_time as start_time,
-                                  trainings.distance_total as distance_total,
-                                  course_names.name as coursename,
-                                  sport_levels.name as sportlevel,
-                                  sports.name as sportname
-                          ',
-        :joins => [:course_name, :sport, :sport_level],
-        :conditions => ['trainings.id = ?', params[:id]])
+    @laps = Lap.where('training_id = ?', params[:id]).all
+    if @home.icon?
+      @icon_url = "#{@home.icon}.png"
+      if @icon_url == ".png"
+        @icon_url = "http://icons.wxug.com/i/c/g/#{@home.icon}.gif"
+      end
 
-    @laps = Lap.all(
-        :conditions => ['training_id = ?', params[:id]]
-    )
+    end
 
     respond_to do |format|
       format.html # show.html.erb
