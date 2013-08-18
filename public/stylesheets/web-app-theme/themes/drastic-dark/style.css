@@ -1094,4 +1094,7 @@ a{
 .wether_icon {
     width: 40px;
 }
+.sorting, .sorting_disabled{
+    background-color: #f0f0f0 !important;
+}
 
