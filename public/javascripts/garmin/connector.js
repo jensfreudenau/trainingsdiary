@@ -17,7 +17,7 @@ function load(authm) {
     }
     else {
         host = "http://www.trainingsdiary.com";
-        key_garminCon  = "306312473ce6bbb165b75bbf53302516";
+        key_garminCon  = "536b56b9c19941fcda1d7aa92955738e";
     }
     auth = authm;
     var display = new Garmin.DeviceDisplay("garminDisplay", {
