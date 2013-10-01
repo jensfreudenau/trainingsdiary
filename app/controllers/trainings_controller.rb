@@ -180,7 +180,7 @@ class TrainingsController < ApplicationController
 
   # GET /trainings/1/edit
   def edit
-    @log = Logger.new('log/trainings.log')
+    @log  = Logger.new('log/trainings.log')
     w_api = Wunderground.new("4f8b96009743282f")
     w_api.language = 'DE'
 
@@ -194,10 +194,12 @@ class TrainingsController < ApplicationController
                                 trainings.distance_total as distancetotal')
                         .joins(:course_name, :sport, :sport_level, :weather)
                         .first
-    unless @training.map_data.nil?
+
+    if @training.map_data.length > 4
       load_weather_data
+      @weather_desc = @weather
     end
-    @weather_desc = @weather
+
     @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport        = Sport.get_sports_by_user(current_user.id)
     @coursename   = CourseName.get_coursename_by_user(current_user.id)
@@ -455,7 +457,7 @@ class TrainingsController < ApplicationController
   end
 
   def load_weather_data
-    res       =  @training.map_data.split('],[')
+    res       = @training.map_data.split('],[')
     lat_lon   = res[2].split(',')
     time      = DateTime.parse(@training['start_time'].to_s)
     h         = time.strftime("%H")
