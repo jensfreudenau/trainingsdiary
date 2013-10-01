@@ -1107,3 +1107,13 @@ th.sorting_desc {
     background-color: #EBEBEB !important;
 }
 
+fieldset {
+    border:1px solid #323e41;
+    padding:20px;
+    background-color: #ccc;
+    background-color:rgba(22, 24, 44,0.5);
+}
+
+fieldset input {
+    text-shadow: 0.1em 0.1em 0.2em black;
+}
