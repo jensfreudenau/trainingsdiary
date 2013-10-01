@@ -181,8 +181,7 @@ class TrainingsController < ApplicationController
   # GET /trainings/1/edit
   def edit
     @log  = Logger.new('log/trainings.log')
-    w_api = Wunderground.new("4f8b96009743282f")
-    w_api.language = 'DE'
+
 
 
     @training = Training.where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
@@ -457,6 +456,8 @@ class TrainingsController < ApplicationController
   end
 
   def load_weather_data
+    w_api     = Wunderground.new("4f8b96009743282f")
+    w_api.language = 'DE'
     res       = @training.map_data.split('],[')
     lat_lon   = res[2].split(',')
     time      = DateTime.parse(@training['start_time'].to_s)
