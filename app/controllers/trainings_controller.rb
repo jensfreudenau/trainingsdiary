@@ -10,9 +10,27 @@ load 'fileutils.rb'
 
 class TrainingsController < ApplicationController
   include Devise::Controllers::Helpers
-  before_filter :authenticate_user!, :except => [:index, :show, :sort]
+  before_filter :authenticate_user!, :except => [:index, :show, :sort ]
   #load_and_authorize_resource
   include Trainingsdata
+
+  # GET /trainings/newsimple
+  # GET /trainings/newsimple.xml
+  def newsimple
+
+    @training = current_user.trainings.new
+    @training.laps.build()
+    #:joins => [:sport_level, :sport, :course_name],
+
+    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)
+    @coursename = CourseName.get_coursename_by_user(current_user.id)
+
+    #respond_to do |format|
+    #  format.html # newsimple.html.erb
+    #  format.xml { render :xml => @training }
+    #end
+  end
 
   def index
     @log = Logger.new('log/trainings.log')
@@ -77,10 +95,9 @@ class TrainingsController < ApplicationController
 
   end
 
-  # GET /trainings/1
-  # GET /trainings/1.xml
+  # GET /trainings/show
+  # GET /trainings/show.xml
   def show
-
     @training = Training.select('
                         trainings.*,
                         weathers.temp as temperature,
@@ -93,9 +110,9 @@ class TrainingsController < ApplicationController
                         sports.name as sportname,
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
-                        .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-                        .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
-                        .first
+    .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
+    .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
+    .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all
     if @training.icon?
@@ -135,6 +152,7 @@ class TrainingsController < ApplicationController
       format.xml { render :xml => @training }
     end
   end
+
   # GET /trainings/bigcalendar
   # GET /trainings/bigcalendar.xml
   def import_workouts
@@ -176,31 +194,8 @@ class TrainingsController < ApplicationController
                                 trainings.distance_total as distancetotal')
                         .joins(:course_name, :sport, :sport_level, :weather)
                         .first
-
-    res       =  @training.map_data.split('],[')
-    lat_lon   = res[2].split(',')
-    time      = DateTime.parse(@training['start_time'].to_s)
-    h         = time.strftime("%H")
-    weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
-    weather_data.each do |data, index|
-      index.each do |v|
-        v.each do |i|
-          if i.class.to_s == 'Array'
-            i.each do |f|
-              @log.debug(f['date']['hour'].to_yaml)
-              if f['date']['hour'].to_s == h.to_s
-
-                @temp       = f['tempm']
-                @icon       = f['icon']
-                @weather    = f['conds']
-                @humidity   = f['hum']
-                @speed      = f['wspdm']
-                @deg        = f['wdird']
-              end
-            end
-          end
-        end
-      end
+    unless @training.map_data.nil?
+      load_weather_data
     end
     @weather_desc = @weather
     @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
@@ -261,7 +256,7 @@ class TrainingsController < ApplicationController
     if !params[:training][:time_total].nil?
       params[:training][:time_total] = params[:training][:time_total].to_f
     end
-    @training       = Training.find(params[:id])
+    @training = Training.find(params[:id])
     @training.save
     respond_to do |format|
 
@@ -273,10 +268,10 @@ class TrainingsController < ApplicationController
 
 
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
-          format.xml  { head :ok }
+          format.xml { head :ok }
         else
           format.html { render :action => "edit" }
-          format.xml  { render :xml => @training.errors, :status => :unprocessable_entity }
+          format.xml { render :xml => @training.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -459,6 +454,33 @@ class TrainingsController < ApplicationController
     return 1
   end
 
+  def load_weather_data
+    res       =  @training.map_data.split('],[')
+    lat_lon   = res[2].split(',')
+    time      = DateTime.parse(@training['start_time'].to_s)
+    h         = time.strftime("%H")
+    weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
+    weather_data.each do |data, index|
+      index.each do |v|
+        v.each do |i|
+          if i.class.to_s == 'Array'
+            i.each do |f|
+              @log.debug(f['date']['hour'].to_yaml)
+              if f['date']['hour'].to_s == h.to_s
+
+                @temp       = f['tempm']
+                @icon       = f['icon']
+                @weather    = f['conds']
+                @humidity   = f['hum']
+                @speed      = f['wspdm']
+                @deg        = f['wdird']
+              end
+            end
+          end
+        end
+      end
+    end
+  end
   def batch (file)
     f = File.open(file, "r")
     @training = current_user.trainings.new()
@@ -494,14 +516,14 @@ class TrainingsController < ApplicationController
           )
         end
 
-        @training.distance_total = td.distance_total
-        @training.time_total = td.time_total
-        @training.calories    = td.calories
-        @training.map_data = td.map_data
-        @training.heartrate = td.heartrate
-        @training.heartrate_avg = td.heartrate_avg
-        @training.heartrate_max = td.heartrate_max
-        @training.height = td.height
+        @training.distance_total  = td.distance_total
+        @training.time_total      = td.time_total
+        @training.calories        = td.calories
+        @training.map_data        = td.map_data
+        @training.heartrate       = td.heartrate
+        @training.heartrate_avg   = td.heartrate_avg
+        @training.heartrate_max   = td.heartrate_max
+        @training.height          = td.height
         @training.save
       end
     end
