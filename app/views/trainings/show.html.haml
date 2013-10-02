@@ -138,7 +138,7 @@
                       %td
                         = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
                       %td
-                        = convertTimeToDuration(lap.duration, :format => :default)
+                        = convertTimeToDuration(lap.duration, :format => :milliseconds)
                       %td
                         - if lap.distance_total != 0
                           - if training.sportname == 'Radfahren'
@@ -163,8 +163,6 @@
                   = t('activerecord.attributes.lap.all_calories', :default => t('activerecord.labels.all_calories', :default => 'ges. Kalorien'))
                 %td{:colspan => 5}
                   = cals
-                  = minutes_per_km(training.distance_total, duration.to_f) unless duration.nil?
-                  = duration
 
 
       .trainings_data
