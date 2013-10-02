@@ -1,6 +1,7 @@
 = javascript_include_tag 'OpenLayers', 'OpenStreetMap', 'highcharts/js/highcharts'
 - training = @training
-- cals = 0
+- cals = duration = 0
+
 - heartrate = [training.heartrate]
 .block
   .content
@@ -129,13 +130,15 @@
                     = t("activerecord.attributes.lap.calories", :default => t("activerecord.labels.calories", :default => "Kalorien"))
                 %tbody
                   - @laps.each_with_index do |lap, index|
+
+                    - duration += lap.duration unless lap.duration.nil?
                     %tr{:class => cycle("odd", "even")}
                       %td
                         = index.to_i + 1
                       %td
                         = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
                       %td
-                        = ChronicDuration.output(lap.duration.to_f, :format => :chrono)
+                        = convertTimeToDuration(lap.duration, :format => :default)
                       %td
                         - if lap.distance_total != 0
                           - if training.sportname == 'Radfahren'
@@ -160,6 +163,8 @@
                   = t('activerecord.attributes.lap.all_calories', :default => t('activerecord.labels.all_calories', :default => 'ges. Kalorien'))
                 %td{:colspan => 5}
                   = cals
+                  = minutes_per_km(training.distance_total, duration.to_f) unless duration.nil?
+                  = duration
 
 
       .trainings_data
