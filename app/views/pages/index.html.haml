@@ -50,11 +50,6 @@
                             = t('activerecord.attributes.training.coursename', :default => t('activerecord.labels.coursename', :default => 'Course'))
                           %dd
                             = training.coursename
-                          - if training.comment?
-                            %dt
-                              = t('activerecord.attributes.training.comment', :default => t('activerecord.labels.comment', :default => 'Comment'))
-                            %dd
-                              = training.comment
                           %br/
                           .wat-cf
                             = link_to image_tag('web-app-theme/icons/show.png', :alt => "#{t('web-app-theme.show', :default=> 'show')}") + '' + t('web-app-theme.show', :default=> 'show'), page_path(training), :class => 'button'

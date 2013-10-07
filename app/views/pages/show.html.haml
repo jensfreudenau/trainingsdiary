@@ -93,18 +93,6 @@
                   -if home.humidity?
                     = home.humidity
                     #{"%"}
-
-
-        - if home.comment?
-          %table.training.datatable{:width => '100%'}
-            %thead
-              %tr
-                %th
-                  = t("activerecord.attributes.training.comment", :default => t("activerecord.labels.comment", :default => "comment"))
-            %tbody
-              %tr
-                %td
-                  = home.comment
         #laps
           .outer_laps
             %table.laps.datatable{:width => '100%'}
