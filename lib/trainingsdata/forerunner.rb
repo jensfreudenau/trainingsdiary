@@ -5,10 +5,10 @@ module Trainingsdata
                   :distance_total, :speed_max,
                   :calories, :heartrate_avg, :heartrate_max,
                   :start_time, :course, :sport,
-                  :lap_single_map, :lap_single_heartrate, :lap_single_height
+                  :lap_single_map, :lap_single_heartrate, :lap_single_height, :source_doc
     
-    def initialize ()
-      @log = Logger.new('log/fore_runner123.log')
+    def initialize
+      @log = Logger.new('log/fore_runner.log')
       @lap_single_map       = Array.new
       @lap_single_heartrate = Array.new
       @lap_single_height    = Array.new
@@ -38,7 +38,7 @@ module Trainingsdata
       @calories       = 0
       @start_time     = 0
       @course         = ''
-      @distance       = 0;
+      @distance       = 0
       @deg            = ''
       @training       = ''
       @time           = ''
@@ -46,6 +46,7 @@ module Trainingsdata
       @prev_lon       = ''
       @running_total  = 0
       @sport          = ''
+      @source_doc     = ''
     end
     
     def start_import(file_or_xml = 'xml')
@@ -171,7 +172,7 @@ module Trainingsdata
              
             if sub_node.name == 'Position'
               @course += '[' + sub_node.children[0].text.to_s + ',' + sub_node.children[1].text.to_s + '],'
-            end            
+            end
           end          
         end
       end    
@@ -266,7 +267,7 @@ module Trainingsdata
                     @rounds[round][:laps][trackpoint.to_i] ||= {}
 
                     if sub_sub_node.name == 'LatitudeDegrees'
-                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees]   = sub_sub_node.text.to_f
+                        @rounds[round][:laps][trackpoint.to_i][:latitude_degrees] = sub_sub_node.text.to_f
                     end
 
                     if sub_sub_node.name == 'LongitudeDegrees'

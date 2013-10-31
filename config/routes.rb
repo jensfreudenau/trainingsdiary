@@ -1,13 +1,16 @@
 Trainingsdiary::Application.routes.draw do
   
-  match '/courses/download', :controller => 'courses', :action => 'download'
-  match '/courses/bigmap', :controller => 'courses', :action => 'bigmap'
-  match '/courses/route_from_training'  , :to => 'courses#route_from_training'
-  match '/courses/save_route_from_training'  , :to => 'courses#save_route_from_training'
-  match '/trainings/bigcalendar'  , :to => 'trainings#bigcalendar'
-  match '/trainings/import_workouts'  , :to => 'trainings#import_workouts'
-  match '/pages' => 'pages#index', :as => :user_root
+  match '/courses/download' , :controller => 'courses', :action => 'download'
+  match '/courses/bigmap'   , :controller => 'courses', :action => 'bigmap'
+  match '/courses/route_from_training'        , :to => 'courses#route_from_training'
+  match '/courses/save_route_from_training'   , :to => 'courses#save_route_from_training'
+  match '/trainings/bigcalendar'              , :to => 'trainings#bigcalendar'
+
+  match '/trainings/import_workouts'          , :to => 'trainings#import_workouts'
+  match '/trainings/newsimple'                , :to => 'trainings#newsimple'
+  match '/pages' => 'pages#index'             , :as => :user_root
   match 'listen' => 'pages#listen'
+  match '/trainings/newsimple', :controller => 'trainings', :action => 'newsimple'
   resources :courses
 
   devise_for :users
@@ -20,6 +23,7 @@ Trainingsdiary::Application.routes.draw do
   resources :trainings
   resources :statistics
   resources :blog_entries
+  resources :workouts
 
   devise_scope :user do
     get '/signin' => 'devise/sessions#new'
@@ -42,6 +46,8 @@ Trainingsdiary::Application.routes.draw do
   resources :trainings do
     post :presave, :on => :collection
     post :sort, :on => :collection
+
+    #get :newsimple, :on => :collection
     #post :bigcalendar, :on => :collection
 
   end
@@ -56,7 +62,7 @@ Trainingsdiary::Application.routes.draw do
     post :sort, :on => :collection
   end
   match 'bigmap', :to => 'pages#bigmap'
-  
+
 =begin
 	devise_for :users, :controllers => {:users => 'users'}  
 		resources :user

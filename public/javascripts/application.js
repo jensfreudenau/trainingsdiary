@@ -599,7 +599,9 @@ jQuery(document).ready(function () {
         }
     });
 
-    jQuery('#datepicker').datetimepicker();
+    jQuery('#datepicker').datetimepicker({
+        dateFormat: "dd.mm.yy",
+        firstDay: 1});
 
     jQuery("li.distance").mouseover(function () {
         jQuery(".comment").dialog();
@@ -608,7 +610,9 @@ jQuery(document).ready(function () {
         jQuery(".comment").hide();
     });
 
-    jQuery("#datepicker").datepicker();
+    jQuery("#datepicker").datepicker({
+        dateFormat: "dd.mm.yy",
+        firstDay: 1});
 
 
     jQuery(function() {

@@ -14,6 +14,7 @@
                           'flick/jquery-ui-1.8.16.custom',
                           'timepicker/jquery-ui-timepicker-addon',
                           'layerstyle',
+                          'modal/default',
                           :cache => true
 
     
@@ -24,6 +25,7 @@
                           'application',
                           'timepicker/jquery-ui-timepicker-addon',
                           'fancybox/jquery.fancybox-1.3.4.pack',
+                          'modal/modernizr.custom',
                            :cache => true
 
     = csrf_meta_tag
@@ -49,8 +51,8 @@
                           %a{:href => '#'}= t('web-app-theme.settings', :default => 'Settings')
                     - else
 
-
-                      %a{:href => '#login-box', :id =>'loginButton'}
+                      .md-trigger{"data-modal" => "modal-1"}
+                      %a{:href => '#login-box', :id =>'loginButton',:class=> 'md-trigger',  "data-modal" => "modal-1"}
                         %span
                           = t('web-app-theme.login', :default => 'Login')
 
