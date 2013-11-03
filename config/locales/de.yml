@@ -239,7 +239,10 @@ de:
         file: "Datei"
         name: "Name"
       training:
+        duration: "Dauer"
+        min_per_km: "min/km"
         distance_total: "Streckenlänge"
+        location: "Ort"
         time_total: "ges. Zeit"
         sportname: "Sportart"
         sport_id: "Sportart"

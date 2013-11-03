@@ -1,9 +1,11 @@
 Trainingsdiary::Application.routes.draw do
   
-  match '/courses/download' , :controller => 'courses', :action => 'download'
-  match '/courses/bigmap'   , :controller => 'courses', :action => 'bigmap'
+  match '/courses/download'                   , :controller => 'courses', :action => 'download'
+  match '/courses/bigmap'                     , :controller => 'courses', :action => 'bigmap'
+  match '/courses/draw'                       , :controller => 'courses', :action => 'draw'
   match '/courses/route_from_training'        , :to => 'courses#route_from_training'
   match '/courses/save_route_from_training'   , :to => 'courses#save_route_from_training'
+
   match '/trainings/bigcalendar'              , :to => 'trainings#bigcalendar'
 
   match '/trainings/import_workouts'          , :to => 'trainings#import_workouts'
@@ -24,6 +26,7 @@ Trainingsdiary::Application.routes.draw do
   resources :statistics
   resources :blog_entries
   resources :workouts
+  resources :tracks, :controller => 'tracks'
 
   devise_scope :user do
     get '/signin' => 'devise/sessions#new'
@@ -47,17 +50,9 @@ Trainingsdiary::Application.routes.draw do
     post :presave, :on => :collection
     post :sort, :on => :collection
 
-    #get :newsimple, :on => :collection
-    #post :bigcalendar, :on => :collection
 
   end
-=begin
-  resources :trainings do
-    collection do
-      get :bigcalendar
-    end
-  end
-=end
+
   resources :blog_entries do
     post :sort, :on => :collection
   end

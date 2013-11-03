@@ -1,0 +1,22 @@
+%p#notice= notice
+
+= stylesheet_link_tag 'leaflet/leaflet.css'
+= javascript_include_tag 'jquery.json-2.4.min'
+.block
+  .content
+    .inner
+      #track_min_per_km
+        =@track.min_per_km + ' ' + t('activerecord.attributes.training.min_per_km', :default => 'min_per_km')
+      #track_distance
+        =@track.distance + ' ' + t('activerecord.attributes.training.distance_total', :default => 'distance')
+      #track_duration
+        =@track.duration + ' ' + t('activerecord.attributes.training.duration', :default => 'duration')
+
+      #draw_map
+
+= javascript_include_tag 'leaflet/leaflet', 'leaflet/application'
+:javascript
+  drawRoute(#{@track.waypoints}, "#{@track.min_per_km}");
+= link_to 'Edit', edit_track_path(@track)
+\|
+= link_to 'Back', tracks_path

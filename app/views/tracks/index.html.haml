@@ -1,0 +1,39 @@
+= stylesheet_link_tag 'dataTables/jquery.dataTables.css'
+= javascript_include_tag 'jquery.dataTables.min'
+:javascript
+  jQuery(document).ready(function() {
+    jQuery('#list').dataTable({
+      "iDisplayLength": 50,
+      "aoColumns": [
+        null,
+        null,
+        null,
+        { "bSortable": false }
+      ]
+    });
+  } );
+.block
+  .content
+    #training
+      .dialog_base
+      .inner
+        .listing
+          %table.list#list
+            %thead
+              %tr.datalist
+                %th= t("activerecord.attributes.training.distance_total", :default => t("activerecord.labels.subject", :default => "Dist."))
+                %th= t("activerecord.attributes.training.time_total", :default => t("activerecord.labels.time_total", :default => "Duration"))
+                %th= t("activerecord.attributes.training.location", :default => t("activerecord.labels.location", :default => "location"))
+                %th
+                  &nbsp;
+            %tbody
+              - @tracks.each do |track|
+                %tr
+                  %td=track.distance
+                  %td=track.duration
+                  %td=track.location
+                  %td= link_to 'Show', track
+
+%br
+
+= link_to 'New Track', new_track_path

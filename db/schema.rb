@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130803125344) do
+ActiveRecord::Schema.define(:version => 20131103104521) do
 
   create_table "blog_entries", :force => true do |t|
     t.string   "subject"
@@ -99,6 +99,18 @@ ActiveRecord::Schema.define(:version => 20130803125344) do
     t.integer  "sort_order"
     t.string   "mnemonic"
     t.string   "test",       :limit => 1
+  end
+
+  create_table "tracks", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "sport_id"
+    t.text     "waypoints"
+    t.string   "distance"
+    t.string   "duration"
+    t.string   "min_per_km"
+    t.string   "location"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "trainings", :force => true do |t|

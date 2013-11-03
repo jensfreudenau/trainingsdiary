@@ -29,7 +29,7 @@
               - @sport.each do |option|
                 %label.radio
                   = f.radio_button :sport_id, option.id
-                  = t("activerecord.attributes.training.sport", :default => option.name)
+                  = t('activerecord.attributes.training.sport', :default => option.name)
 
             %li
               = f.label :course_name_id, t("activerecord.attributes.training.coursename", :default => "Course Name"), :class => :label

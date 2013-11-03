@@ -1,0 +1,40 @@
+= stylesheet_link_tag 'leaflet/leaflet.css'
+= javascript_include_tag 'jquery.json-2.4.min'
+.block
+  .content
+    .inner
+      %ul#trainingsform
+        = form_for @track, :url => tracks_path, :html => { :id => 'track', :class => :form, :multipart => true}  do |f|
+          = f.hidden_field :user_id, :value => current_user.id
+          %fieldset.edit
+            %li
+              = f.label :min_per_km, t('activerecord.attributes.training.min_per_km', :default => 'min_per_km'), :class => :label
+              = f.text_field :min_per_km, :id => 'track_min_per_km', :value => '4:10'
+            %li
+              = f.label :duration, t('activerecord.attributes.training.duration', :default => 'duration'), :class => :label
+              = f.text_field :duration, :id => 'track_duration'
+            %li
+              = f.label :location, t('activerecord.attributes.training.location', :default => 'location'), :class => :label
+              = f.text_field :location, :id => 'track_location'
+            %li
+              = f.label :sport_id, t('activerecord.attributes.training.sport_id', :default => 'Sport'), :class => :label
+              - @sport.each do |option|
+                %label.radio
+                  = f.radio_button :sport_id, option.id
+                  = t('activerecord.attributes.training.sport', :default => option.name)
+            %li
+              = f.label :distance, t('activerecord.attributes.training.distance_total', :default => 'distance'), :class => :label
+              = f.text_field :distance, :id => 'track_distance'
+              = f.hidden_field :waypoints, :id => 'track_waypoints'
+            %li
+              .group.navform.wat-cf
+                %button.button{:type => 'submit'}
+                  = image_tag('web-app-theme/icons/tick.png', :alt => "#{t('web-app-theme.save', :default => 'Save')}")
+                  = t('web-app-theme.save', :default => 'Save')
+
+
+          #draw_map
+
+= javascript_include_tag 'leaflet/leaflet', 'leaflet/application'
+
+

@@ -127,12 +127,12 @@
                     = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))
 
                   %th
-                    = t("activerecord.attributes.lap.calories", :default => t("activerecord.labels.calories", :default => "Kalorien"))
+                    = t('activerecord.attributes.lap.calories', :default => t('activerecord.labels.calories', :default => 'Kalorien'))
                 %tbody
                   - @laps.each_with_index do |lap, index|
 
                     - duration += lap.duration unless lap.duration.nil?
-                    %tr{:class => cycle("odd", "even")}
+                    %tr{:class => cycle('odd', 'even')}
                       %td
                         = index.to_i + 1
                       %td

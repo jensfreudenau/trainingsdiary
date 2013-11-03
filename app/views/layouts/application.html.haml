@@ -110,8 +110,13 @@
                     %li{ :class => (params[:controller] == 'courses' ? 'active topmenu' : 'topmenu') }
                       = link_to t('courses'), courses_path
                       %ul
+                        %li{:class =>'submenu'}
+                          = link_to "#{t('web-app-theme.new', :default => 'New')}", new_course_path
                         %li{:class =>'submenu last'}
-                          = link_to "#{t('web-app-theme.new', :default => '"New')}", new_course_path
+                          = link_to "#{t('web-app-theme.new_route', :default => 'New Route')}", :controller => :courses, :action => :draw
+
+                    %li{ :class => (params[:controller] == 'tracks' ? 'active topmenu' : 'topmenu') }
+                      = link_to t('tracks'), tracks_path
 
       #wrapper.wat-cf
         .flash
