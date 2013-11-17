@@ -1,5 +1,6 @@
-= stylesheet_link_tag 'leaflet/leaflet.css'
-= javascript_include_tag 'jquery.json-2.4.min'
+%script{src: 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'}
+= javascript_include_tag   'google/application'
+
 .block
   .content
     .inner
@@ -31,10 +32,8 @@
                 %button.button{:type => 'submit'}
                   = image_tag('web-app-theme/icons/tick.png', :alt => "#{t('web-app-theme.save', :default => 'Save')}")
                   = t('web-app-theme.save', :default => 'Save')
+      #draw_map
 
 
-          #draw_map
-
-= javascript_include_tag 'leaflet/leaflet', 'leaflet/application'
 
 
