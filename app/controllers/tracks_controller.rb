@@ -17,7 +17,8 @@ class TracksController < ApplicationController
   # GET /tracks/1
   # GET /tracks/1.json
   def show
-    @track = Track.find(params[:id])
+    @track = Track.where('tracks.user_id = ? AND tracks.id = ?', current_user, params[:id]).first
+    @sport_type = Sport.get_sport_type_by_id(@track.sport_id)
 
     respond_to do |format|
       format.html # show.html.erb

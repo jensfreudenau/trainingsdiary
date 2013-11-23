@@ -11,7 +11,7 @@ function initialize() {
     jQuery('input:radio').click(function() {
 
         sports = jQuery(this).closest(".radio").text();
-        console.log(jQuery.trim(sports));
+
         if (jQuery.trim(sports) == 'Laufen') {
             typeMap =  'WALKING';
         }
@@ -189,25 +189,58 @@ function initialize() {
         }
     });
 
-    function mknull(wert) {
-        if (wert<10) return "0" + parseInt(wert); else return parseInt(wert);
-    }
 
-    function timeCalculator() {
-        var secs        = jQuery('#track_min_per_km').val();
-        var secSplits   = secs.split(':');
-        var sec         = (secSplits[0] * 60) * 1 + secSplits[1] * 1;
-        var km          = dist / 1000;
-        var sekunden    = sec * km;
-        var stunden     = Math.floor(sekunden / 3600);
-        var minuten     = Math.floor((sekunden - stunden * 3600) / 60);
-        var gessec      = sekunden - stunden * 3600 - minuten * 60;
-        var gesZeit     = mknull(stunden) + ":" + mknull(minuten) + ":" +mknull(gessec);
-        jQuery( "#track_duration").val(gesZeit);
-    }
+
+
 }
-jQuery(document).ready(function () {
-    google.maps.event.addDomListener(window, 'load', initialize);
-});
+
+function mknull(wert) {
+    if (wert<10) return "0" + parseInt(wert); else return parseInt(wert);
+}
+
+function timeCalculator() {
+    var secs        = jQuery('#track_min_per_km').val();
+    var secSplits   = secs.split(':');
+    var sec         = (secSplits[0] * 60) * 1 + secSplits[1] * 1;
+    var km          = dist / 1000;
+    var sekunden    = sec * km;
+    var stunden     = Math.floor(sekunden / 3600);
+    var minuten     = Math.floor((sekunden - stunden * 3600) / 60);
+    var gessec      = sekunden - stunden * 3600 - minuten * 60;
+    var gesZeit     = mknull(stunden) + ":" + mknull(minuten) + ":" +mknull(gessec);
+    jQuery( "#track_duration").val(gesZeit);
+}
+
+function displayRoute(waypoints,sport_type) {
+
+    var myOptions = {
+        zoom: 12,
+        center: new google.maps.LatLng(52.48458353031518, 13.34541249249014,13),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("draw_map"), myOptions);
+    jQuery.each(waypoints['track'], function( index, value ) {
+        var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
+        console.log(map);
+        directionsDisplay.setMap(map); // map should be already initialized.
+        var service = new google.maps.DirectionsService();
+        var start = new google.maps.LatLng(value.start_lat, value.start_lng);
+        var end = new google.maps.LatLng(value.stop_lat, value.stop_lng);
+        console.log(end);
+
+
+        var request = {
+            origin : start,
+            destination : end,
+            travelMode : google.maps.DirectionsTravelMode[sport_type]
+        };
+        service.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    });
+
+}
 
 
