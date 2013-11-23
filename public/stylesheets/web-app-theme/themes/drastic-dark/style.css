@@ -1089,11 +1089,10 @@ a{
 
 .maindata .rundata {
     float:left;
-    margin-right: 65px;
 }
 
-.maindata .weatherdata {
-
+table.weatherdata {
+    width: 47%;
 }
 .wether_icon {
     width: 40px;
