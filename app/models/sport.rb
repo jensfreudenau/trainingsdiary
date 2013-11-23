@@ -10,10 +10,16 @@ class Sport < ActiveRecord::Base
   end
 
   def self.get_sports_by_user (user_id)
-      return Sport.find(
-                            :all,
-                            :select => 'id, name',
-                            :conditions => {:user_id => user_id}
-                          )
+      return Sport.select('id, name').where('sports.user_id = ?',user_id)
+  end
+
+  def self.get_sport_type_by_id(id)
+    sport = Sport.find(id)
+    if sport.mnemonic == 'Biking'
+      return 'BICYCLING'
     end
+    if sport.mnemonic == 'Running'
+      return 'WALKING'
+    end
+  end
 end

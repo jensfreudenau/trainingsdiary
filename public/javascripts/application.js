@@ -312,9 +312,20 @@ function heartchart(data, avg, maxMeasure, cssId) {
         new Highcharts.Chart({
             chart: {
                 renderTo: cssId,
-                width: '690',
+
                 defaultSeriesType: 'spline',
                 margin: [0]
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'percent',
+                    lineColor: '#ffffff',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#ffffff'
+                    }
+                }
             },
             title: {
                 text: ''
