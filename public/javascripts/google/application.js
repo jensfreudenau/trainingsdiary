@@ -6,14 +6,21 @@ var step;
 var tracks = {
     track: []
 };
+var segments    = [];
+var markers     = [];
+var myOptions   = {};
+var alphas      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var alphaIdx    = 0;
+var service     = '';
+var poly        = '';
+var data;
+var waypoints;
+var travel_mode;
 function initialize() {
-
-    jQuery('input:radio').click(function() {
-
+    jQuery('input:radio').click(function () {
         sports = jQuery(this).closest(".radio").text();
-
         if (jQuery.trim(sports) == 'Laufen') {
-            typeMap =  'WALKING';
+            typeMap = 'WALKING';
         }
         else {
             typeMap = 'BICYCLING';
@@ -26,20 +33,19 @@ function initialize() {
     else {
         typeMap = 'BICYCLING';
     }
-    var markers = [],
+    markers = [],
         segments = [],
         myOptions = {
             zoom: 12,
-            center: new google.maps.LatLng(52.48458353031518, 13.34541249249014,13),
+            center: new google.maps.LatLng(52.48458353031518, 13.34541249249014, 13),
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDoubleClickZoom: true,
             draggableCursor: "crosshair"
         },
-        alphas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-        alphaIdx = 0,
-        map     = new google.maps.Map(document.getElementById("draw_map"), myOptions),
-        service = new google.maps.DirectionsService(),
-        poly    = new google.maps.Polyline({
+        alphaIdx    = 0,
+        map         = new google.maps.Map(document.getElementById("draw_map"), myOptions),
+        service     = new google.maps.DirectionsService(),
+        poly        = new google.maps.Polyline({
             map: map,
             strokeColor: '#00FFFF',
             strokeOpacity: 0.6,
@@ -54,76 +60,6 @@ function initialize() {
         markers = [];
         poly.setPath([]);
     };
-
-    function getSegmentsPath() {
-        tracks = {
-            track: []
-        };
-        var a, i,
-            len     = segments.length,
-            arr     = [];
-            dist    = 0;
-        for (i = 0; i < len; i++) {
-            a = segments[i];
-            if (a && a.routes) {
-                arr = arr.concat(a.routes[0].overview_path);
-                dist = dist + a.routes[0].legs[0].distance.value;
-
-                tracks.track.push({
-                    "start_lat" : a.routes[0].legs[0].start_location.lat(),
-                    "start_lng" : a.routes[0].legs[0].start_location.lng(),
-                    "stop_lat"  : a.routes[0].legs[0].end_location.lat(),
-                    "stop_lng"  : a.routes[0].legs[0].end_location.lng()
-                });
-            }
-        }
-        timeCalculator();
-        jQuery( "#track_distance").val(dist);
-        jQuery( "#track_waypoints").val(JSON.stringify(tracks));
-        return arr;
-    }
-
-    function save_waypoints()
-    {
-        var w=[],wp;
-        var rleg = ren.directions.routes[0].legs[0];
-
-        data.start = {'lat': rleg.start_location.lat(), 'lng':rleg.start_location.lng()}
-        data.end = {'lat': rleg.end_location.lat(), 'lng':rleg.end_location.lng()}
-        var wp = rleg.via_waypoints
-        for(var i=0;i<wp.length;i++)w[i] = [wp[i].lat(),wp[i].lng()]
-        data.waypoints = w;
-
-        var str = JSON.stringify(data)
-
-//        var jax = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-//        jax.open('POST','process.php');
-//        jax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-//        jax.send('command=save&mapdata='+str)
-//        jax.onreadystatechange = function(){ if(jax.readyState==4) {
-//            if(jax.responseText.indexOf('bien')+1)alert('Updated');
-//            else alert(jax.responseText)
-//        }}
-    }
-    function addSegment(start, end, segIdx) {
-        service.route(
-            {
-                origin: start,
-                destination: end,
-                travelMode: google.maps.DirectionsTravelMode[typeMap],
-                unitSystem: google.maps.UnitSystem.METRIC
-            },
-            function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    //store the entire result, as we may at some time want
-                    //other data from it, such as the actual directions
-                    segments[segIdx] = result;
-                    poly.setPath(getSegmentsPath());
-                }
-            }
-        );
-    }
-
     google.maps.event.addListener(map, "click", function (e) {
         //limiting the number of markers added to no more than 26, as if we have
         //that many we have used up all our alphabetical characters for the icons
@@ -140,32 +76,6 @@ function initialize() {
             });
         marker.segmentIndex = markers.length - 1;
         marker.iconChar = c;//just storing this for good measure, may want at some time
-        function updateSegments() {
-            var start, end, inserts, i,
-                idx     = this.segmentIndex,
-                segLen  = segments.length, //segLen will always be 1 shorter than markers.length
-                myPos   = this.getPosition();
-            if (segLen === 0) { //nothing to do, this is the only marker
-                return;
-            }
-            if (idx == -1) { //this is the first marker
-                start   = [myPos];
-                end     = [markers[1].getPosition()];
-                inserts = [0];
-            } else if (idx == segLen - 1) { //this is the last marker
-                start   = [markers[markers.length - 2].getPosition()];
-                end     = [myPos];
-                inserts = [idx];
-            } else {//there are markers both behind and ahead of this one in the 'markers' array
-                start = [markers[idx].getPosition(), myPos];
-                end = [myPos, markers[idx + 2].getPosition()];
-                inserts = [idx, idx + 1];
-            }
-            for (i = 0; i < start.length; i++) {
-                addSegment(start[i], end[i], inserts[i]);
-            }
-        }
-
         /**********************************************************************
          Note that the line below which sets an event listener for the markers
          'drag' event and which is commented out (uncomment it to test,
@@ -188,14 +98,65 @@ function initialize() {
             addSegment(markers[markers.length - 2].getPosition(), evtPos, marker.segmentIndex);
         }
     });
+}
+function getSegmentsPath() {
+    tracks = {
+        track: []
+    };
+    var a, i,
+        len = segments.length,
+        arr = [];
+    dist = 0;
+    for (i = 0; i < len; i++) {
+        a = segments[i];
+        if (a && a.routes) {
+            arr = arr.concat(a.routes[0].overview_path);
+            dist = dist + a.routes[0].legs[0].distance.value;
+            tracks.track.push({
+                "start_lat": a.routes[0].legs[0].start_location.lat(),
+                "start_lng": a.routes[0].legs[0].start_location.lng(),
+                "stop_lat": a.routes[0].legs[0].end_location.lat(),
+                "stop_lng": a.routes[0].legs[0].end_location.lng()
+            });
+        }
+    }
+    timeCalculator();
+    jQuery("#track_distance").val(dist);
+    jQuery("#track_waypoints").val(JSON.stringify(tracks));
+    return arr;
+}
+function save_waypoints() {
+    var w       = [], wp;
+    var rleg    = ren.directions.routes[0].legs[0];
+    data.start  = {'lat': rleg.start_location.lat(), 'lng': rleg.start_location.lng()}
+    data.end    = {'lat': rleg.end_location.lat(), 'lng': rleg.end_location.lng()}
+    var wp      = rleg.via_waypoints
+    for (var i = 0; i < wp.length; i++)w[i] = [wp[i].lat(), wp[i].lng()]
 
+    data.waypoints = w;
+}
 
-
-
+function addSegment(start, end, segIdx) {
+    service.route(
+        {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.DirectionsTravelMode[typeMap],
+            unitSystem: google.maps.UnitSystem.METRIC
+        },
+        function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                //store the entire result, as we may at some time want
+                //other data from it, such as the actual directions
+                segments[segIdx] = result;
+                poly.setPath(getSegmentsPath());
+            }
+        }
+    );
 }
 
 function mknull(wert) {
-    if (wert<10) return "0" + parseInt(wert); else return parseInt(wert);
+    if (wert < 10) return "0" + parseInt(wert); else return parseInt(wert);
 }
 
 function timeCalculator() {
@@ -207,40 +168,85 @@ function timeCalculator() {
     var stunden     = Math.floor(sekunden / 3600);
     var minuten     = Math.floor((sekunden - stunden * 3600) / 60);
     var gessec      = sekunden - stunden * 3600 - minuten * 60;
-    var gesZeit     = mknull(stunden) + ":" + mknull(minuten) + ":" +mknull(gessec);
-    jQuery( "#track_duration").val(gesZeit);
+    var gesZeit     = mknull(stunden) + ":" + mknull(minuten) + ":" + mknull(gessec);
+    jQuery("#track_duration").val(gesZeit);
 }
 
-function displayRoute(waypoints,sport_type) {
 
-    var myOptions = {
-        zoom: 12,
-        center: new google.maps.LatLng(52.48458353031518, 13.34541249249014,13),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+
+function updateSegments() {
+    var start, end, inserts, i,
+        idx = this.segmentIndex,
+        segLen = segments.length, //segLen will always be 1 shorter than markers.length
+        myPos = this.getPosition();
+    if (segLen === 0) { //nothing to do, this is the only marker
+        return;
     }
-    map = new google.maps.Map(document.getElementById("draw_map"), myOptions);
-    jQuery.each(waypoints['track'], function( index, value ) {
-        var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
-        console.log(map);
-        directionsDisplay.setMap(map); // map should be already initialized.
-        var service = new google.maps.DirectionsService();
-        var start = new google.maps.LatLng(value.start_lat, value.start_lng);
-        var end = new google.maps.LatLng(value.stop_lat, value.stop_lng);
-        console.log(end);
+    if (idx == -1) { //this is the first marker
+        start = [myPos];
+        end = [markers[1].getPosition()];
+        inserts = [0];
+    } else if (idx == segLen - 1) { //this is the last marker
+        start = [markers[markers.length - 2].getPosition()];
+        end = [myPos];
+        inserts = [idx];
+    } else {//there are markers both behind and ahead of this one in the 'markers' array
+        start = [markers[idx].getPosition(), myPos];
+        end = [myPos, markers[idx + 2].getPosition()];
+        inserts = [idx, idx + 1];
+    }
+    for (i = 0; i < start.length; i++) {
+        addSegment(start[i], end[i], inserts[i]);
+    }
+}
+var directionsService     = new google.maps.DirectionsService();
 
+function start() {
+    var directionsDisplay = new google.maps.DirectionsRenderer();
 
-        var request = {
-            origin : start,
-            destination : end,
-            travelMode : google.maps.DirectionsTravelMode[sport_type]
-        };
-        service.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
+    var lastSeg = waypoints['track'].length - 1;
+
+    var start = new google.maps.LatLng( waypoints['track'][0].start_lat,  waypoints['track'][0].start_lng);
+    var end =  new google.maps.LatLng( waypoints['track'][lastSeg].stop_lat,  waypoints['track'][lastSeg].stop_lng);
+
+    var mapOptions = {
+        zoom:7,
+        center: start
+    }
+    map = new google.maps.Map(document.getElementById('draw_map'), mapOptions);
+    directionsDisplay.setMap(map);
+    jQuery.each(waypoints['track'], function (index, value) {
+        if(index != 0) {
+            if(index != lastSeg+1)   {
+                markers.push({
+                    location:new google.maps.LatLng(value.start_lat, value.start_lng),
+                    stopover:true
+                });
             }
-        });
+        }
     });
+    calcRoute(start, end, markers);
+}
 
+function calcRoute(start, end, waypts) {
+    var request = {
+        waypoints: waypts,
+        origin: start,
+        destination:end,
+        travelMode: google.maps.DirectionsTravelMode[typeMap]
+    };
+
+    directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
+}
+
+function displayRoute(wayps, tmode) {
+    typeMap     = tmode;
+    waypoints   = wayps;
+    google.maps.event.addDomListener(window, 'load', start);
 }
 
 
