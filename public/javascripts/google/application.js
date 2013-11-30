@@ -16,6 +16,7 @@ var poly        = '';
 var data;
 var waypoints;
 var travel_mode;
+var directionsDisplay;
 function initialize() {
     jQuery('input:radio').click(function () {
         sports = jQuery(this).closest(".radio").text();
@@ -202,7 +203,7 @@ function updateSegments() {
 var directionsService     = new google.maps.DirectionsService();
 
 function start() {
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay = new google.maps.DirectionsRenderer();
 
     var lastSeg = waypoints['track'].length - 1;
 
@@ -225,6 +226,9 @@ function start() {
             }
         }
     });
+    console.log(start);
+    console.log(end);
+    console.log(markers);
     calcRoute(start, end, markers);
 }
 
