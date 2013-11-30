@@ -226,9 +226,6 @@ function start() {
             }
         }
     });
-    console.log(start);
-    console.log(end);
-    console.log(markers);
     calcRoute(start, end, markers);
 }
 
@@ -243,6 +240,10 @@ function calcRoute(start, end, waypts) {
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
+        }
+        else {
+            console.log(status);
+            console.log(response);
         }
     });
 }
