@@ -66,7 +66,7 @@ function getRoute(response, changes) {
 
 
     distance[route._leaflet_id] = response.route_summary['total_distance'];
-    writeDistance();
+
 }
 
 
@@ -91,7 +91,8 @@ function onMapClick(e) {
             url: 'http://routes.cloudmade.com/68ee3ca235dd4e4f973298bc343e9b73/api/0.3/' + fromMarker.getLatLng().lat + ',' + fromMarker.getLatLng().lng + ',' + e.latlng.lat + ',' + e.latlng.lng + '/foot.js',
             dataType: "jsonp",
             success: function (json) {
-                getRoute(json, 0)
+                getRoute(json, 0);
+                writeDistance();
             },
             error: function (e) {
                 console.log(e);
@@ -104,7 +105,8 @@ function onMapClick(e) {
                 url: 'http://routes.cloudmade.com/68ee3ca235dd4e4f973298bc343e9b73/api/0.3/' + prevMarker.getLatLng().lat + ',' + prevMarker.getLatLng().lng + ',' + coords.lat + ',' + coords.lng + '/foot.js',
                 dataType: "jsonp",
                 success: function (json) {
-                    getRoute(json, 1)
+                    getRoute(json, 1);
+                    writeDistance();
                 },
                 error: function (e) {
                     console.log(e);
@@ -118,10 +120,29 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 var basemap = L.tileLayer('http://{s}.tile.cloudmade.com/68ee3ca235dd4e4f973298bc343e9b73/99474/256/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
-function drawRoute(waypoints, min_per_km) {
+function displayRoute(waypoints, min_per_km) {
+    jQuery.each(waypoints['track'], function( index, value ) {
+        var start = new google.maps.LatLng(value.start_lat, value.start_lng);
+        var end = new google.maps.LatLng(value.stop_lat, value.stop_lng);
+
+        var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
+        directionsDisplay.setMap(map); // map should be already initialized.
+
+        var request = {
+            origin : start,
+            destination : end,
+            travelMode : google.maps.TravelMode.WALKING
+        };
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    });
+}
+function drwaRoute(waypoints, min_per_km) {
     secs = min_per_km;
     jQuery.each(waypoints['track'], function( index, value ) {
-        console.log(value);
         toMarker = new L.Marker(new L.LatLng(parseFloat(value.start_lat), parseFloat(value.start_lng)), {draggable: true}).addTo(map);
         jQuery.ajax({
             url: 'http://routes.cloudmade.com/68ee3ca235dd4e4f973298bc343e9b73/api/0.3/' + value.start_lat + ',' + value.start_lng + ',' + value.stop_lat + ',' + value.stop_lng + '/foot.js',

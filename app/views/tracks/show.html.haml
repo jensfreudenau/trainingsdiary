@@ -1,6 +1,7 @@
+= stylesheet_link_tag 'leaflet/leaflet.css'
+= javascript_include_tag 'jquery.json-2.4.min'
 %p#notice= notice
-%script{src: 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'}
-= javascript_include_tag   'google/application'
+
 .block
   .content
     #training
@@ -37,8 +38,10 @@
         #draw_map
 
 
+
+= javascript_include_tag 'leaflet/leaflet', 'leaflet/application'
+
 :javascript
   jQuery(document).ready(function () {
-    displayRoute(#{@track.waypoints}, "#{@sport_type}");
-  });
-
+    drwaRoute(#{@track.waypoints}, "#{@sport_type}");
+  })

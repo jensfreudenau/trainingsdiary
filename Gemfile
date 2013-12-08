@@ -29,5 +29,6 @@ gem 'fullcalendar-rails'
 gem 'newrelic_rpm'
 gem 'geocoder'
 gem 'wunderground'
+gem 'geokit-rails'
 
 

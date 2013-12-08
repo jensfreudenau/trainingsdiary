@@ -1,5 +1,5 @@
-%script{src: 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'}
-= javascript_include_tag   'google/application'
+= stylesheet_link_tag 'leaflet/leaflet.css'
+= javascript_include_tag 'jquery.json-2.4.min'
 
 .block
   .content
@@ -36,7 +36,6 @@
 
 :javascript
   jQuery(document).ready(function () {
-    google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', initialize);
   });
-
-
+= javascript_include_tag 'leaflet/leaflet', 'leaflet/application'
