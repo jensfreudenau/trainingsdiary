@@ -66,6 +66,9 @@ GEM
     geocoder (1.1.8)
     geokit (1.6.5)
       multi_json
+    geokit-rails (2.0.1)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     haml (4.0.2)
       tilt
     haml-rails (0.4)
@@ -174,6 +177,7 @@ DEPENDENCIES
   fullcalendar-rails
   geocoder
   geokit
+  geokit-rails
   haml
   haml-rails
   hpricot
