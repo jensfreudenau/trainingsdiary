@@ -459,7 +459,7 @@ class TrainingsController < ApplicationController
     w_api     = Wunderground.new("4f8b96009743282f")
     w_api.language = 'DE'
     res       = @training.map_data.split('],[')
-    unless res.nil?
+    unless res[2].nil?
       lat_lon   = res[2].split(',')
       time      = DateTime.parse(@training['start_time'].to_s)
       h         = time.strftime("%H")

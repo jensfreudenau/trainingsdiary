@@ -6,7 +6,7 @@ module TrainingsHelper
 
   def convertTimeToDuration(total_seconds, opts = {})
     opts[:format] ||= :default
-    puts "total: #{total_seconds.to_f}"
+
     case opts[:format]
       when :default
         seconds = total_seconds % 60
@@ -15,11 +15,10 @@ module TrainingsHelper
         return format("%02d:%02d:%02d", hours, minutes, seconds)
       when :milliseconds
         #millis  = total_seconds.ceil
-        puts seconds = total_seconds % 60
+        seconds = total_seconds % 60
         minutes = (total_seconds / 60) % 60
         hours   = total_seconds / (60 * 60)
-        puts sec = sprintf("%.2f", seconds)
-        puts sec.to_f
+        sec = sprintf("%.2f", seconds)
         return sprintf("%02d:%02d:%02.2f", hours, minutes, sec.to_f)
     end
 
