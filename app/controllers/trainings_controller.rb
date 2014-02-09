@@ -463,8 +463,7 @@ class TrainingsController < ApplicationController
       lat_lon = res[2].split(',')
       time    = DateTime.parse(@training['start_time'].to_s)
       h       = time.strftime("%H")
-
-      unless lat_lon[0].nil?
+      unless lat_lon[0].nil? and !lat_lon[0].is_a? Numeric
         begin
           weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
           weather_data.each do |data, index|
