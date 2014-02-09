@@ -465,8 +465,6 @@ class TrainingsController < ApplicationController
       h       = time.strftime("%H")
       unless lat_lon[0].nil?
         if lat_lon[0].is_a? Numeric
-          puts 'huhu'
-          puts "#{lat_lon[0]},#{lat_lon[1]}"
           begin
             weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
             weather_data.each do |data, index|
