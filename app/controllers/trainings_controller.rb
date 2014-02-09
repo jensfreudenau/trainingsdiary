@@ -465,21 +465,23 @@ class TrainingsController < ApplicationController
       h       = time.strftime("%H")
 
       unless lat_lon[0].nil?
-        weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
-        weather_data.each do |data, index|
-          index.each do |v|
-            v.each do |i|
-              if i.class.to_s == 'Array'
-                i.each do |f|
-                  @log.debug(f['date']['hour'].to_yaml)
-                  if f['date']['hour'].to_s == h.to_s
+        begin
+          weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
+          weather_data.each do |data, index|
+            index.each do |v|
+              v.each do |i|
+                if i.class.to_s == 'Array'
+                  i.each do |f|
+                    @log.debug(f['date']['hour'].to_yaml)
+                    if f['date']['hour'].to_s == h.to_s
 
-                    @temp     = f['tempm']
-                    @icon     = f['icon']
-                    @weather  = f['conds']
-                    @humidity = f['hum']
-                    @speed    = f['wspdm']
-                    @deg      = f['wdird']
+                      @temp     = f['tempm']
+                      @icon     = f['icon']
+                      @weather  = f['conds']
+                      @humidity = f['hum']
+                      @speed    = f['wspdm']
+                      @deg      = f['wdird']
+                    end
                   end
                 end
               end
