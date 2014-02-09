@@ -2,10 +2,13 @@
 	/*text-align: center;*/
 	margin: 0 0 1em 0;
     min-height: 200px;
-	border-bottom:1px solid black;
+	border:1px solid black;
 	/*background: #DDE3D6 url("/image/main/upload/garmin.jpg") no-repeat 12px 12px;*/
 	padding: 3px;
 	position: relative;
+    margin-top:20px;
+    padding-top: 30px;
+    background: none repeat scroll 0 0 #FFFFFF;
 }
 
 #garminDisplay input {
@@ -25,6 +28,7 @@
     font-size: 1em;
     font-weight: bold;
     padding: 5px;
+    margin-left: 20px;
 }
 
 #garminDisplay input:disabled {
@@ -98,7 +102,7 @@
     font-size: 12px;
 }
 .pluginElement {
-	margin: 5px;
+	margin: 0px;
 }
 
 #deviceSelect {
@@ -142,6 +146,7 @@
     margin: 0px;
     padding:0px;
     text-align: left;
+    margin-top:10px;
     background-color:#FF1493;
     width: 0;
 }
@@ -187,8 +192,6 @@
 .header_cell {
     font-size: 12px;
     background-color: #EBEBEB;
-}
-#readBox {
 }
 
 #deviceBrowserBox {

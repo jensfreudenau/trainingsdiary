@@ -125,6 +125,11 @@ hr {
 
 
 
+#readBox {
+    float: right;
+}
+
+
 
 #sidebar ul li a:link, #sidebar ul li a:visited, .list_overview .link_big_map a {
     background: #FFF;
@@ -876,7 +881,7 @@ body {
 .detail {
     margin-bottom: 30px;
     background: transparent;
-
+    width: 720px;
 }
 
 .detail_right h3 {
