@@ -1,6 +1,6 @@
 # A sample Gemfile
 source 'http://rubygems.org'
-
+ruby '2.1.0'
 gem 'rails'
 gem 'haml-rails'
 gem 'haml'
