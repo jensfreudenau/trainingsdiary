@@ -59,11 +59,6 @@
                       %div{:style => 'clear:both'}
                       #loginBox
                         = render :partial => 'partials/login'
-
-
-
-
-
             #main-navigation
               .menu
                 %ul.wat-cf
@@ -83,6 +78,8 @@
                       %ul
                         %li{:class =>'submenu'}
                           = link_to "#{t('web-app-theme.new', :default => 'New')}", new_training_path
+                        %li{:class =>'submenu'}
+                          = link_to "#{t('web-app-theme.new_simple', :default => 'New Simple')}", :controller => :trainings, :action => :newsimple
                         %li{:class =>'submenu'}
                           = link_to "#{t('web-app-theme.calendar', :default => 'Calendar')}", :controller => :trainings, :action => :bigcalendar
 

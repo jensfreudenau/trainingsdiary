@@ -1,5 +1,4 @@
 require "date"
-
 require 'pp'
 
 class ApplicationController < ActionController::Base
