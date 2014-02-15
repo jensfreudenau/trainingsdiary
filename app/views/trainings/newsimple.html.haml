@@ -1,3 +1,4 @@
+=debug @training
 .block
   .content
     .inner
@@ -14,10 +15,10 @@
                 %ul
                   - @training.errors.full_messages.each do |msg|
                     %li= msg
-            %li
-              = f.fields_for :laps do |lap|
-                = lap.label :distance_total, t("activerecord.attributes.lap.distance_total", :default => "distance total"), :class => :label
-                = lap.text_field :distance_total
+            -#%li
+            -#  = f.fields_for :laps do |lap|
+            -#    = lap.label :distance_total, t("activerecord.attributes.lap.distance_total", :default => "distance total"), :class => :label
+            -#    = lap.text_field :distance_total
             %li
               = f.label :sport_level_id, t("activerecord.attributes.training.sportlevel", :default => "Sport Level"), :class => :label
               = f.collection_select :sport_level_id, @sportlevel, :id, :name

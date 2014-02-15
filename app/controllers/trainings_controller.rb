@@ -2,15 +2,13 @@ require 'rexml/document'
 require 'json'
 require 'active_support/inflector'
 require 'chronic_duration'
-require 'pp'
 require 'open-uri'
-
-load 'fileutils.rb'
+require 'FileUtils.rb'
 
 
 class TrainingsController < ApplicationController
   include Devise::Controllers::Helpers
-  before_filter :authenticate_user!, :except => [:index, :show, :sort ]
+  before_filter :authenticate_user!, :except => [:index, :show, :sort]
   #load_and_authorize_resource
   include Trainingsdata
 
@@ -26,14 +24,14 @@ class TrainingsController < ApplicationController
     @sport      = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
 
-    #respond_to do |format|
-    #  format.html # newsimple.html.erb
-    #  format.xml { render :xml => @training }
-    #end
+    respond_to do |format|
+      format.html # newsimple.html.erb
+      format.xml { render :xml => @training }
+    end
   end
 
   def index
-    @log = Logger.new('log/trainings.log')
+    @log           = Logger.new('log/trainings.log')
 
     #@files = Dir.glob("public/tracks/uploader/temp/*.TCX", File::FNM_CASEFOLD)
     #
@@ -43,22 +41,22 @@ class TrainingsController < ApplicationController
     # end
     #
     items_per_page = 7
-    sort = case params['sort']
-             when "name" then
-               "name"
-             when "sportlevel" then
-               "sport_levels.name"
-             when "sports.name" then
-               "sports.name"
-             when "start_time" then
-               "start_time ASC"
-             when "time_total" then
-               "time_total ASC"
-             when "distance" then
-               "distance_total"
-             else
-               "trainings.start_time DESC"
-           end
+    sort           = case params['sort']
+                       when "name" then
+                         "name"
+                       when "sportlevel" then
+                         "sport_levels.name"
+                       when "sports.name" then
+                         "sports.name"
+                       when "start_time" then
+                         "start_time ASC"
+                       when "time_total" then
+                         "time_total ASC"
+                       when "distance" then
+                         "distance_total"
+                       else
+                         "trainings.start_time DESC"
+                     end
 
     dir = case params['dir']
             when "asc" then
@@ -71,7 +69,7 @@ class TrainingsController < ApplicationController
 
     @trainings = Training.paginate(
         :conditions => ['trainings.user_id = ?', current_user],
-        :select => 'trainings.id,
+        :select     => 'trainings.id,
                                                 trainings.map_data,
                                                 trainings.sport_level_id,
                                                 trainings.comment,
@@ -84,9 +82,9 @@ class TrainingsController < ApplicationController
                                                 time_total,
                                                 trainings.start_time as start_time,
                                                 distance_total',
-        :order => 'start_time DESC',
-        :joins => [:sport_level, :sport, :course_name],
-        :page => params[:page], :per_page => items_per_page)
+        :order      => 'start_time DESC',
+        :joins      => [:sport_level, :sport, :course_name],
+        :page       => params[:page], :per_page => items_per_page)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -100,10 +98,11 @@ class TrainingsController < ApplicationController
   def show
     @training = Training.select('
                         trainings.*,
-                        weathers.temp as temperature,
-                        weathers.icon,
-                        weathers.wind_speed,
-                        weathers.humidity,
+                        w.temp as temperature,
+                        w.weather as weather_description,
+                        w.icon,
+                        w.wind_speed,
+                        w.humidity,
                         sport_levels.name as sportlevel,
                         trainings.start_time as start_time,
                         course_name_id as coursename,
@@ -111,7 +110,12 @@ class TrainingsController < ApplicationController
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
     .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-    .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
+    .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN  weathers w
+                        on trainings.id = w.training_id
+                        and w.training_id  = (
+                        select training_id from weathers where training_id = trainings.id
+			order by w.id desc LIMIT 1) ')
+    .order('w.id desc')
     .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all
@@ -133,7 +137,7 @@ class TrainingsController < ApplicationController
   # GET /trainings/bigcalendar.xml
   def bigcalendar
     @calendar = Training.select(
-                                'trainings.id,
+        'trainings.id,
                                 course_names.name as coursename,
                                 sport_levels.name as sportlevel,
                                 sport_levels.css as css,
@@ -142,9 +146,9 @@ class TrainingsController < ApplicationController
                                 comment,
                                 trainings.start_time as start_time,
                                 distance_total')
-                        .order('start_time desc')
-                        .joins(:sport_level, :sport, :course_name)
-                        .limit(600)
+    .order('start_time desc')
+    .joins(:sport_level, :sport, :course_name)
+    .limit(600)
     @calendardate = params[:month] ? Date.parse(params[:month]) : Date.today
 
     respond_to do |format|
@@ -180,28 +184,39 @@ class TrainingsController < ApplicationController
 
   # GET /trainings/1/edit
   def edit
-    @log  = Logger.new('log/trainings.log')
-
-
-
     @training = Training.where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
                         .select('trainings.*,
-                                sport_levels.name as sportlevel,
-                                trainings.start_time as start_time,
-                                course_name_id as coursename,
-                                sports.name as sportname,
-                                trainings.distance_total as distancetotal')
-                        .joins(:course_name, :sport, :sport_level, :weather)
+                                                    sport_levels.name as sportlevel,
+                                                    trainings.start_time as start_time,
+                                                    course_name_id as coursename,
+                                                    sports.name as sportname,
+                                                    trainings.distance_total as distancetotal')
+                        .joins(:course_name, :sport, :sport_level)
+                        .joins('LEFT JOIN "weathers" ON "weathers"."training_id" = "trainings"."id"')
                         .first
 
-    if @training.map_data.length > 4
-      load_weather_data
-      @weather_desc = @weather
-    end
+    unless @training.map_data.nil?
+      if @training.map_data.length > 4
+        load_weather_data
 
-    @sportlevel   = SportLevel.get_sportlevel_by_user(current_user.id)
-    @sport        = Sport.get_sports_by_user(current_user.id)
-    @coursename   = CourseName.get_coursename_by_user(current_user.id)
+        @weather_desc = @weather
+        weather = Weather.new
+        if weather.wind_deg.nil?
+          weather.training_id=@training.id
+          weather.weather    = @weather
+          weather.temp       = @temp
+          weather.icon       = @icon
+          weather.wind_speed = @speed
+          weather.wind_deg   = @deg
+          weather.humidity   = @humidity
+          weather.save
+        end
+
+      end
+    end
+    @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport      = Sport.get_sports_by_user(current_user.id)
+    @coursename = CourseName.get_coursename_by_user(current_user.id)
   end
 
 
@@ -321,11 +336,11 @@ class TrainingsController < ApplicationController
   protected
   def add_attachment
     # get file name
-    file_name = params[:qqfile]
+    file_name        = params[:qqfile]
     # get file content type
     att_content_type = (request.content_type.to_s == "") ? "application/octet-stream" : request.content_type.to_s
     # create temporal file
-    file = Tempfile.new(file_name)
+    file             = Tempfile.new(file_name)
     # put data into this file from raw post request
     file.print request.raw_post
 
@@ -334,17 +349,17 @@ class TrainingsController < ApplicationController
     Tempfile.send(:define_method, "original_filename") { return file_name }
 
     # save file into attachment
-    attach = Attachment.new(:uploaded_data => file)
+    attach           = Attachment.new(:uploaded_data => file)
     attach.person_id = params[:person_id]
     attach.save!
 
     respond_to do |format|
-      format.json { render(:layout => false, :json => {"success" => true, "data" => attach}.to_json) }
+      format.json { render(:layout => false, :json => { "success" => true, "data" => attach }.to_json) }
       format.html { render(:layout => false, :json => attach.to_json) }
     end
   rescue Exception => err
     respond_to do |format|
-      format.json { render(:layout => false, :json => {"error" => err.to_s}.to_json) }
+      format.json { render(:layout => false, :json => { "error" => err.to_s }.to_json) }
     end
   end
 
@@ -353,13 +368,13 @@ class TrainingsController < ApplicationController
 
       if ajax == true
         file_or_xml = 'xml'
-        td = Trainingsdata::Forerunner.new()
-        td.xml = file_data
+        td          = Trainingsdata::Forerunner.new()
+        td.xml      = file_data
       elsif ajax == 'html'
         file_or_xml = 'file'
-        path = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
-        td = Trainingsdata::Forerunner.new()
-        td.xml = path
+        path        = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
+        td          = Trainingsdata::Forerunner.new()
+        td.xml      = path
       end
 
       td.start_import(file_or_xml)
@@ -371,38 +386,38 @@ class TrainingsController < ApplicationController
 
       td.laps.each do |index, value|
 
-        @distances[index.to_i]      = value[:distance]
-        @duration[index.to_i]       = value[:duration]
-        @heartrate_avg[index.to_i]  = value[:heartrate_avg]
+        @distances[index.to_i]     = value[:distance]
+        @duration[index.to_i]      = value[:duration]
+        @heartrate_avg[index.to_i] = value[:heartrate_avg]
 
         @training.laps.create(
-            :distance_total     => value[:distance],
-            :heartrate_avg      => value[:heartrate_avg],
-            :calories           => value[:calories],
-            :heartrate_max      => value[:heartrate_max],
-            :duration           => value[:duration],
-            :heartrate          => td.lap_single_heartrate[index].to_json,
-            :height             => td.lap_single_height[index].to_json,
-            :start_time         => value[:start_time],
-            :map                => td.lap_single_map[index].to_json,
-            :maximum_speed      => value[:maximum_speed]
+            :distance_total => value[:distance],
+            :heartrate_avg  => value[:heartrate_avg],
+            :calories       => value[:calories],
+            :heartrate_max  => value[:heartrate_max],
+            :duration       => value[:duration],
+            :heartrate      => td.lap_single_heartrate[index].to_json,
+            :height         => td.lap_single_height[index].to_json,
+            :start_time     => value[:start_time],
+            :map            => td.lap_single_map[index].to_json,
+            :maximum_speed  => value[:maximum_speed]
         )
       end
       sports = Sport.get_sports_by_mnemonic(td.sport)
 
-      @training.sport_id        = sports.id
-      @training.calories        = td.calories
-      @training.start_time      = td.start_time
-      @training.distance_total  = td.distance_total
-      @training.time_total      = td.time_total
-      @training.map_data        = td.map_data
-      @training.heartrate       = td.heartrate
-      @training.height          = td.height
-      @training.heartrate_avg   = self.calculate_avg_heartrate
-      @training.heartrate_max   = td.heartrate_max
+      @training.sport_id       = sports.id
+      @training.calories       = td.calories
+      @training.start_time     = td.start_time
+      @training.distance_total = td.distance_total
+      @training.time_total     = td.time_total
+      @training.map_data       = td.map_data
+      @training.heartrate      = td.heartrate
+      @training.height         = td.height
+      @training.heartrate_avg  = self.calculate_avg_heartrate
+      @training.heartrate_max  = td.heartrate_max
 
       @training.save
-      weather = Weather.new
+      weather            = Weather.new
       weather.training_id=@training.id
       weather.save
     end
@@ -410,8 +425,8 @@ class TrainingsController < ApplicationController
 
   def calculate_avg_heartrate
     @log.debug(@training)
-    calc_heartrate_sum  = 1
-    res                 = 1
+    calc_heartrate_sum = 1
+    res                = 1
     if @training.distance_total.to_f > 0
       begin
         @distances.each_with_index do |value, index|
@@ -464,7 +479,7 @@ class TrainingsController < ApplicationController
       time    = DateTime.parse(@training['start_time'].to_s)
       h       = time.strftime("%H")
       unless lat_lon[0].nil?
-        if lat_lon[0].is_a? Numeric
+        #if lat_lon[0].is_a? Numeric
           begin
             weather_data = w_api.history_for(time.strftime("%Y%m%d"), "#{lat_lon[0]},#{lat_lon[1]}")
             weather_data.each do |data, index|
@@ -472,15 +487,15 @@ class TrainingsController < ApplicationController
                 v.each do |i|
                   if i.class.to_s == 'Array'
                     i.each do |f|
-                      @log.debug(f['date']['hour'].to_yaml)
-                      if f['date']['hour'].to_s == h.to_s
-
+                      if f['date']['hour'].to_s == h.to_s   #durch das Wetter parsen bis wir die richtige stunde haben.
+                        logger.debug f
                         @temp     = f['tempm']
                         @icon     = f['icon']
                         @weather  = f['conds']
                         @humidity = f['hum']
                         @speed    = f['wspdm']
                         @deg      = f['wdird']
+                        return
                       end
                     end
                   end
@@ -488,22 +503,22 @@ class TrainingsController < ApplicationController
               end
             end
           end
-        end
+        #end
       end
     end
   end
 
   def batch (file)
-    f = File.open(file, "r")
-    @training = current_user.trainings.new()
-    @training.user_id = @training.user_id
-    @training.sport_id = 5
+    f                        = File.open(file, "r")
+    @training                = current_user.trainings.new()
+    @training.user_id        = @training.user_id
+    @training.sport_id       = 5
     @training.sport_level_id = 1
     @training.course_name_id = 4
-    @training.filename = File.basename(file).to_s
-    @training_orl = Training.find(:first,
-                                  :conditions => {:user_id => @training.user_id, :filename => @training.filename},
-                                  :select => 'id')
+    @training.filename       = File.basename(file).to_s
+    @training_orl            = Training.find(:first,
+                                             :conditions => { :user_id => @training.user_id, :filename => @training.filename },
+                                             :select     => 'id')
 
     if @training_orl.nil?
       @training.save
@@ -528,14 +543,14 @@ class TrainingsController < ApplicationController
           )
         end
 
-        @training.distance_total  = td.distance_total
-        @training.time_total      = td.time_total
-        @training.calories        = td.calories
-        @training.map_data        = td.map_data
-        @training.heartrate       = td.heartrate
-        @training.heartrate_avg   = td.heartrate_avg
-        @training.heartrate_max   = td.heartrate_max
-        @training.height          = td.height
+        @training.distance_total = td.distance_total
+        @training.time_total     = td.time_total
+        @training.calories       = td.calories
+        @training.map_data       = td.map_data
+        @training.heartrate      = td.heartrate
+        @training.heartrate_avg  = td.heartrate_avg
+        @training.heartrate_max  = td.heartrate_max
+        @training.height         = td.height
         @training.save
       end
     end

@@ -82,6 +82,12 @@
                     = image_tag(@icon_url, :alt => "#{training.icon}", :class => 'wether_icon')
               %tr
                 %td
+                  = t('activerecord.attributes.training.weather', :default => t('activerecord.labels.weather', :default => 'weather'))
+                %td
+                  -if training.weather_description
+                    = training.weather_description
+              %tr
+                %td
                   = t('activerecord.attributes.training.wind', :default => t('activerecord.labels.wind', :default => 'Wind'))
                 %td
                   -if training.wind_speed?

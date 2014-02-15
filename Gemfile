@@ -30,5 +30,7 @@ gem 'newrelic_rpm'
 gem 'geocoder'
 gem 'wunderground'
 gem 'geokit-rails'
+gem 'unf'
+gem 'logging-rails', :require => 'logging/rails'
 
 

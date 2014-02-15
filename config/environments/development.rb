@@ -7,7 +7,7 @@ Trainingsdiary::Application.configure do
 	config.cache_classes = false
 
 	# Log error messages when you accidentally call methods on nil.
-	config.whiny_nils = true
+	# config.whiny_nils = true
 
 	# Show full error reports and disable caching
 	config.consider_all_requests_local       = true
@@ -22,5 +22,11 @@ Trainingsdiary::Application.configure do
 	# Only use best-standards-support built into browsers
 	config.action_dispatch.best_standards_support = :builtin
   config.log_level = :debug
+
+  # Set the logging destination(s)
+  config.log_to = %w[stdout file]
+
+  # Show the logging configuration on STDOUT
+  config.show_log_configuration = true
 end
 
