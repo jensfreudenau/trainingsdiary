@@ -3,7 +3,7 @@ require 'json'
 require 'active_support/inflector'
 require 'chronic_duration'
 require 'open-uri'
-require 'FileUtils.rb'
+require 'fileutils.rb'
 
 
 class TrainingsController < ApplicationController
