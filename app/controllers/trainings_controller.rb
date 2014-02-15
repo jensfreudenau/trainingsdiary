@@ -18,7 +18,6 @@ class TrainingsController < ApplicationController
 
     @training = current_user.trainings.new
     @training.laps.build()
-    #:joins => [:sport_level, :sport, :course_name],
 
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport      = Sport.get_sports_by_user(current_user.id)
@@ -33,13 +32,6 @@ class TrainingsController < ApplicationController
   def index
     @log           = Logger.new('log/trainings.log')
 
-    #@files = Dir.glob("public/tracks/uploader/temp/*.TCX", File::FNM_CASEFOLD)
-    #
-    #for file in @files
-
-    # self.batch(file)
-    # end
-    #
     items_per_page = 7
     sort           = case params['sort']
                        when "name" then
