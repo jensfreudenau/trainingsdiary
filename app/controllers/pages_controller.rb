@@ -17,7 +17,7 @@ class PagesController < ApplicationController
                                             time_total,
                                             trainings.start_time as start_time,
                                             distance_total',
-                                   :order => 'id DESC',
+                                   :order => 'start_time DESC',
                                    :joins => [:sport_level, :sport, :course_name],
                                    :page => params[:page], :per_page => items_per_page)
   end
@@ -66,7 +66,7 @@ class PagesController < ApplicationController
                                                 distance_total',
                                    :order => sort,
                                    :joins => [:sport_level, :sport, :course_name],
-                                   :page => params[:page], :per_page => 200)
+                                   :page => params[:page], :per_page => 2000)
   end
 
 
