@@ -1,25 +1,19 @@
 class PagesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show, :bigmap, :listen]
 
-  def index
-    #@log = Logger.new('log/home.log')   
-    items_per_page = 7
-    @trainings = Training.paginate(:select => 'trainings.id,
-                                            trainings.map_data,
-                                            trainings.sport_level_id,
-                                            trainings.comment,
-                                            trainings.heartrate_avg,
-                                            trainings.heartrate_max,
-                                            course_names.name as coursename,
-                                            sport_levels.name as sportlevel,
-                                            sport_levels.css as css,
-                                            sports.name as sportname,
-                                            time_total,
-                                            trainings.start_time as start_time,
-                                            distance_total',
-                                   :order => 'start_time DESC',
-                                   :joins => [:sport_level, :sport, :course_name],
-                                   :page => params[:page], :per_page => items_per_page)
+  def index  
+    @trainings = Training.select('
+                        trainings.*,                        
+                        sport_levels.name as sportlevel,
+                        sport_levels.css as css,
+                        trainings.start_time as start_time,
+                        course_name_id as coursename,
+                        sports.name as sportname,                          
+                        course_names.name as coursename,
+                        trainings.distance_total as distancetotal')
+              .joins(:course_name, :sport, :sport_level)
+              .order(start_time: :desc)
+              .page params[:page]  
   end
 
   def bigmap
@@ -52,7 +46,7 @@ class PagesController < ApplicationController
              else
                'trainings.start_time DESC'
            end
-    @trainings = Training.paginate(:select => 'trainings.id,
+    @trainings = Training.select('trainings.id,
                                                 trainings.sport_level_id,
                                                 trainings.comment,
                                                 trainings.heartrate_avg,
@@ -63,10 +57,26 @@ class PagesController < ApplicationController
                                                 sports.name as sportname,
                                                 time_total,
                                                 trainings.start_time as start_time,
-                                                distance_total',
-                                   :order => sort,
-                                   :joins => [:sport_level, :sport, :course_name],
-                                   :page => params[:page], :per_page => 2000)
+                                                distance_total')
+              .joins(:course_name, :sport, :sport_level)
+              .order(sort)
+              .page(params[:page])
+              .per(2000)
+    # @trainings = Training.paginate(:select => 'trainings.id,
+    #                                             trainings.sport_level_id,
+    #                                             trainings.comment,
+    #                                             trainings.heartrate_avg,
+    #                                             trainings.heartrate_max,
+    #                                             course_names.name as coursename,
+    #                                             sport_levels.name as sportlevel,
+    #                                             sport_levels.css as css,
+    #                                             sports.name as sportname,
+    #                                             time_total,
+    #                                             trainings.start_time as start_time,
+    #                                             distance_total',
+    #                                :order => sort,
+    #                                :joins => [:sport_level, :sport, :course_name],
+    #                                :page => params[:page], :per_page => 2000)
   end
 
 

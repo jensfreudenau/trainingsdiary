@@ -49,13 +49,15 @@
                   &oslash;
                   = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
                 %td
-                  = training.heartrate_avg
+                  -if(training.heartrate_avg != 1)
+                    = training.heartrate_avg
               %tr
                 %td
                   max
-                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate_avg", :default => "Heartrate"))
+                  = t("activerecord.attributes.training.heartrate", :default => t("activerecord.labels.heartrate", :default => "Heartrate"))
                 %td
-                  = training.heartrate_max
+                  -if(training.heartrate_max != 0)
+                    = training.heartrate_max
 
 
 
@@ -63,7 +65,7 @@
             %thead
               %tr
                 %th
-                  &nbsp;
+                  = t("activerecord.attributes.training.weather", :default => t("activerecord.labels.weather", :default => "Weather"))
                 %th
                   &nbsp;
             %tbody
@@ -160,7 +162,8 @@
                             = lap.heartrate_avg
 
                       %td
-                        = lap.heartrate_max.to_i
+                        -if(training.heartrate_max != 0)
+                          = lap.heartrate_max.to_i
                       %td
                         = lap.calories.to_i
                         - cals = cals + lap.calories.to_i
@@ -183,13 +186,13 @@
 
             %br/
             .create_route
-              = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>"courses", :action=>"route_from_training", :trainings_id => "#{training.id}" }
+              = link_to t('create trainings route', :default =>'create trainings route'), { :controller=>'courses', :action=>'route_from_training', :trainings_id => "#{training.id}" }
             %br/
             .link_big_map
               = link_to t('fullscreen', :default =>'show fullscreen'), { :controller=>'pages', :action=>'bigmap', :id => "#{training.id}" }, :id => 'bigmap', :class => 'iframe'
         .wat-cf
-          = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_training_path(training), :class => "button"
-          = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), training_path(training), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+          = link_to image_tag('web-app-theme/icons/application_edit.png', :alt => "#{t('web-app-theme.edit', :default=> 'Edit')}") + ' ' + t('web-app-theme.edit', :default=> 'Edit'), edit_training_path(training), :class => 'button'
+          = link_to image_tag('web-app-theme/icons/cross.png', :alt => "#{t('web-app-theme.delete', :default=> 'Delete')}") + ' ' + t('web-app-theme.delete', :default => 'Delete'), training_path(training), :method => 'delete', :class => 'button', :confirm => "#{t('web-app-theme.confirm', :default => 'Are you sure?')}"
 
 
 

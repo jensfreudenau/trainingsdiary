@@ -15,5 +15,6 @@ class Training < ActiveRecord::Base
     #default_scope order('trainings.start_time DESC')
     validates :start_time, :presence => true
     validates :sport_id, :presence => true
-    
+    #permit_params :sport_id, :sport_level_id, :course_name_id, :time_total, :distance_total, :comment
+   
 end

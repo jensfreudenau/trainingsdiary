@@ -1,6 +1,6 @@
 :javascript
-  $(document).ready(function(){  
-    $('#sortable').sortable({
+  jQuery(document).ready(function(){
+    jQuery('#sortable').sortable({
       axis: 'y',
       dropOnEmpty: false,       
       cursor: 'crosshair',
@@ -8,12 +8,12 @@
       opacity: 0.4,
       scroll: true,
       update: function(){
-        $.ajax({
+        jQuery.ajax({
           type: 'post',
           data: $('#sortable').sortable('serialize'),
           dataType: 'script',
           complete: function(request){
-            $('#sortable li').effect('highlight', {}, 2000);
+            jQuery('#sortable li').effect('highlight', {}, 2000);
           },
           url: '/course_names/sort'
         })

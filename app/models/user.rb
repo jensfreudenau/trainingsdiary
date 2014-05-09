@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, 
+         :recoverable, :rememberable, :trackable, :validatable
     belongs_to :role
     has_many :trainings
     has_many :sports
@@ -8,11 +12,11 @@ class User < ActiveRecord::Base
     has_many :tracks
     #include Mongoid::Document
     # Setup accessible (or protected) attributes for your model
-    attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :role_id, :time_zone
+    #attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :role_id, :time_zone
 	
     # Include default devise modules. Others available are:
     # :token_authenticatable, :confirmable, :lockable and :timeoutable
-    devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
+    devise :database_authenticatable,  :recoverable, :rememberable, :trackable, :validatable #, :token_authenticatable
     def self.current
         Thread.current[:user]
     end

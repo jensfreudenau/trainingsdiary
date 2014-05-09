@@ -4,14 +4,14 @@ require 'active_support/inflector'
 require 'chronic_duration'
 require 'open-uri'
 require 'fileutils.rb'
-
+#require 'Bar'
 
 class TrainingsController < ApplicationController
   include Devise::Controllers::Helpers
   before_filter :authenticate_user!, :except => [:index, :show, :sort]
   #load_and_authorize_resource
-  include Trainingsdata
-
+  #include Trainingsdata
+  #include Bar
   # GET /trainings/newsimple
   # GET /trainings/newsimple.xml
   def newsimple
@@ -58,26 +58,19 @@ class TrainingsController < ApplicationController
             else
               "ASC"
           end
-
-    @trainings = Training.paginate(
-        :conditions => ['trainings.user_id = ?', current_user],
-        :select     => 'trainings.id,
-                                                trainings.map_data,
-                                                trainings.sport_level_id,
-                                                trainings.comment,
-                                                trainings.heartrate_avg,
-                                                trainings.heartrate_max,
-                                                course_names.name as coursename,
-                                                sport_levels.name as sportlevel,
-                                                sport_levels.css as css,
-                                                sports.name as sportname,
-                                                time_total,
-                                                trainings.start_time as start_time,
-                                                distance_total',
-        :order      => 'start_time DESC',
-        :joins      => [:sport_level, :sport, :course_name],
-        :page       => params[:page], :per_page => items_per_page)
-
+    @trainings = Training.select('
+                        trainings.*,                        
+                        sport_levels.name as sportlevel,
+                        sport_levels.css as css,
+                        trainings.start_time as start_time,
+                        course_name_id as coursename,
+                        sports.name as sportname,                          
+                        course_names.name as coursename,
+                        trainings.distance_total as distancetotal')
+              .joins(:course_name, :sport, :sport_level) 
+              .where(['trainings.user_id= ?', current_user])
+              .order(start_time: :desc)
+              .page params[:page]  
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @trainings }
@@ -101,14 +94,14 @@ class TrainingsController < ApplicationController
                         sports.name as sportname,
                         course_names.name as coursename,
                         trainings.distance_total as distancetotal')
-    .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
-    .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN  weathers w
+              .where('trainings.user_id = ? AND trainings.id = ?', current_user, params[:id])
+              .joins(:course_name, :sport, :sport_level).joins('LEFT JOIN  weathers w
                         on trainings.id = w.training_id
                         and w.training_id  = (
                         select training_id from weathers where training_id = trainings.id
-			order by w.id desc LIMIT 1) ')
-    .order('w.id desc')
-    .first
+			                  order by w.id desc LIMIT 1) ')
+              .order('w.id desc')
+              .first
 
     @laps = Lap.where('training_id = ?', params[:id]).all
     if @training.icon?
@@ -255,7 +248,7 @@ class TrainingsController < ApplicationController
   def update
     @log = Logger.new('log/trainings.log')
     Training.mounting
-    file_data = params[:training][:filename]
+   pp file_data = params[:training][:filename]
     if params[:training][:start_time].nil?
       params[:training][:start_time] = Time.now.to_s(:db)
     end
@@ -267,8 +260,7 @@ class TrainingsController < ApplicationController
     @training = Training.find(params[:id])
     @training.save
     respond_to do |format|
-
-      if @training.update_attributes(params[:training])
+      if @training.update_attributes(params.require(:training).permit(:sport_id, :sport_level_id, :course_name_id, :time_total, :distance_total, :comment))
         if file_data
           self.save_file_data(file_data, 'html')
         end
@@ -357,15 +349,13 @@ class TrainingsController < ApplicationController
 
   def save_file_data(file_data, ajax)
     begin
-
+      td          = Forerunner.new()
       if ajax == true
         file_or_xml = 'xml'
-        td          = Trainingsdata::Forerunner.new()
         td.xml      = file_data
       elsif ajax == 'html'
         file_or_xml = 'file'
         path        = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
-        td          = Trainingsdata::Forerunner.new()
         td.xml      = path
       end
 
@@ -518,7 +508,7 @@ class TrainingsController < ApplicationController
       FileUtils.mv file, "public/tracks/uploader/ok/"+File.basename(file).to_s
       begin
 
-        td = Trainingsdata::Forerunner.new()
+        td = Forerunner.new()
 
         td.laps.each_with_index do |value, index|
 

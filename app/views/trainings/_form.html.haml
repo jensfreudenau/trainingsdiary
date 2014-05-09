@@ -4,32 +4,7 @@
     load("#{form_authenticity_token}");
   }
 
-
-  jQuery.noConflict();
-  jQuery(document).ready(function() // or $(function()
-  {
-    run();
-  });
-
-
-  jQuery(function() {
-    var par = jQuery('#garminDisplay');
-    //jQuery(par).hide();
-
-    function runEffect() {
-      jQuery("#garminDisplay").toggle('blind', 1500 );
-    }
-     // set effect from select menu value
-    jQuery( "#find_device" ).click(function() {
-
-      runEffect();
-      return false;
-    });
-  });
-
 %ul#trainingsform
   = form_for @training, :html => { :class => 'form' }, :remote=>true  do |f|
-
     %li
-
       #garminDisplay

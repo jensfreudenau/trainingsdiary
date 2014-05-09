@@ -1,6 +1,5 @@
 require 'yaml'
-module Trainingsdata
-  class Forerunner  < Trainingsdata::Base
+  class Forerunner < Base
     attr_accessor :xml, :rounds, :time_total,
                   :distance_total, :speed_max,
                   :calories, :heartrate_avg, :heartrate_max,
@@ -307,4 +306,3 @@ module Trainingsdata
       end
     end
   end #class
-end #module

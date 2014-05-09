@@ -3,11 +3,11 @@ require 'pp'
 
 class ApplicationController < ActionController::Base
     helper :all
-    
+
     before_filter :authenticate_user!, :except => [:index, :show]
     before_filter :set_locale, :set_time_zone, :list_last_trainings, :calendar, :statistic
     protect_from_forgery
-    
+
     rescue_from CanCan::AccessDenied do |exception|
         Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
         flash[:error] = exception.message
@@ -17,11 +17,11 @@ class ApplicationController < ActionController::Base
     def set_time_zone
         Time.zone = current_user.time_zone unless current_user.blank?
     end
-    
+
     def set_locale
         I18n.locale = params[:locale] || I18n.default_locale
     end
-    
+
     def list_last_trainings
       @last_trainings = Training.all(
                                         #:conditions => ['trainings.user_id = ?', current_user ],
@@ -54,14 +54,14 @@ class ApplicationController < ActionController::Base
         #                                        :joins => [:sport_level, :sport, :course_name],
         #                                        :limit => 3)
     end
-    
-    def statistic      
+
+    def statistic
         #@log = Logger.new('log/applic.log')
         @sports = Sport.all(
             :select => 'id, name',
             :order => 'id DESC'
         )
-        if params[:week] 
+        if params[:week]
           @from_date = DateTime.parse(params[:week])
         else
           @from_date = DateTime.now
@@ -70,12 +70,12 @@ class ApplicationController < ActionController::Base
         @sports.each do |sport|
 
         @report[sport.name.to_s] = Training.sum('distance_total', :conditions => {
-                                                              :sport_id => sport.id,  
+                                                              :sport_id => sport.id,
                                                               :start_time => @from_date.beginning_of_week..@from_date.end_of_week })
-        
-        end       
+
+        end
     end
-      
+
     def calendar
         @calendartrainings = Training.all(
             :select => 'trainings.id,

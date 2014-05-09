@@ -9,11 +9,14 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131103104521) do
+ActiveRecord::Schema.define(version: 20140331160141) do
 
-  create_table "blog_entries", :force => true do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "blog_entries", force: true do |t|
     t.string   "subject"
     t.text     "content"
     t.datetime "publish_at"
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.datetime "updated_at"
   end
 
-  create_table "course_names", :force => true do |t|
+  create_table "course_names", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -29,7 +32,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.integer  "sort"
   end
 
-  create_table "courses", :force => true do |t|
+  create_table "courses", force: true do |t|
     t.string   "name"
     t.string   "file"
     t.text     "comment"
@@ -41,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.integer  "trainings_id"
   end
 
-  create_table "downloads", :force => true do |t|
+  create_table "downloads", force: true do |t|
     t.string   "name"
     t.string   "file"
     t.text     "comment"
@@ -51,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.datetime "updated_at"
   end
 
-  create_table "laps", :force => true do |t|
+  create_table "laps", force: true do |t|
     t.integer  "trainings_id"
     t.float    "distance_total"
     t.float    "heartrate_max"
@@ -68,7 +71,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.float    "maximum_speed"
   end
 
-  create_table "posts", :force => true do |t|
+  create_table "posts", force: true do |t|
     t.string   "name"
     t.string   "title"
     t.text     "content"
@@ -76,13 +79,13 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.datetime "updated_at"
   end
 
-  create_table "roles", :force => true do |t|
+  create_table "roles", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "sport_levels", :force => true do |t|
+  create_table "sport_levels", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -91,29 +94,28 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.integer  "sort"
   end
 
-  create_table "sports", :force => true do |t|
+  create_table "sports", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sort_order"
     t.string   "mnemonic"
-    t.string   "test",       :limit => 1
   end
 
-  create_table "tracks", :force => true do |t|
+  create_table "tracks", force: true do |t|
     t.integer  "user_id"
     t.integer  "sport_id"
     t.text     "waypoints"
     t.string   "distance"
     t.string   "duration"
     t.string   "min_per_km"
-    t.string   "location"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "location"
   end
 
-  create_table "trainings", :force => true do |t|
+  create_table "trainings", force: true do |t|
     t.integer  "user_id"
     t.integer  "sport_id"
     t.integer  "sport_level_id"
@@ -133,13 +135,13 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.integer  "calories"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+  create_table "users", force: true do |t|
+    t.string   "email",                            default: "", null: false
+    t.string   "encrypted_password",   limit: 128, default: "", null: false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",                    default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -151,17 +153,17 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.string   "time_zone"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "weather_translations", :force => true do |t|
+  create_table "weather_translations", force: true do |t|
     t.string   "de"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "weather_id"
   end
 
-  create_table "weathers", :force => true do |t|
+  create_table "weathers", force: true do |t|
     t.integer  "training_id"
     t.string   "weather"
     t.float    "temp"
@@ -173,9 +175,9 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.datetime "updated_at"
   end
 
-  add_index "weathers", ["training_id"], :name => "index_weathers_on_training_id"
+  add_index "weathers", ["training_id"], name: "index_weathers_on_training_id", using: :btree
 
-  create_table "workout_steps", :force => true do |t|
+  create_table "workout_steps", force: true do |t|
     t.integer  "user_id"
     t.string   "name"
     t.string   "duration"
@@ -187,7 +189,7 @@ ActiveRecord::Schema.define(:version => 20131103104521) do
     t.integer  "workout_id"
   end
 
-  create_table "workouts", :force => true do |t|
+  create_table "workouts", force: true do |t|
     t.string   "name"
     t.string   "discipline"
     t.datetime "created_at"

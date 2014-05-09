@@ -10,7 +10,7 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 module Trainingsdiary
     class Application < Rails::Application
         require 'rack/raw_upload'
-        config.middleware.use 'Rack::RawUpload', :paths => ['/tracks/uploader']
+        config.middleware.use 'Rack::RawUpload' #, :paths => ['/tracks/uploader']
         # Settings in config/environments/* take precedence over those specified here.
         # Application configuration should go into files in config/initializers
         # -- all .rb files in that directory are automatically loaded.
@@ -32,7 +32,8 @@ module Trainingsdiary
         # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
         config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
         config.i18n.default_locale = :de
-        config.autoload_paths += %W( #{config.root}/lib )
+        config.i18n.enforce_available_locales = false
+        config.autoload_paths += %W(#{config.root}/lib)
         config.autoload_paths += Dir["#{config.root}/lib/**/"]
         # JavaScript files you want as :defaults (application.js is always included).
         # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
@@ -42,6 +43,7 @@ module Trainingsdiary
         config.log_level = :debug
         # Configure sensitive parameters which will be filtered from the log file.
         config.filter_parameters += [:password]
+
         config.to_prepare do
             Devise::SessionsController.layout 'sign'
 	      end

@@ -1,11 +1,14 @@
 require 'json'
 require 'net/http'
-module Trainingsdata 
-  class Base       
+  class Base
     attr_accessor :map_data, :heartrate, :height, :laps, :file, :avg_heartrate
     def initialize
       @log = Logger.new('log/base.log')
 
+    end
+
+    def tst
+      puts 'huhu'
     end
     #
     # loads the main data into a new hash
@@ -179,5 +182,3 @@ module Trainingsdata
       return res
     end
   end #class
-   
-end #module

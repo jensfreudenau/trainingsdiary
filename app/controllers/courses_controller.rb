@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
   before_filter :init
   load_and_authorize_resource
-  include Trainingsdata
+  #include Trainingsdata
   
   def init
     @log          = Logger.new('log/courses.log')  

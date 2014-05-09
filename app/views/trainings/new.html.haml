@@ -1,27 +1,15 @@
 = stylesheet_link_tag 'communicator2.css'
-
-= javascript_include_tag 'prototype' ,
+= javascript_include_tag 'garmin/prototype' ,
                          'garmin/connector',
-                         'garmin/GarminDevicePluginDemo',
-                         'garmin/GarminDeviceControlDemo',
-                         'garmin/GarminDevicePlugin',
-                         'garmin/Util-XmlConverter',
-                         'garmin/Util-Broadcaster',
-                         'garmin/Util-BrowserDetect',
-                         'garmin/Util-DateTimeFormat',
-                         'garmin/Util-PluginDetect',
-                         'garmin/Util-XmlConverter',
-                         'garmin/GarminObjectGenerator',
-                         'garmin/GarminPluginUtils',
-                         'garmin/GarminDevice',
-                         'garmin/GarminDevicePlugin',
-                         'garmin/GarminDeviceControl',
-                         'garmin/GarminDeviceDisplay'
+                          'garmin/device/GarminDeviceDisplay'
+
+
 
 .detail
   .content
     .inner
       = render :partial => 'form'
 
-
+:javascript
+  load("#{form_authenticity_token}");
 
