@@ -30,6 +30,8 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+gem 'heroku'
+
 gem 'pg'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'yaml_db'
