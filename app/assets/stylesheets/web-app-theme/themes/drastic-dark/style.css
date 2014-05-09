@@ -1,0 +1,1138 @@
+/*
+
+    Drastic Dark
+    by Juan Maria Martinez Arce
+       juan[at]insignia4u.com
+
+    light grey:                 #cfcfcf
+    medium grey:                #36393d
+    dark grey:                  #1a1a1a
+    interactive action yellow   #ffff88
+    red                         #cc0000
+    light blue                  #E6EEFC
+    dark blue                   #0B43A8
+
+*/
+
+.small {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    line-height: 1.4em;
+}
+
+.gray {
+    color: #999999;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: normal;
+    letter-spacing: normal;
+    line-height: 1.6em;
+}
+
+.hightlight {
+    background-color: #ffff88;
+    font-weight: bold;
+    color: #36393d;
+}
+
+a:link, a:visited, a:hover, a:active, h1, h2, h3 {
+    /*color: #36393d;*/
+}
+
+a {
+    -moz-outline: none;
+    /*font-size: 12px;*/
+}
+
+body {
+    color: #222;
+    font-size: 14px;
+    font-family: helvetica, arial, sans-serif;
+}
+
+hr {
+    background: #f0f0ee;
+    color: #f0f0ee;
+}
+
+#header {
+    height: 100px;
+    width: 960px;
+
+}
+
+.header-cont {
+    border-bottom: 1px solid #ff1493;
+    background: #36393d;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 10000;
+    /*border-bottom-width: 5px;*/
+    /*border-color: tomato;*/
+}
+
+#header .header-cont h1 {
+    padding: 15px 0 15px 70px;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1.2em;
+}
+
+#header .header-cont h1 a:link, #header .header-cont h1 a:active, #header .header-cont h1 a:hover, #header .header-cont h1 a:visited {
+    color: #FFF;
+}
+
+
+
+#main .block .content {
+    background: none;
+    padding-top: 1px;
+    padding-bottom: 20px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    min-width: 760px;
+}
+
+#main .block .content h2 {
+    margin-left: 15px;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 1.2em;
+    color: #DA185F;
+
+}
+
+#main .block .content p {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    line-height: 1.45em;
+}
+
+#sidebar h3, ul.listing h3 {
+
+    background: #1a1a1a;
+    color: #FFF;
+}
+
+
+
+#readBox {
+    float: right;
+}
+
+
+
+#sidebar ul li a:link, #sidebar ul li a:visited, .list_overview .link_big_map a {
+    background: #FFF;
+    border-bottom: 1px solid #F0F0EE;
+    text-decoration: none;
+}
+
+#sidebar ul li a:hover, #sidebar ul li a:active {
+    /*background: #666666;*/
+    /*color: #ffffff;*/
+    text-shadow: gray 0.1em 0.1em 0.2em;
+}
+#navigation {
+    background:#1A1A1A;
+    height: 40px;
+}
+#user-navigation {
+    float: right;
+	padding-left: 55px;
+    width: 15%;
+}
+#user-navigation ul li a{
+    font-size: 14px;
+}
+
+
+
+#user-navigation ul li ul {
+    float: right;
+}
+#user-navigation a.logout {
+    background: #cc0000;
+    padding: 1px 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 3px;
+}
+#main-navigation {
+    float: left;
+    padding-left: 55px;
+    height: 35px;
+	width: 80%;
+}
+#main-navigation ul li a, #user-navigation ul li a {
+    padding: 0;
+    padding-left: 15px;
+}
+
+#main-navigation ul li.active a, #user-navigation ul li.active a {
+    border-bottom: 1px dotted #FF1493;
+}
+#main-navigation ul li, #user-navigation ul li {
+    margin-right: 0;
+	padding-left: 15px;
+	margin-right: 5px;
+}
+
+#main-navigation ul li a:link, #main-navigation ul li a:visited, #main-navigation ul li a:hover, #main-navigation ul li a:active,
+#user-navigation ul li a:link, #user-navigation ul li a:visited, #user-navigation ul li a:hover, #user-navigation ul li a:active,
+.secondary-navigation ul li a:link, .secondary-navigation ul li a:visited, .secondary-navigation ul li a:hover, .secondary-navigation ul li a:active
+ {
+    /*text-decoration: none;*/
+    color: #FFF;
+    /*letter-spacing: 1px;*/
+
+}
+#main-navigation ul.wat-cf li , #user-navigation ul.wat-cf li{
+    padding-top: 15px;
+}
+
+#main-navigation ul.wat-cf, #user-navigation ul.wat-cf {
+    height: 45px;
+}
+
+#main-navigation ul li ul li, #user-navigation ul li ul li  {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+}
+
+#main-navigation ul li.active, #user-navigation ul li.active {
+    text-decoration: underline;
+}
+.secondary-navigation li a:hover {
+    background: #666666;
+}
+
+.secondary-navigation {
+    background: gray;
+    border-bottom-color: #1a1a1a;
+}
+
+.secondary-navigation ul li.active, .secondary-navigation ul li.active a:hover {
+    background-color: #1a1a1a;
+}
+
+#footer .block {
+    color: #FFF;
+    background: #1a1a1a;
+}
+
+#footer .block p {
+    margin: 0;
+    padding: 10px;
+}
+
+/* pagination */
+
+.pagination a, .pagination span {
+    -moz-border-radius: 3px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+.pagination a:hover {
+    color:white;
+}
+
+
+
+
+/* forms */
+
+.form label.label {
+    color: #FFF;
+}
+
+.form input.text_field, .form textarea.text_area {
+    /*width: 80%;*/
+    border: 1px solid #cfcfcf;
+}
+
+.form textarea.text_area {
+    height: 200px;
+}
+
+.form input.button {
+    background: #cfcfcf;
+    -moz-border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    padding: 2px 5px;
+    cursor: pointer;
+    color: #36393d;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.form input.button:hover {
+    border: 1px solid #666;
+}
+
+.form .description {
+    font-style: italic;
+    color: #8C8C8C;
+    font-size: .9em;
+}
+
+.form .navform a {
+    color: #cc0000;
+}
+
+.form label.error {
+    color: red;
+    width: 400px;
+}
+
+/* flash-messages */
+.flash .message {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    text-align: center;
+    margin: 0 auto 15px;
+
+}
+
+.flash .message p {
+    margin: 8px;
+}
+
+.flash .error {
+    border: 1px solid #fbb;
+    background-color: #fdd;
+}
+
+.flash .warning {
+    border: 1px solid #fffaaa;
+    background-color: #ffffcc;
+}
+
+.flash .notice {
+    border: 1px solid #1FDF00;
+    background-color: #BBFFB6;
+}
+
+/* lists */
+
+ul.list li {
+    border-bottom:1px solid #F0F0EE;
+}
+
+ul.list li .item .avatar {
+    border:1px solid  #F0F0EE;
+    padding: 2px;
+}
+
+.secondary-navigation li {
+    line-height: 30px;
+}
+
+/* box */
+
+#box .block {
+    background: #FFF;
+}
+
+#box .block h2 {
+    background: #36393d;
+    color: #FFF;
+}
+
+/* rounded borders */
+
+.secondary-navigation li.first a, .secondary-navigation ul li.first, .table th.first, .table th.first {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+}
+
+.table th.last {
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+}
+
+.secondary-navigation ul li.first {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+}
+
+#last_trainings, #last_trainings .block, #sidebar, #sidebar .block, #main .block, #sidebar ul.navigation, #last_trainings ul.navigation, ul.list li, #footer .block, .form input.button, #box .block {
+    -moz-border-radius-bottomleft: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+
+}
+
+.block .left {
+    float: left;
+    /*width:320px;*/
+}
+
+ul.trainings {
+    list-style-type: disc !important;
+    padding-left: 22px !important;
+}
+
+.secondary-navigation {
+    border-bottom-width: 2px;
+    min-width: 760px;
+}
+
+.sortup {
+    color: #1FDF00;
+}
+
+.sortdown {
+    color: #CD0A0A;
+}
+
+.outer_laps div.left {
+    float: left;
+    width: 5%;
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.outer_laps div.right {
+    float: right;
+    width: 92%;
+}
+
+.outer_laps {
+    margin: 10px 0 0 0;
+    padding: 10px 0 0 0;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#map, #draw_map {
+    height: 400px;
+    margin: 0 20px;
+    padding: 5px;
+    border: 1px solid gray;
+    box-shadow: 5px 6px 9px -3px #353535;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+}
+#draw_map {
+    width: 96%;
+    height:700px;
+    margin: 20px 0;
+}
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+#sortable li {
+    margin: 0 3px 15px 30px;
+    /*background: none repeat scroll 0 0 #FFFFFF;*/
+    background-color: rgba(22, 24, 44, 0.5);
+    border: 1px solid #323E41;
+    /*box-shadow: 0 0 5px #CCCCCC;*/
+
+}
+#sortable li a, #sortable li td.name {
+    color:white;
+}
+#sortable td.name {
+    padding-top: 7px;
+    padding-left: 7px;
+    width: 200px;
+    font-size: 12px;
+}
+
+#sortable td.css {
+    width: 100px;
+    font-size: 12px;
+}
+
+#heartrate_chart, #height_chart, #Laufen, #Radfahren {
+
+    margin-bottom: 20px;
+    /*height: 350px;*/
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 6px 9px -3px #353535;
+    overflow: hidden;
+}
+
+.trainings_data {
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    font-size: 12px;
+}
+
+.quader {
+    height: 10px;
+    width: 10px;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+ul#trainingsform {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul#trainingsform li {
+    margin-bottom: 20px;
+    clear: both;
+}
+
+ul#trainingsform label {
+    /*font-size: 10px;*/
+    /*font-weight: bold;*/
+    /*text-transform: uppercase;*/
+    display: block;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    /*clear: both;*/
+}
+
+ul#coursesform {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul#coursesform li {
+    margin-bottom: 20px;
+    clear: both;
+}
+
+ul#coursesform label {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+    clear: both;
+}
+
+#statistic #week {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+	font-size: 0.8em;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#statistic #week a, #statistic #week a:hover {
+    text-decoration: none;
+    padding: 0px;
+    color: #999;
+}
+
+#statistic li {
+    padding: 10px;
+    /*border-bottom: 1px solid #F0F0EE;*/
+}
+.last_trainings #trainings  {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.minimap {
+    border: 1px solid gray;
+    height: 200px;
+    width: 200px;
+    float: right;
+    margin-bottom: 5px;
+}
+
+table.trainings_data {
+    float: left;
+}
+
+li.list_overview {
+    height: 225px;
+    margin-bottom: 10px;
+    padding: 15px;
+    list-style-type: none;
+}
+
+ul.listing {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    list-style: none;
+}
+
+li.training_data {
+    height: 200px;
+}
+
+.clear {
+    clear: both;
+}
+
+tr.empty {
+    height: 20px;
+}
+
+.block dl.floated {
+    padding: 17px;
+    float: left;
+}
+
+.block dt {
+    float: left;
+    clear: left;
+    width: 110px;
+    text-align: right;
+    /*font-weight: bold;*/
+    color: black;
+    line-height: 25px;
+}
+
+.block dt:after {
+    /*content: ":\a0\a0";*/
+}
+
+.block dd {
+    margin: 0 0 0 135px;
+    padding: 0;
+    line-height: 25px;
+}
+
+.courves h3 {
+    padding: 30px 0 10px 100px;
+}
+.list_overview .link_big_map a{
+    color:black;
+    text-shadow: none;
+}
+.link_big_map {
+    text-align: right;
+}
+.link_big_map a{
+    text-align: right;
+    color:white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+
+}
+ul.listing .link_big_map {
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+.inner h3 {
+    margin-left: 20px;
+    margin-top: 0px;
+}
+
+.inner h2 {
+    margin-bottom: 0px;
+}
+
+/* Tables */
+
+table.training {
+    font-size: 12px;
+}
+
+table.laps {
+    font-size: 12px;
+}
+
+td .map {
+    border: 1px solid gray;
+    height: 200px;
+    width: 200px;
+
+}
+
+table {
+    font-family: Aller, 'Lucida Grande', sans-serif;
+    color: #666;
+    /*box-shadow: 0 0 5px #999999;*/
+    margin: 0 30px 0 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    border-spacing: 0;
+    /*border-collapse: collapse;*/
+    vertical-align: baseline;
+}
+
+table tr {
+    border-bottom: 1px solid #ebebeb;
+    border-top: 1px solid #fff;
+}
+
+thead tr {
+    border-top: none;
+}
+
+table thead tr {
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;	
+    
+}
+ 
+/*
+ 	table.training tr:first-child th:first-child,
+	table.training tr:first-child td:first-child {
+	*/	
+table thead tr:first-child th:first-child {
+		border-top-left-radius: 3px;	
+}
+table thead tr:first-child th:last-child {
+		border-top-right-radius: 3px;	
+}
+tbody tr:nth-child(odd) {
+    /*background: #fff;*/
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 3px;
+    border-bottom: 0;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 3px;
+}
+
+tbody tr td, thead tr th {
+
+    padding: 12px 14px;
+    /*position: relative;*/
+    text-align: left;
+}
+
+thead tr th {
+	background: #f3f3f3;
+    padding: 1px 14px;
+    border-bottom: 1px solid #DA185F;
+    height:30px;
+}
+
+.outer_laps table, table.training {
+    background: #fafafa;
+    border-radius: 3px;
+    box-shadow: 5px 6px 9px -3px #353535;
+    margin-bottom: 16px;
+}
+
+.sortlist table {
+    margin: 1px;
+}
+
+.trainings_data .block {
+    font-family: Aller, 'Lucida Grande', sans-serif;
+    color: #666;
+    background: #fff;
+    margin-top: 20px;
+    box-shadow: 0 0 2px #999999;
+    padding: 10px;
+}
+
+.red {
+    color: #cc0000;
+}
+
+.orange {
+    color: coral;
+}
+
+.green {
+    color: green;
+}
+
+.blue {
+    color: #0B43A8;
+}
+
+body {
+    margin: 0px;
+}
+
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -10000;
+}
+
+#ausgabe {
+    background: black;
+    padding: 10px 15px;
+    margin: 10px;
+    border: 1px solid #cecece;
+    color: white;
+    opacity: 0.8;
+    position: absolute;
+    top: 140px;
+    z-index: 10;
+    font-size: 12px;
+    width: 500px;
+}
+
+.inner form {
+    padding: 20px;
+}
+
+.inner form label {
+    /*color :black;*/
+
+}
+
+.menu {
+    position: absolute;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+}
+
+.menu li.topmenu {
+    float: left;
+    width: 80px;
+}
+
+.topmenu a {
+    float: left;
+}
+
+.topmenu ul {
+    width: 100px;
+    display: none;
+
+}
+
+.menu ul li.topmenu ul li.submenu a {
+    color: #444444;
+    font-size: 12px;
+    font-family: Verdana, arial, helvetica;
+}
+
+.menu ul li.topmenu ul {
+    margin-top: 32px;
+}
+
+.menu ul li.topmenu ul li.submenu a, .menu ul li.topmenu ul li.submenu {
+    padding: 0 0 0 2px;
+    margin-left: 15px;
+    width: 100px;
+    overflow: hidden;
+    font-size: 10px;
+}
+
+.menu ul li.topmenu ul li.submenu {
+    padding: 10px 5px;
+    margin-left: 0;
+    background: #fff;
+    box-shadow: 3px 4px 2px -2px #000;
+
+}
+
+.menu ul li.topmenu ul li.last {
+}
+
+.topmenu a, .submenu a {
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.submenu a {
+    border-bottom: 1px dotted grey;
+    position: relative;
+    clear: both; /* special IE6 */
+}
+#user-navigation .menu ul li.topmenu ul li.submenu a, .menu ul li.topmenu ul li.submenu {
+    width: 150px;
+    font-size: 10px;
+}
+
+.topmenu:hover ul {
+    display: block;
+    z-index: 500;
+}
+
+.inner {
+    z-index: 50;
+    width: 97%;
+}
+
+.detail {
+    margin-bottom: 30px;
+    background: transparent;
+    width: 720px;
+}
+
+.detail_right h3 {
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.detail_ovarall {
+    width: 80%;
+    background: white;
+    margin-bottom: 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 5px 6px 9px -3px #353535;
+    margin-right: -20px;
+}
+.detail_right {
+    float: right;
+    width: 605px;
+    background: white;
+    margin-bottom: 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 5px 6px 9px -3px #353535;
+    margin-right: -20px;
+}
+
+.detail_left {
+    float: left;
+    width: 60px;
+
+}
+
+.detail_left img {
+    background: white;
+    box-shadow: 5px 6px 9px -3px #353535;
+    padding: 5px;
+    /*border:1px solid black;*/
+    /*border:1px solid #;*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.trainings, .statistics {
+    background: white;
+}
+
+.partial {
+    /*background: none repeat scroll 0 0 rgba(127, 127, 127, 0.6);*/
+    margin-bottom: 30px;
+	padding:15px;
+
+	/*border: 1px solid #494949;*/
+    /*background: url("/images/background.png") repeat scroll 0 0 transparent;*/
+}
+
+ul.navigation li span a {
+    float: left;
+}
+
+
+
+.form select {
+    line-height: 30px;
+    /*margin-top: 10px;*/
+    padding: 5px;
+}
+
+#calendar, #statistic, #last_trainings{
+	box-shadow: 5px 6px 9px -3px #353535;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+}
+
+
+
+
+/*#####################LOGIN######################*/
+/*-------LOGIN STARTS HERE -------*/
+
+/* Login Button Text */
+#loginButton span {
+    color:#FFF;
+    cursor:pointer;
+}
+
+
+
+/* Login Box */
+#loginBox {
+    position:absolute;
+    top:34px;
+    right:0;
+    display:none;
+    z-index:29;
+}
+
+
+
+
+
+/* Login Form */
+#loginForm {
+    width:248px;
+}
+
+#loginForm fieldset {
+    margin:0 0 12px 0;
+    display:block;
+    border:0;
+    padding:0;
+}
+
+fieldset#body {
+    background:#fff;
+    -moz-border-radius:3px;
+    padding:10px 13px;
+
+}
+
+#loginForm #checkbox {
+    width:auto;
+    margin:1px 9px 0 0;
+    float:left;
+    padding:0;
+    border:0;
+    *margin:-3px 9px 0 0; /* IE7 Fix */
+}
+
+#body label {
+    color:#3a454d;
+    margin:9px 0 0 0;
+    display:block;
+    float:left;
+}
+
+#loginForm #body fieldset label {
+    display:block;
+    float:none;
+    margin:0 0 6px 0;
+}
+
+/* Default Input */
+#loginForm input {
+    width:92%;
+
+}
+
+/* Sign In Button */
+#loginForm #login {
+    width:auto;
+    float:left;
+    background:#339cdf url(../images/loginbuttonbg.png) repeat-x;
+    color:#fff;
+    padding:7px 10px 8px 10px;
+    text-shadow:0px -1px #278db8;
+    border:1px solid #339cdf;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0 12px 0 0;
+    cursor:pointer;
+    *padding:7px 2px 8px 2px; /* IE7 Fix */
+}
+
+/* Forgot your password */
+#loginForm span {
+    text-align:center;
+    display:block;
+    padding:7px 0 4px 0;
+
+}
+
+#loginForm span a {
+    color:#3a454d;
+    text-shadow:1px 1px #fff;
+    font-size:12px;
+}
+
+input:focus {
+    outline:none;
+}
+
+
+body {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.inner h2, .inner h3 {
+    color:white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    padding-left: 10px;
+}
+.create_route a{
+     float: right;
+     color: white;
+     text-shadow:  black 0.1em 0.1em 0.2em;
+}
+a{
+    color:black;
+}
+
+.maindata .rundata {
+    float:left;
+}
+
+table.weatherdata {
+    width: 47%;
+}
+.wether_icon {
+    width: 40px;
+}
+table.dataTable thead th.sorting,table.dataTable thead th.sorting_desc, table.dataTable thead th.sorting_asc{
+    padding-right:20px !important;
+}
+th.sorting_desc {
+    padding-right: 20px;
+}
+.sorting, .sorting_disabled{
+    background-color: #f0f0f0 !important;
+}
+.sorting_desc,.sorting_asc   {
+    background-color: #EBEBEB !important;
+}
+
+fieldset {
+    border:1px solid #323e41;
+    padding:20px;
+    background-color: #ccc;
+    background-color:rgba(22, 24, 44,0.5);
+}
+
+fieldset input[type="radio"] {
+    height: 15px;
+    width: 15px;
+}
+#loginForm fieldset{
+    background-color:#1C2858;
+
+}
+#loginForm label{
+    color: #FFFFFF;
+}
