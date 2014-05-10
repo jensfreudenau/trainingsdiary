@@ -43,7 +43,11 @@ module Trainingsdiary
         config.log_level = :debug
         # Configure sensitive parameters which will be filtered from the log file.
         config.filter_parameters += [:password]
+        config.assets.enabled = true
+        config.assets.version = '1.0'
+        config.assets.initialize_on_precompile = true
 
+        config.serve_static_assets = false
         config.to_prepare do
             Devise::SessionsController.layout 'sign'
         end
