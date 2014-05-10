@@ -47,6 +47,5 @@ module Trainingsdiary
         config.to_prepare do
             Devise::SessionsController.layout 'sign'
         end
-        config.serve_static_assets = true
     end
 end
