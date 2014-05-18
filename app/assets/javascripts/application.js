@@ -105,6 +105,7 @@ function osm_getTileURL(bounds) {
 }
 
 function createMapWithRoute(coordinates, cssId, withControl, zoomControl) {
+
     withControl = typeof(withControl) != 'undefined' ? withControl : true;
     zoomControl = typeof(zoomControl) != 'undefined' ? zoomControl : false;
     var minLat = 100000;
@@ -118,7 +119,7 @@ function createMapWithRoute(coordinates, cssId, withControl, zoomControl) {
     // World Geodetic System 1984 projection
     var WGS84 = new OpenLayers.Projection("EPSG:4326");
 
-
+    OpenLayers.ImgPath = "images/";
     map = new OpenLayers.Map(cssId, {
         controls: [
             new OpenLayers.Control.Navigation(),
