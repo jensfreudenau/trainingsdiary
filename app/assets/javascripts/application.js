@@ -119,7 +119,7 @@ function createMapWithRoute(coordinates, cssId, withControl, zoomControl) {
     // World Geodetic System 1984 projection
     var WGS84 = new OpenLayers.Projection("EPSG:4326");
 
-    OpenLayers.ImgPath = "assets/";
+    OpenLayers.ImgPath = "/assets/";
     map = new OpenLayers.Map(cssId, {
         controls: [
             new OpenLayers.Control.Navigation(),
