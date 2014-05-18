@@ -1045,7 +1045,7 @@ fieldset#body {
 #loginForm #login {
     width:auto;
     float:left;
-    background:#339cdf url(../images/loginbuttonbg.png) repeat-x;
+    /*background:#339cdf url(../images/loginbuttonbg.png) repeat-x;*/
     color:#fff;
     padding:7px 10px 8px 10px;
     text-shadow:0px -1px #278db8;
