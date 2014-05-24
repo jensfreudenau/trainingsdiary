@@ -4,9 +4,8 @@ class CourseNamesController < ApplicationController
     before_filter :authenticate_user!, :except => [:sort]
     #load_and_authorize_resource
     def index
-        @course_names = CourseName.all(
-            :conditions => ["course_names.user_id = ?", current_user ]
-            )
+      @course_names = CourseName.where(['course_names.user_id= ?', current_user])
+
         #@course_names = course_names.paginate:page => params[:page], :per_page => 25
         respond_to do |format|
             format.html # index.html.erb
@@ -40,16 +39,14 @@ class CourseNamesController < ApplicationController
 
     # GET /course_names/1/edit
     def edit
-        @course_name = CourseName.where(
-            :conditions => {:user_id => current_user.id , :id => params[:id]}
-        )
+      @course_name = CourseName.where('course_names.user_id = ? AND course_names.id = ?', current_user, params[:id]).first
     end
 
     # POST /course_names
     # POST /course_names.xml
     def create
         params[:course_name][:user_id] = current_user.id
-        @course_name = CourseName.new(params[:course_name])
+        @course_name = CourseName.new(course_params)
 
         respond_to do |format|
             if @course_name.save
@@ -69,7 +66,7 @@ class CourseNamesController < ApplicationController
         @course_name = CourseName.find(params[:id])
 
         respond_to do |format|
-            if @course_name.update_attributes(params[:course_name])
+            if @course_name.update_attributes(course_params)
                 format.html { redirect_to(course_names_url, :notice => 'Course name was successfully updated.') }
                 format.xml  { head :ok }
             else
@@ -98,5 +95,11 @@ class CourseNamesController < ApplicationController
         course_name.save
       end 
       render :nothing => true 
+    end
+
+    private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def course_params
+      params.require(:course_name).permit(:course_name, :name, :user_id)
     end
 end

@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery.ui.all
+//= require jquery_ujs
 jQuery.noConflict();
 /*
  * jQuery File Upload Plugin JS Example 4.6

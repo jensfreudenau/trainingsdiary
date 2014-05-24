@@ -1,7 +1,7 @@
 class CourseName < ActiveRecord::Base
 	has_many :trainings
 	belongs_to :user
-	default_scope :order => 'sort'
+  default_scope { order('sort') }
   validates :name, :presence => true
   
   def self.get_coursename_by_user (user_id)

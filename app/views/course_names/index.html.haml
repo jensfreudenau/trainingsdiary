@@ -10,7 +10,7 @@
       update: function(){
         jQuery.ajax({
           type: 'post',
-          data: $('#sortable').sortable('serialize'),
+          data: jQuery('#sortable').sortable('serialize'),
           dataType: 'script',
           complete: function(request){
             jQuery('#sortable li').effect('highlight', {}, 2000);
@@ -29,7 +29,7 @@
             %table            
               %tr{:class => cycle("odd", "even")}
                 %td{:class => "name"}
-                  = link_to course_name.name, course_name_path(course_name)
+                  = course_name.name
                 %td.last
-                  \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_course_name_path(course_name)} |
-                  \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", course_name_path(course_name), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+                  = link_to "#{t('web-app-theme.edit', :default => 'Edit')}", edit_course_name_path(course_name)
+                  = link_to "#{t('web-app-theme.delete', :default => 'Delete')}", course_name_path(course_name), :method => :delete, :data => { :confirm => "#{t('web-app-theme.confirm', :default => 'Are you sure?')}" }
