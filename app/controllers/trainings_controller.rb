@@ -222,24 +222,21 @@ class TrainingsController < ApplicationController
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
     @sport      = Sport.get_sports_by_user(current_user.id)
     @coursename = CourseName.get_coursename_by_user(current_user.id)
-    @training   = current_user.trainings.new(params[:training])
-
-
+    @training   = current_user.trainings.new(training_params)
     file_data = params[:training][:filename]
     respond_to do |format|
-      if @training.update_attributes(params[:training])
+      #if @training.update_attributes(params[:training])
         if file_data
           self.save_file_data(file_data, html)
         end
         if @training.save
-
           format.html { redirect_to(trainings_url, :notice => 'Training was successfully updated.') }
           format.xml { head :ok }
         else
           format.html { render :action => "new" }
           format.xml { render :xml => @training.errors, :status => :unprocessable_entity }
         end
-      end
+      #end
     end
   end
 
@@ -292,7 +289,6 @@ class TrainingsController < ApplicationController
 
   def presave
     @log = Logger.new('log/trainings.log')
-    #skip_before_filter :verify_authenticity_token
     xml = params[:training_xml]
 
     @coursename           = CourseName.get_last_coursename_by_user(current_user.id)
@@ -490,52 +486,8 @@ class TrainingsController < ApplicationController
     end
   end
 
-  def batch (file)
-    f                        = File.open(file, "r")
-    @training                = current_user.trainings.new()
-    @training.user_id        = @training.user_id
-    @training.sport_id       = 5
-    @training.sport_level_id = 1
-    @training.course_name_id = 4
-    @training.filename       = File.basename(file).to_s
-    @training_orl            = Training.find(:first,
-                                             :conditions => { :user_id => @training.user_id, :filename => @training.filename },
-                                             :select     => 'id')
-
-    if @training_orl.nil?
-      @training.save
-
-      FileUtils.mv file, "public/tracks/uploader/ok/"+File.basename(file).to_s
-      begin
-
-        td = Forerunner.new()
-
-        td.laps.each_with_index do |value, index|
-
-          @training.laps.create(
-              :distance_total => value[:distance],
-              :heartrate_avg  => value[:heartrate_avg],
-              :calories       => value[:calories],
-              :heartrate_max  => value[:heartrate_max],
-              :duration       => value[:duration],
-              :heartrate      => value[:heartrate].to_json,
-              :height         => value[:height].to_json,
-              :map            => value[:map].to_json,
-              :start_time     => value[:time]
-          )
-        end
-
-        @training.distance_total = td.distance_total
-        @training.time_total     = td.time_total
-        @training.calories       = td.calories
-        @training.map_data       = td.map_data
-        @training.heartrate      = td.heartrate
-        @training.heartrate_avg  = td.heartrate_avg
-        @training.heartrate_max  = td.heartrate_max
-        @training.height         = td.height
-        @training.save
-      end
-    end
+  private
+  def training_params
+    params.require(:training).permit(:training, :sport_level_id, :sport_id, :course_name_id, :time_total, :distance_total, :comment, :start_time )
   end
-
 end
