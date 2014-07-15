@@ -4,12 +4,8 @@ require 'net/http'
     attr_accessor :map_data, :heartrate, :height, :laps, :file, :avg_heartrate
     def initialize
       @log = Logger.new('log/base.log')
-
     end
 
-    def tst
-      puts 'huhu'
-    end
     #
     # loads the main data into a new hash
     #
@@ -51,10 +47,12 @@ require 'net/http'
 
       @diagramm.each_with_index do |data, data_index|
         self.load_track_data(data, data_index)
-
         map             << @lap_map
-        local_heartrate << @lap_heartrate
         local_height    << @lap_height
+
+        unless @lap_heartrate.empty?
+          local_heartrate << @lap_heartrate
+        end
       end
       @laps           = @laps.sort
       @lap_calories   = self.calories
@@ -62,8 +60,13 @@ require 'net/http'
       @time_total     = self.time_total
       @start_time     = self.start_time
       @map_data       = map.to_json
-      @heartrate      = local_heartrate.to_json
       @height         = local_height.to_json
+
+      if local_heartrate.empty?
+        @heartrate = false
+      else
+        @heartrate = local_heartrate.to_json
+      end
     end
      
     
@@ -115,7 +118,6 @@ require 'net/http'
 
       end
       @lap_single_height[data_index]    = @lap_height
-
       @lap_single_heartrate[data_index] = @lap_heartrate
       @lap_single_map[data_index]       = @lap_map
     end
@@ -128,8 +130,6 @@ require 'net/http'
       #@file = Net::HTTP.get(uri)
       #@path ="/Users/jensfreudenau/Development/trainingsdiary/public/uploads/tmp/klein.TCX"
       @file = File.new(@path, "r")
-      @log.debug('@file')
-      @log.debug(@file)
     end
     
     ##

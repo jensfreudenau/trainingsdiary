@@ -56,6 +56,7 @@ gem 'devise-encryptable'
 gem 'fog'
 gem 'rack-raw-upload'
 gem 'jquery-ui-rails'
+gem 'time_difference'
 group :production do
   gem 'rails_12factor'
 end

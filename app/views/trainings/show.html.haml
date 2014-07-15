@@ -58,8 +58,16 @@
                 %td
                   -if(training.heartrate_max != 0)
                     = training.heartrate_max
-
-
+              %tr
+                %td
+                  = t('activerecord.attributes.training.calories', :default => t('activerecord.labels.calories', :default => 'Kalorien'))
+                %td
+                  = training.calories
+              %tr
+                %td
+                  = t('activerecord.attributes.training.max_speed', :default => t('activerecord.labels.max_speed', :default => 'max. Speed'))
+                %td
+                  = training.max_speed
 
           %table.training.datatable.weatherdata{:width => '40%'}
             %thead
@@ -126,6 +134,8 @@
                   %th
                     = t("activerecord.attributes.lap.duration", :default => t("activerecord.labels.duration", :default => "Duration"))
                   %th
+                    = t("activerecord.attributes.lap.maximum_speed", :default => t("activerecord.labels.maximum_speed", :default => "max Speed"))
+                  %th
                     &oslash; Pace
                   %th
                     &oslash;
@@ -134,8 +144,6 @@
                     max.
                     = t("activerecord.attributes.lap.heartrate", :default => t("activerecord.labels.heartrate_max", :default => "max Heartrate"))
 
-                  %th
-                    = t('activerecord.attributes.lap.calories', :default => t('activerecord.labels.calories', :default => 'Kalorien'))
                 %tbody
                   - @laps.each_with_index do |lap, index|
 
@@ -147,6 +155,8 @@
                         = number_to_human(lap.distance_total, :units => :distance, :precision => 4)
                       %td
                         = convertTimeToDuration(lap.duration, :format => :milliseconds)
+                      %td
+                        = number_with_precision(lap.maximum_speed,precision: 2, locale: :de)
                       %td
                         - if lap.distance_total != 0
                           - if training.sportname == 'Radfahren'
@@ -164,9 +174,6 @@
                       %td
                         -if(training.heartrate_max != 0)
                           = lap.heartrate_max.to_i
-                      %td
-                        = lap.calories.to_i
-                        - cals = cals + lap.calories.to_i
               %tr
                 %td{:colspan => 2}
                   = t('activerecord.attributes.lap.all_calories', :default => t('activerecord.labels.all_calories', :default => 'ges. Kalorien'))
