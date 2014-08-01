@@ -95,10 +95,18 @@
   var display;
 
   function load() {
+      if (window.location.hostname == '0.0.0.0') {
+          host = "http://0.0.0.0:3000";
+          key_garminCon  = "9efb0ab754c9aebac8db458d98f5a717";
+      }
+      else {
+          host = "http://www.trainingsdiary.com";
+          key_garminCon  = "536b56b9c19941fcda1d7aa92955738e";
+      }
       display = new GarminDeviceControlJens(
           "statusText",
           "readMap",
-          ["http://0.0.0.0:3000", "9efb0ab754c9aebac8db458d98f5a717"],
+          [host, key_garminCon],
           "#{form_authenticity_token}"
       );
   }
