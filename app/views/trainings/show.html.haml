@@ -67,8 +67,7 @@
                 %td
                   = t('activerecord.attributes.training.max_speed', :default => t('activerecord.labels.max_speed', :default => 'max. Speed'))
                 %td
-                  = training.max_speed
-
+                  = number_with_precision(training.max_speed,precision: 2, locale: :de)
           %table.training.datatable.weatherdata{:width => '40%'}
             %thead
               %tr
@@ -173,13 +172,7 @@
 
                       %td
                         -if(training.heartrate_max != 0)
-                          = lap.heartrate_max.to_i
-              %tr
-                %td{:colspan => 2}
-                  = t('activerecord.attributes.lap.all_calories', :default => t('activerecord.labels.all_calories', :default => 'ges. Kalorien'))
-                %td{:colspan => 5}
-                  = cals
-
+                          = lap.heartrate_max
 
       .trainings_data
         - if(!training.heartrate.nil?)

@@ -106,7 +106,7 @@ hr {
     font-weight: bold;
     letter-spacing: 1px;
     line-height: 1.2em;
-    color: #DA185F;
+    color: #36393D;
 
 }
 
@@ -246,13 +246,10 @@ hr {
     color:white;
 }
 
-
-
-
 /* forms */
 
 .form label.label {
-    color: #FFF;
+    color: #777777;
 }
 
 .form input.text_field, .form textarea.text_area {
@@ -508,7 +505,7 @@ ul#trainingsform label {
     display: block;
     margin-bottom: 20px;
     letter-spacing: 2px;
-    text-shadow: black 0.1em 0.1em 0.2em;
+
     /*clear: both;*/
 }
 
@@ -559,7 +556,7 @@ ul#coursesform label {
     border-radius: 4px;
 }
 .minimap {
-    border: 1px solid gray;
+    /*border: 1px solid gray;*/
     height: 200px;
     width: 200px;
     float: right;
@@ -878,7 +875,7 @@ body {
 
 .inner {
     z-index: 50;
-    width: 97%;
+    width: 100%;
 }
 
 .detail {
@@ -1079,16 +1076,14 @@ input:focus {
 
 body {
     font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    background-color: #FAFAFA;
 }
 
 .inner h2, .inner h3 {
-    color:white;
-    text-shadow: black 0.1em 0.1em 0.2em;
     padding-left: 10px;
 }
 .create_route a{
      float: right;
-     color: white;
      text-shadow:  black 0.1em 0.1em 0.2em;
 }
 a{
@@ -1121,8 +1116,8 @@ th.sorting_desc {
 fieldset {
     border:1px solid #323e41;
     padding:20px;
-    background-color: #ccc;
-    background-color:rgba(22, 24, 44,0.5);
+    background-color: #ddd;
+
 }
 
 fieldset input[type="radio"] {
@@ -1136,3 +1131,25 @@ fieldset input[type="radio"] {
 #loginForm label{
     color: #FFFFFF;
 }
+
+#activityListing tr td {
+    padding:3px;
+}
+#statusBox, #readBox, #deviceBox{
+    background-color: #FFFFFF;
+    border: 1px solid gray;
+    margin-bottom: 3px;
+    left: 35px;
+    top: 25px;
+    width: 700px;
+}
+#readMap {
+    width: 700px !important;
+}
+div.olMapViewport {
+
+    text-align: left;
+}
+
+
+

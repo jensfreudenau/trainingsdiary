@@ -13,6 +13,10 @@ Trainingsdiary::Application.routes.draw do
   #match '/pages' => 'pages#index'             , :as => :user_root
   get '/listen' => 'pages#listen'
   get '/trainings/newsimple', :controller => 'trainings', :action => 'newsimple'
+  get '/trainings/testxml', :controller => 'trainings', :action => 'testxml'
+  get '/trainings/getWorkoutByStartTime', :controller => 'trainings', :action => 'getWorkoutByStartTime'
+  post '/trainings/saveWorkouts', :controller => 'trainings', :action => 'saveWorkouts'
+  post 'trainings/new'
   resources :courses
 
 
@@ -47,15 +51,12 @@ Trainingsdiary::Application.routes.draw do
     post :sort, :on => :collection
   end
   resources :trainings do
-    post :presave, :on => :collection
+    post :save_workouts, :on => :collection
     post :sort, :on => :collection
 
 
   end
 
-  resources :blog_entries do
-    post :sort, :on => :collection
-  end
   get 'bigmap', :to => 'pages#bigmap'
 
 =begin

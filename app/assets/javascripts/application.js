@@ -598,14 +598,14 @@ jQuery(document).ready(function () {
         jQuery("#background").height(height);
     });
 
-    jQuery("a#bigmap").fancybox({
-        'hideOnContentClick': true,
-        'width': '100%',
-        'height': '100',
-        'margin': 0,
-        'padding': 0,
-        'padding-right': 10
-    });
+//    jQuery("a#bigmap").fancybox({
+//        'hideOnContentClick': true,
+//        'width': '100%',
+//        'height': '100',
+//        'margin': 0,
+//        'padding': 0,
+//        'padding-right': 10
+//    });
 
 
 //    jQuery("#training").validate({

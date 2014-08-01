@@ -76,7 +76,11 @@ require 'net/http'
     # :attr_accessor data
     ##    
     def load_track_data (data, data_index)
-      
+      @log.debug('data::')
+      @log.debug(data)
+      @log.debug('data_index')
+      @log.debug(data_index)
+
       @lap_map              = []
       @lap_single_heartrate[data_index]  ||= {}
       @lap_single_map[data_index]        ||= {}

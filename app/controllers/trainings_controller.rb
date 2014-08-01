@@ -7,7 +7,7 @@ require 'fileutils.rb'
 
 class TrainingsController < ApplicationController
   include Devise::Controllers::Helpers
-  before_filter :authenticate_user!, :except => [:index, :show, :sort, :testxml]
+  before_filter :authenticate_user!, :except => [:index, :show, :sort, :new, :saveWorkouts]
   #load_and_authorize_resource
   #include Trainingsdata
   #include Bar
@@ -156,7 +156,6 @@ class TrainingsController < ApplicationController
     unless @training.map_data.nil?
       if @training.map_data.length > 4
         load_weather_data
-
         @weather_desc = @weather
         weather = Weather.new
         if weather.wind_deg.nil?
@@ -169,7 +168,6 @@ class TrainingsController < ApplicationController
           weather.humidity   = @humidity
           weather.save
         end
-
       end
     end
     @sportlevel = SportLevel.get_sportlevel_by_user(current_user.id)
@@ -250,7 +248,7 @@ class TrainingsController < ApplicationController
   # DELETE /trainings/1
   # DELETE /trainings/1.xml
   def destroy
-    @training = Training.find(params[:id])
+    @training = current_user.trainings.find(params[:id])
 
     @training.destroy
     respond_to do |format|
@@ -260,7 +258,7 @@ class TrainingsController < ApplicationController
     end
   end
 
-  def presave
+  def save_workouts
     @log = Logger.new('log/trainings.log')
     xml = params[:training_xml]
 
@@ -284,6 +282,73 @@ class TrainingsController < ApplicationController
     render js: "window.location.pathname = #{edit_training_path(@training).to_json}"
     #render :nothing => true
   end
+
+  def getWorkoutByStartTime
+    @log = Logger.new('log/trainings.log')
+    @training = Training.select('start_time').where('trainings.start_time = ?', params[:start_time]).first
+    respond_to do |format|
+      #format.html # new.html.erb
+      format.json { render json: @training }
+    end
+  end
+
+  #ist ein ajax call
+  def saveWorkouts
+    @log = Logger.new('log/saveWorkouts.log')
+    xml = params['training']
+    if xml[0] == '"'
+      xml[0] = ''
+    end
+    if xml.split('').last == '"'
+      xml.chop!
+    end
+    xml.chomp!
+    xml.gsub!('\n', '')
+    xml.gsub!(/\\\//, "")
+    xml.gsub!('\"', '"')
+    @sportlevel           = SportLevel.get_sportlevel_by_user(current_user.id)
+    @sport                = Sport.get_sports_by_user(current_user.id)
+    @coursename           = CourseName.get_coursename_by_user(current_user.id)
+    @training             = Training.new(:user_id => current_user.id)
+    @training.start_time  = Time.now
+
+    @training.sport_id       = 1
+    @training.sport_level_id = 1
+    @training.course_name_id = 1
+    @training.max_speed      = 0
+    @training.save
+
+    unless @training.id.nil?
+      self.save_file_data(xml, true)
+    end
+
+    unless @training.map_data.nil?
+      if @training.map_data.length > 4
+        load_weather_data
+
+        @weather_desc = @weather
+        weather = Weather.new
+        if weather.wind_deg.nil?
+          weather.training_id=@training.id
+          weather.weather    = @weather
+          weather.temp       = @temp
+          weather.icon       = @icon
+          weather.wind_speed = @speed
+          weather.wind_deg   = @deg
+          weather.humidity   = @humidity
+          weather.save
+        end
+
+      end
+    end
+    @training.save
+
+   respond_to do |format|
+      format.html { render  :partial => 'trainings/save_workouts'}
+   end
+  end
+
+
 
   protected
   def add_attachment
@@ -320,11 +385,11 @@ class TrainingsController < ApplicationController
     begin
       @td = Forerunner.new()
       if ajax == true
-        file_or_xml = 'xml'
-        @td.xml      = file_data
+        file_or_xml   = 'xml'
+        @td.xml       = file_data
       elsif ajax == 'html'
-        file_or_xml = 'file'
-        @td.xml        = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
+        file_or_xml   = 'file'
+        @td.xml       = "http://s3-eu-west-1.amazonaws.com/trainingsdiary/uploads/training/filename/#{@training.user_id}/#{@training.id}/"+file_data
       end
 
       @td.start_import(file_or_xml)
@@ -463,7 +528,6 @@ class TrainingsController < ApplicationController
                   if i.class.to_s == 'Array'
                     i.each do |f|
                       if f['date']['hour'].to_s == h.to_s   #durch das Wetter parsen bis wir die richtige stunde haben.
-                        logger.debug f
                         @temp     = f['tempm']
                         @icon     = f['icon']
                         @weather  = f['conds']

@@ -802,7 +802,7 @@ Garmin.DeviceControl.prototype = {
 							this.gpsDataStringCompressed = this.garminPlugin.getTcdXmlz();
 							
 							this.gpsData = Garmin.XmlConverter.toDocument(this.gpsDataString);
-							this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});										
+							this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});
 						}
 						break;
 					case Garmin.DeviceControl.FILE_TYPES.fitHealthData:

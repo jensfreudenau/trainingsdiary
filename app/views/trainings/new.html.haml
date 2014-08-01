@@ -1,13 +1,15 @@
-= stylesheet_link_tag 'communicator2.css'
-= javascript_include_tag 'garmin/prototype' ,
-                         'garmin/connector',
+= stylesheet_link_tag 'garminDeviceControlDemo.css'
+= javascript_include_tag  'OpenLayers',
+                          'OpenStreetMap',
+                          'garmin/prototype' ,
+                         'garmin/preview',
                          'garmin/device/GarminDeviceDisplay',
                          'garmin/device/GarminDeviceControl',
                           'garmin/device/GarminDevicePlugin',
                           'garmin/device/GarminGpsDataStructures' ,
-                          'garmin/device/GoogleMapController' ,
                           'garmin/device/GarminDevice' ,
                           'garmin/device/GarminPluginUtils' ,
+                          'garmin/device/GoogleMapController' ,
                           'garmin/api/GarminRemoteTransfer' ,
                           'garmin/util/Util-XmlConverter' ,
                           'garmin/util/Util-Broadcaster' ,
@@ -27,14 +29,79 @@
                           'garmin/directory/GarminDirectoryFactory',
                           'garmin/directory/GarminDirectoryUtils',
                           'garmin/directory/GarminFile'
-
-
+:javascript
+  //base layers
+  var openstreetmap = new OpenLayers.Layer.OSM();
+  var opencyclemap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
 
 .detail
   .content
     .inner
-      = render :partial => 'form'
+      //= render :partial => 'form'
+      #statusBox
+        #statusText Status Text
+        #progressBar{:align => 'left', :style => 'display: none;'}
+          #progressWrapper
+            #progressBarDisplay  
+      #deviceBox
+        %input#findDevicesButton{:disabled => 'true', :type => 'button', :value => 'Find Devices'}/
+        %input#cancelFindDevicesButton{:disabled => 'true', :type => 'button', :value => 'Cancel Find Devices'}/
+        %select#deviceSelect{:disabled => 'true', :name => 'deviceSelect'}
+          %option{:value => '-1'} No Devices Found
+        %br/
+        %textarea#deviceInfoText{:cols => '60', :rows => '11'}
+      #readBox
+        File Type:
+        %select#fileTypeSelect{:disabled => 'true', :name => 'fileTypeSelect'}
+          %option{:value => 'FitnessHistoryDirectory'} TCX History Directory
+          %option{:value => 'GPSData'} GPX
+          %option{:value => 'FitnessHistory'} TCX History (all)
+
+
+        %input#readDataButton{:disabled => 'true', :type => 'button', :value => 'Read From Device'}/
+        %input#cancelReadDataButton{:disabled =>'true', :type => 'button', :value => 'Cancel Read'}/
+        / <textarea id="readTracksText" name="readTracksText" rows="75" cols="75">
+        %br/
+        Listing:
+        %table#activityListingHeader{:cellpadding => '3px'}
+          %tr
+            %td
+              %input#checkAllBox{:disabled => 'disabled', :type => 'checkbox'}/
+            %td
+              %b Activity
+        %table#activityListing{:cellpadding => '3px'}
+          %tr
+            %td{:colspan => '3'} No activities listed.
+        %input#readSelectedButton{:disabled => 'true', :type => 'button', :value => 'Read Selected from Device'}/
+        %br/
+        Routes:
+        %select#readRoutesSelect{:disabled => 'true', :name => 'readRoutesSelect'}
+          %option{:value => '-1'} No Routes Found
+        %br/
+        Tracks:
+        %select#readTracksSelect{:disabled => 'true', :name => 'readTracksSelect'}
+          %option{:value => '-1'} No Tracks Found
+        %br/
+        Waypoints:
+        %select#readWaypointsSelect{:disabled => 'true', :name => 'readWaypointsSelect'}
+          %option{:value => '-1'} No Waypoints Found
+        #readMap  
+      #ajaxcall{:style=> 'display:none;'}
+        %p
+          Training wird gespeichert
+      #result
 
 :javascript
-  load("#{form_authenticity_token}");
+  var display;
+
+  function load() {
+      display = new GarminDeviceControlJens(
+          "statusText",
+          "readMap",
+          ["http://0.0.0.0:3000", "9efb0ab754c9aebac8db458d98f5a717"],
+          "#{form_authenticity_token}"
+      );
+  }
+  load();
+
 

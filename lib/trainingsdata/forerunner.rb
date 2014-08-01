@@ -45,7 +45,8 @@ class Forerunner < Base
       #garmin
       @source_doc = Nokogiri::XML(@xml)
     end
-
+    @log.debug('start_import')
+    @log.debug(@source_doc)
     self.generate_laps
     self.save_file_data
     #self.cleanup
@@ -173,7 +174,8 @@ class Forerunner < Base
         @sport = activity['Sport'].to_s
       end
     end
-
+    @log.debug('Activity')
+    @log.debug(@sport)
     @source_doc.root.children.children.children.each do |node|
 
       if node.name == 'Lap'

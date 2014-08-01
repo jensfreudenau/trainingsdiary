@@ -1,10 +1,38 @@
-= form_for(@training, :remote => true, format: :html) do |f|
-  %fieldset.edit
-    .group
-      = f.label :time_total, t('activerecord.attributes.training.time_total', :default => 'time_total'), :class => :label
-      = f.text_field :time_total, :class => 'text_field'
-    .group
-      = f.label :distance_total, t('activerecord.attributes.training.distance_total', :default => 'distance_total'), :class => :label
-      = f.text_field :distance_total, :class => 'text_field'
-    .actions
-      = f.submit
+.block
+  .content
+    .inner
+      %ul#trainingsform
+        = form_for(@training, :remote => true, format: :html) do |f|
+          %fieldset.edit
+            %li
+              = f.label :sport_level_id, t('activerecord.attributes.training.sportlevel', :default => 'Sport Level'), :class => :label
+              = f.collection_select :sport_level_id, @sportlevel, :id, :name
+            %li
+              = f.label :sport_id, t('activerecord.attributes.training.sport_id', :default => 'Sport'), :class => :label
+              - @sport.each do |option|
+                %label.radio
+                  = f.radio_button :sport_id, option.id
+                  = t('activerecord.attributes.training.sport', :default => option.name)
+
+            %li
+              = f.label :course_name_id, t('activerecord.attributes.training.coursename', :default => 'Course Name'), :class => :label
+              = f.collection_select :course_name_id, @coursename, :id, :name
+            %li
+              = f.label :time_total, t('activerecord.attributes.training.time_total', :default => 'Time'), :class => :label
+              = f.text_field :time_total, :class => 'text_field', :value => time2hms(to_dot_time(@training.time_total.to_i))
+            %li
+              = f.label :distance_total, t('activerecord.attributes.training.distance_total', :default => 'Distance '), :class => :label
+              = f.text_field :distance_total, :class => 'text_field' ,:value => number_with_precision(@training.distance_total)
+            %li
+              = f.label :comment, t('activerecord.attributes.training.comment', :default => 'Comment'), :class => :label
+              = f.text_area :comment, :class => 'text_area', :cols => 50
+            %li
+              = f.label :start_time, t('activerecord.attributes.training.start_time', :default => 'Start Time'), :class => :label
+              = f.text_field :start_time, :class => 'text_field', :id => 'datepicker'
+            .group.navform.wat-cf
+              %button.button{:type => 'submit'}
+                = image_tag('web-app-theme/icons/tick.png', :alt => "#{t('web-app-theme.save', :default => 'Save')}")
+                = t('web-app-theme.save', :default => 'Save')
+            .map{:class => 'minimap', :id => "map_#{@training.id.to_s}"}
+              :javascript
+                createMapWithRoute( #{@training.map_data}, "map_#{@training.id.to_s}", false);
