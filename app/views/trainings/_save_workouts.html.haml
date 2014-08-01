@@ -1,0 +1,10 @@
+= form_for(@training, :remote => true, format: :html) do |f|
+  %fieldset.edit
+    .group
+      = f.label :time_total, t('activerecord.attributes.training.time_total', :default => 'time_total'), :class => :label
+      = f.text_field :time_total, :class => 'text_field'
+    .group
+      = f.label :distance_total, t('activerecord.attributes.training.distance_total', :default => 'distance_total'), :class => :label
+      = f.text_field :distance_total, :class => 'text_field'
+    .actions
+      = f.submit

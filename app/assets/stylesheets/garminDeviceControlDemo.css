@@ -1,0 +1,63 @@
+#statusBox {
+    position: relative;
+    height: 30px;
+
+    padding: 10px;
+
+}
+
+#deviceBox {
+    position: relative;
+
+
+    padding: 10px;
+}
+
+#readBox {
+    position: relative;
+
+    padding: 10px;
+
+    float: none;
+    padding-bottom: 25px;
+}
+
+#writeBox {
+    position: relative;
+    border: 5px outset #046380;
+    background-color: #F6E8B1;
+    padding: 10px;
+
+}
+
+#readBox textarea, #writeBox textarea {
+    width: 100%;
+}
+
+#readMap {
+    width: 400px;
+    height: 400px;
+}
+
+#progressBar {
+    height:15px;
+    border:1px solid black;
+    width: 90%;
+    padding:0px;
+    text-align: left;
+    background-color:#efefef;
+}
+
+#progressWrapper {
+    position:relative;
+}
+
+#progressBarDisplay {
+    position:absolute;
+    top:0px;
+    height:15px;
+    margin: 0px;
+    padding:0px;
+    text-align: left;
+    background-color:#66cc33;
+}
